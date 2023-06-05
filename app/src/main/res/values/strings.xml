@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TP_Contact</string>
+    <string name="prenom">Prénom</string>
+    <string name="nom">Nom</string>
+    <string name="numero">Numéro</string>
+    <string name="action_save">action_save</string>
+    <string name="action_quit">action_quit</string>
+    <string name="action_delete">action_delete</string>
+    <string name="action_call">action_call</string>
+    <string name="action_change">action_change</string>
+    <string name="action_edit">action_edit</string>
+    <string name="quitter">Quitter</string>
+</resources>
