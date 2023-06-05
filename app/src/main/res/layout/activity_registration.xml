@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".registrationActivity">
+    tools:context=".RegistrationActivity">
 
   <TextView
       android:id="@+id/textView_registerHeader"
@@ -30,20 +30,21 @@
       app:layout_constraintTop_toBottomOf="@+id/textView_registerHeader" />
 
   <EditText
-      android:id="@+id/editTextTextPasswordRegister"
+      android:importantForAutofill="no"
+      android:id="@+id/editTextPasswordRegister"
       android:layout_width="wrap_content"
       android:layout_height="48dp"
       android:layout_marginTop="184dp"
       android:ems="10"
       android:hint="Mot de passe"
       android:inputType="textPassword"
-      android:labelFor="@+id/editTextTextPasswordRegister"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.497"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/textView_registerMail" />
 
   <EditText
+      android:importantForAutofill="no"
       android:id="@+id/editTextTextEmailAddressRegister"
       android:layout_width="wrap_content"
       android:layout_height="48dp"
@@ -62,7 +63,7 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="36dp"
       android:text="@string/textview_registerPasswordContent"
-      app:layout_constraintBottom_toTopOf="@+id/editTextTextPasswordRegister"
+      app:layout_constraintBottom_toTopOf="@+id/editTextPasswordRegister"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.498"
       app:layout_constraintStart_toStartOf="parent" />
@@ -76,10 +77,11 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.507"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/editTextTextPasswordRegister" />
+      app:layout_constraintTop_toBottomOf="@+id/editTextPasswordRegister" />
 
   <EditText
-      android:id="@+id/editText_registerName"
+      android:importantForAutofill="no"
+      android:id="@+id/editTextNameRegister"
       android:layout_width="wrap_content"
       android:layout_height="48dp"
       android:layout_marginTop="52dp"
@@ -100,5 +102,16 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.498"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/editText_registerName" />
+      app:layout_constraintTop_toBottomOf="@+id/editTextNameRegister" />
+
+  <Button
+      android:id="@+id/buttonRegisterToLogin"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="28dp"
+      android:text="Vous avez déjà un compte ? Se connecter"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.498"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/button_register" />
 </androidx.constraintlayout.widget.ConstraintLayout>

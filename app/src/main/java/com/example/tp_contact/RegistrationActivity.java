@@ -3,6 +3,7 @@ package com.example.tp_contact;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class registrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPassword;
     EditText registerName;
@@ -26,8 +27,8 @@ public class registrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         registerEmail=findViewById(R.id.editTextTextEmailAddressRegister);
-        registerPassword=findViewById(R.id.editTextTextPasswordRegister);
-        registerName=findViewById(R.id.editText_registerName);
+        registerPassword=findViewById(R.id.editTextPasswordRegister);
+        registerName=findViewById(R.id.editTextNameRegister);
         mRegister = findViewById(R.id.button_register);
         mAuth = FirebaseAuth.getInstance();
         mRegister.setOnClickListener( new View.OnClickListener() {
@@ -35,25 +36,42 @@ public class registrationActivity extends AppCompatActivity {
                 String email= registerEmail.getText().toString();
                 String password= registerPassword.getText().toString();
                 String name= registerName.getText().toString();
-                registerUser(email,password,name);
+                createAccount(email,password,name);
+            }
+        });
+        Button Register_To_Login = findViewById(R.id.buttonRegisterToLogin);
+        Register_To_Login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
             }
         });
     }
-    private void registerUser(String email, String password, String name) {
+    private void createAccount(String email, String password, String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // save user info in database
-                            Toast.makeText(registrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                            Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(mainIntent);
                             finish();
 
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(registrationActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (password.length()<8) {
+                                Toast.makeText(RegistrationActivity.this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(RegistrationActivity.this, "Email is already taken.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     }
                 });
