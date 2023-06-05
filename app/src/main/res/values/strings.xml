@@ -10,4 +10,10 @@
     <string name="action_change">action_change</string>
     <string name="action_edit">action_edit</string>
     <string name="quitter">Quitter</string>
+    <string name="textview_registerHeaderContent">Inscription</string>
+    <string name="textview_registerMail">Email :</string>
+    <string name="textview_registerPasswordContent">Mot de passe :</string>
+    <string name="textView_registerNameDisplay">Votre prénom</string>
+    <string name="adresse_mail">Adresse mail</string>
+    <string name="button_register">Créer un compte</string>
 </resources>

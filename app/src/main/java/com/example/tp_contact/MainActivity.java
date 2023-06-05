@@ -32,11 +32,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView gg = findViewById(R.id.listView);
-        gg.setAdapter(adapter);
 
-        gg.setOnItemClickListener(this);
-        gg.setTextFilterEnabled(true);
     }
 
     @Override
