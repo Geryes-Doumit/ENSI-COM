@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegistrationActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPassword;
-    EditText registerName;
     FirebaseAuth mAuth;
     Button mRegister;
     @Override
@@ -28,15 +27,13 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         registerEmail=findViewById(R.id.editTextTextEmailAddressRegister);
         registerPassword=findViewById(R.id.editTextPasswordRegister);
-        registerName=findViewById(R.id.editTextNameRegister);
         mRegister = findViewById(R.id.button_register);
         mAuth = FirebaseAuth.getInstance();
         mRegister.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {
                 String email= registerEmail.getText().toString();
                 String password= registerPassword.getText().toString();
-                String name= registerName.getText().toString();
-                createAccount(email,password,name);
+                createAccount(email,password);
             }
         });
         Button Register_To_Login = findViewById(R.id.buttonRegisterToLogin);
@@ -50,7 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-    private void createAccount(String email, String password, String name) {
+    private void createAccount(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
