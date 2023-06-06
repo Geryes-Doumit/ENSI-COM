@@ -21,6 +21,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class SettingsActivity extends AppCompatActivity {
     Button updatePictureButton;
     Button updateButton;
+    Button logout;
     EditText nameSettings;
     TextView userName;
     @Override
@@ -60,6 +61,18 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+        logout=findViewById(R.id.buttonLogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent mainIntent = new Intent(SettingsActivity.this, LoginActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
         updatePictureButton=findViewById(R.id.buttonUpdatePictureSettings);
+
     }
 }
