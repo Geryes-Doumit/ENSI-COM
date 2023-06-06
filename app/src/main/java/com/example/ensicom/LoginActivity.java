@@ -27,6 +27,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(mainIntent);
+            finish();
+        }
         loginEmail=findViewById(R.id.editTextEmailLogin);
         loginPassword=findViewById(R.id.editTextPasswordLogin);
         mLogin = findViewById(R.id.buttonLogin);
@@ -69,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Connecté", Toast.LENGTH_SHORT).show();
                 Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(mainIntent);
