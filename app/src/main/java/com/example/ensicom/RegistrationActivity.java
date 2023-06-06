@@ -11,12 +11,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class    RegistrationActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPassword;
     FirebaseAuth mAuth;
@@ -33,6 +34,10 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= registerEmail.getText().toString();
                 String password= registerPassword.getText().toString();
+                if (email.isEmpty() || password.isEmpty()){
+                    Toast.makeText(RegistrationActivity.this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 createAccount(email,password);
             }
         });
@@ -60,16 +65,20 @@ public class RegistrationActivity extends AppCompatActivity {
                             startActivity(mainIntent);
                             finish();
 
-                        } else {
-                            if (password.length()<8) {
-                                Toast.makeText(RegistrationActivity.this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(RegistrationActivity.this, "Email is already taken.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
                         }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (e.getMessage().equals("The email address is badly formatted.")){
+                            Toast.makeText(RegistrationActivity.this, "Veuillez entrer un email valide", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (e.getMessage().equals("The given password is invalid. [ Password should be at least 6 characters ]")){
+                            Toast.makeText(RegistrationActivity.this, "Veuillez entrer un mot de passe d'au moins 6 caractères", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(RegistrationActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
