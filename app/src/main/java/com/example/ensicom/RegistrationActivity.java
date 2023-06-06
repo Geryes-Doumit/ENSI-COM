@@ -55,7 +55,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(RegistrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
-                            Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(mainIntent);
                             finish();
