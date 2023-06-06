@@ -14,6 +14,6 @@
     <string name="textview_registerMail">Email :</string>
     <string name="textview_registerPasswordContent">Mot de passe :</string>
     <string name="textView_registerNameDisplay">Votre prénom</string>
-    <string name="adresse_mail">Adresse mail</string>
+    <string name="adresse_mail">Email</string>
     <string name="button_register">Créer un compte</string>
 </resources>
