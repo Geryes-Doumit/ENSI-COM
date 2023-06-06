@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class    RegistrationActivity extends AppCompatActivity {
     EditText registerEmail;
@@ -58,8 +59,8 @@ public class    RegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(RegistrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                            FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User("",email,""));
+                            Toast.makeText(RegistrationActivity.this, "Compte créé", Toast.LENGTH_SHORT).show();
                             Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(mainIntent);
