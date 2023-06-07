@@ -29,7 +29,7 @@ public class    RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             Intent mainIntent = new Intent(RegistrationActivity.this, HomeActivity.class);
-            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
             finish();
         }
@@ -53,9 +53,9 @@ public class    RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainIntent);
-                finish();
+                //finish();
             }
         });
     }
@@ -70,7 +70,7 @@ public class    RegistrationActivity extends AppCompatActivity {
                                     .setValue(new User("",email,""));
                             Toast.makeText(RegistrationActivity.this, "Compte créé", Toast.LENGTH_SHORT).show();
                             Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(mainIntent);
                             finish();
 
