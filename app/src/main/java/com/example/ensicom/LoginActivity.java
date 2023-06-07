@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
             finish();
         }
@@ -63,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent mainIntent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainIntent);
-                finish();
+                //finish();
             }
         });
 
@@ -77,9 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Connecté", Toast.LENGTH_SHORT).show();
                 Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(mainIntent);
-                    finish();
+                    //finish();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
