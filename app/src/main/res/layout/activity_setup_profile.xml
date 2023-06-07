@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextUpdateProfileNameSettings" />
 
     <ImageView
-        android:id="@+id/imageViewProfilePicture"
+        android:id="@+id/imageViewPostPicture"
         android:layout_width="210dp"
         android:layout_height="199dp"
         android:layout_marginTop="120dp"

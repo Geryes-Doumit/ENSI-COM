@@ -10,14 +10,18 @@ public class ClassicPost {
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
+    private String pictureUrl;
 
     public ClassicPost() {
     }
 
-    public ClassicPost(String content, String userId, Long date) {
+
+
+    public ClassicPost(String content, String userId, Long date, String pictureUrl) {
         this.content = content;
         this.userId = userId;
         this.date = date;
+        this.pictureUrl = pictureUrl;
     }
 
     public void setLikeCount(Integer likeCount) {
@@ -46,5 +50,13 @@ public class ClassicPost {
 
     public Long getDate() {
         return date;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }

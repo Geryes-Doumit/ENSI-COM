@@ -40,7 +40,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup_profile);
         nameSettings=findViewById(R.id.editTextUpdateProfileNameSettings);
         updateButton=findViewById(R.id.buttonUpdateProfileSettings);
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class SetupProfileActivity extends AppCompatActivity {
             }
 
         });
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

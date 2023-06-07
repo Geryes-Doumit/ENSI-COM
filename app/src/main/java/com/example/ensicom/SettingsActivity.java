@@ -7,11 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -59,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
         userName=findViewById(R.id.textView_settingsName);
         userName.setText(name);
         nameSettings=findViewById(R.id.editTextUpdateProfileNameSettings);
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DatabaseReference userRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
@@ -130,7 +128,7 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
