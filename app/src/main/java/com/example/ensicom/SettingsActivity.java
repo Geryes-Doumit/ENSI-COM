@@ -207,7 +207,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            // Handle back button action here
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return true;
