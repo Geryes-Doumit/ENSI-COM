@@ -202,6 +202,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        finish();
         return true;
     }
     @Override
