@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView userName;
     Button settings;
     Button newPostButton;
+    Button testButton;
     List<String> userNameList = new ArrayList<>();
     List<String> postList = new ArrayList<>();
 
@@ -40,7 +41,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        testButton=findViewById(R.id.buttonTest);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
         List<HashMap<String, String>> itemsList = new ArrayList<>();
         SimpleAdapter adapter = new SimpleAdapter(
                 HomeActivity.this,
