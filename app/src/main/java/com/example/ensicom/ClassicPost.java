@@ -10,18 +10,48 @@ public class ClassicPost {
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
-    private String pictureUrl;
+    private String pictureUrl1;
+    private String pictureUrl2;
+    private String pictureUrl3;
+    private String pictureUrl4;
+
+    public String getPictureUrl2() {
+        return pictureUrl2;
+    }
+
+    public void setPictureUrl2(String getPictureUrl2) {
+        this.pictureUrl2 = getPictureUrl2;
+    }
+
+    public String getPictureUrl3() {
+        return pictureUrl3;
+    }
+
+    public void setPictureUrl3(String getPictureUrl3) {
+        this.pictureUrl3 = getPictureUrl3;
+    }
+
+    public String getPictureUrl4() {
+        return pictureUrl4;
+    }
+
+    public void setPictureUrl4(String getPictureUrl4) {
+        this.pictureUrl4 = getPictureUrl4;
+    }
 
     public ClassicPost() {
     }
 
 
 
-    public ClassicPost(String content, String userId, Long date, String pictureUrl) {
+    public ClassicPost(String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4) {
         this.content = content;
         this.userId = userId;
         this.date = date;
-        this.pictureUrl = pictureUrl;
+        this.pictureUrl1 = pictureUrl1;
+        this.pictureUrl2 = pictureUrl2;
+        this.pictureUrl3 = pictureUrl3;
+        this.pictureUrl4 = pictureUrl4;
     }
 
     public void setLikeCount(Integer likeCount) {
@@ -52,11 +82,11 @@ public class ClassicPost {
         return date;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getPictureUrl1() {
+        return pictureUrl1;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPictureUrl1(String pictureUrl) {
+        this.pictureUrl1 = pictureUrl;
     }
 }
