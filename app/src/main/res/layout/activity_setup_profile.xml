@@ -22,9 +22,12 @@
 
     <Button
         android:id="@+id/buttonUpdateProfileSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="165dp"
+        android:layout_height="55dp"
         android:layout_marginTop="68dp"
+        android:background="@drawable/login_button"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         android:text="Créer le profil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
