@@ -33,8 +33,16 @@ public class HomeActivity extends AppCompatActivity {
     TextView userName;
     Button settings;
     Button newPostButton;
+    Button buttonProfile;
+    Button buttonHomeSettings;
+    Button buttonActuality;
+    Button ButtonEvent;
     List<String> userNameList = new ArrayList<>();
     List<String> postList = new ArrayList<>();
+
+
+    Button evenementsButton = findViewById(R.id.ButtonEvent);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,14 @@ public class HomeActivity extends AppCompatActivity {
 
         postsListView = findViewById(R.id.postsList);
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
+
+
+        buttonActuality.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onActualitesButtonClick(v);
+            }
+        });
         postsRef.limitToLast(10).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -117,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
         String name = user.getDisplayName();
         userName=findViewById(R.id.textView_userName);
         userName.setText(name);
-        settings=findViewById(R.id.buttonHomeSettings);
+        settings=findViewById(R.id.buttonActuality);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +156,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onActualitesButtonClick(View view) {
+        // Code à exécuter lorsque le bouton "Actualités" est cliqué
+        Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
+    }
+
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

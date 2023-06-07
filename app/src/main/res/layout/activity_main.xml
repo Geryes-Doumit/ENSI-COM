@@ -1,18 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/top_ribbon"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#87CEFA"
+            android:orientation="horizontal">
+
+            <!-- Bouton du menu -->
+            <ImageView
+                android:id="@+id/menu_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/menu"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:padding="16dp"
+                android:background="#87CEFA"
+                android:contentDescription="Menu Button"
+                android:clickable="true"
+                android:onClick="onMenuButtonClick" />
+
+            <!-- Logo ENSICOM -->
+            <TextView
+                android:id="@+id/logo_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ENSICOM"
+                android:textSize="48sp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:background="#87CEFA"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onLogoClick" />
+
+            <!-- Menu utilisateur -->
+            <ImageView
+                android:id="@+id/user_menu_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/profil"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:padding="16dp"
+                android:background="#87CEFA"
+                android:contentDescription="User Menu Button"
+                android:clickable="true"
+                android:onClick="onUserMenuButtonClick" />
+
+        </LinearLayout>
+
+        <!-- Conteneur des boutons Actualités et Événements -->
+        <LinearLayout
+            android:id="@+id/bottom_ribbon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="12dp"
+            android:background="#87CEFA"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Bouton Actualités -->
+
+            <!-- Bouton Événements -->
+            <Button
+                android:id="@+id/button_actualites"
+                android:layout_width="10dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_actualites"
+                android:onClick="onActualitesButtonClick"
+                android:text="Actualités" />
+
+            <Button
+                android:id="@+id/button_evenements"
+                android:layout_width="10dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_evenement"
+                android:onClick="onEvenementsButtonClick"
+                android:text="Événements" />
+        </LinearLayout>
+
+        <!-- Bouton plus -->
+        <ImageView
+            android:id="@+id/independent_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@id/bottom_ribbon"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="338dp"
+            android:layout_marginBottom="50dp"
+            android:clickable="true"
+            android:onClick="onIndependentButtonClick"
+            android:padding="16dp"
+            android:src="@drawable/circle"
+            android:contentDescription="Independent Button" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#FFFFFF">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+
+            <!-- Add your menu items here -->
+            <TextView
+                android:id="@+id/menu_profil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profil" />
+
+            <TextView
+                android:id="@+id/menu_parametres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paramètres" />
+            <!-- Add more menu items if needed -->
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+
+
+
+
+
+
+

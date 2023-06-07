@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/top_ribbon"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#87CEFA"
+        android:orientation="horizontal">
+
+        <!-- Bouton du menu -->
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/menu"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="16dp"
+            android:background="#87CEFA"
+            android:contentDescription="Menu Button"
+            android:clickable="true"
+            android:onClick="onMenuButtonClick" />
+
+        <!-- Logo ENSICOM -->
+        <TextView
+            android:id="@+id/logo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENSICOM"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="#87CEFA"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="onLogoClick" />
+
+        <!-- Menu utilisateur -->
+        <ImageView
+            android:id="@+id/user_menu_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/profil"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:padding="16dp"
+            android:background="#87CEFA"
+            android:contentDescription="User Menu Button"
+            android:clickable="true"
+            android:onClick="onUserMenuButtonClick" />
+
+    </LinearLayout>
+
+    <!-- Conteneur des boutons Actualités et Événements -->
+    <LinearLayout
+        android:id="@+id/bottom_ribbon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:background="#87CEFA"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Bouton Actualités -->
+
+        <!-- Bouton Événements -->
+        <Button
+            android:id="@+id/button_actualites"
+            android:layout_width="10dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_actualites"
+            android:onClick="onActualitesButtonClick"
+            android:text="Actualités" />
+
+        <Button
+            android:id="@+id/button_evenements"
+            android:layout_width="10dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_evenement"
+            android:onClick="onEvenementsButtonClick"
+            android:text="Événements" />
+    </LinearLayout>
+
+</RelativeLayout>
+
+

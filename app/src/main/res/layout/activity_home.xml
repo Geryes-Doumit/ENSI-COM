@@ -6,54 +6,103 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <include
-        android:id="@+id/toolBar"
-        layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#0000FF"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="99dp" />
 
     <TextView
         android:id="@+id/textView_userName"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginTop="68dp"
-        android:text=""
+        android:layout_marginTop="28dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="ENSI'COM"
+        android:textColor="#171E47"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/ButtonEvent"
+        android:layout_width="218dp"
+        android:layout_height="113dp"
+        android:backgroundTint="#1B365A"
+        android:text="Evenement"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="202dp"
+        tools:layout_editor_absoluteY="630dp" />
+
+    <Button
+        android:id="@+id/buttonActuality"
+        android:layout_width="210dp"
+        android:layout_height="97dp"
+        android:background="#1B365A"
+        android:text="Actualité"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#E6E6E6"
+        tools:layout_editor_absoluteY="634dp" />
+
+    <ImageButton
+        android:id="@+id/buttonProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/login"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="305dp" />
+
+    <Button
         android:id="@+id/buttonHomeSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:text="Paramètres"
+        android:layout_width="70dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintHorizontal_bias="0.032"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/newPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="85dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="429dp"
         android:text="Ajouter un post"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton" />
 
     <ListView
         android:id="@+id/postsList"
-        android:layout_width="359dp"
-        android:layout_height="463dp"
+        android:layout_width="399dp"
+        android:layout_height="437dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonHomeSettings"
-        app:layout_constraintVertical_bias="0.295"/>
+        app:layout_constraintVertical_bias="0.0" />
 
-
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="89dp"
+        android:layout_height="90dp"
+        android:background="@android:drawable/ic_menu_sort_by_size"
+        app:layout_constraintBottom_toTopOf="@+id/buttonActuality"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
 </androidx.constraintlayout.widget.ConstraintLayout>
