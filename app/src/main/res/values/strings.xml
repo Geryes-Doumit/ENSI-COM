@@ -16,4 +16,6 @@
     <string name="textView_registerNameDisplay">Votre prénom</string>
     <string name="adresse_mail">Email</string>
     <string name="button_register">Créer un compte</string>
+    <string name="temp_email">prénom.nom@uha.fr</string>
+    <string name="temp_name">Prénom</string>
 </resources>
