@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
                                 postUserName = postUser.getUsername();
                             }
                             userNameList.add(postUserName);
-                            postList.add(postContent +" liked by "+ " people");
+                            postList.add(postContent +" liked by "+ String.valueOf(post.getLikeUserList().size())+" people");
 
                             HashMap<String, String> map = new HashMap<>();
                             map.put("First Line", userNameList.get(userNameList.size()-1));
