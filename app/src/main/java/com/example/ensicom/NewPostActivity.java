@@ -204,7 +204,7 @@ public class NewPostActivity extends AppCompatActivity {
                     }
                     else {
                         Uri imageUri = data.getData();
-                        ImageView imageView = imageViewsList.get(0); // Assuming the single image goes to the first ImageView
+                        ImageView imageView = imageViewsList.get(0);
                         getImageInImageView(imageUri, imageView);
                     }
                 }
@@ -264,8 +264,8 @@ public class NewPostActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 //    }
-    int totalTasks = 0; // Total number of tasks to complete
-    int completedTasks = 0; // Number of completed tasks
+    int totalTasks = 0;
+    int completedTasks = 0;
     private void uploadPost() {
         if (imagePath1 != null) {
             totalTasks++; // Increment the total tasks count
@@ -282,7 +282,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Uri> task) {
                                         if (task.isSuccessful()) {
                                             pictureUrl1 = task.getResult().toString();
-                                            completedTasks++; // Increment the counter
+                                            completedTasks++;
                                             checkAndPost();
                                         }
                                     }
@@ -302,7 +302,7 @@ public class NewPostActivity extends AppCompatActivity {
                     });
         }
         if (imagePath2 != null) {
-            totalTasks++; // Increment the total tasks count
+            totalTasks++;
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Chargement...");
             progressDialog.show();
@@ -316,7 +316,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Uri> task) {
                                         if (task.isSuccessful()) {
                                             pictureUrl2 = task.getResult().toString();
-                                            completedTasks++; // Increment the counter
+                                            completedTasks++;
                                             checkAndPost();
                                         }
                                     }
@@ -336,7 +336,7 @@ public class NewPostActivity extends AppCompatActivity {
                     });
         }
         if (imagePath3 != null) {
-            totalTasks++; // Increment the total tasks count
+            totalTasks++;
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Chargement...");
             progressDialog.show();
@@ -350,7 +350,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Uri> task) {
                                         if (task.isSuccessful()) {
                                             pictureUrl3 = task.getResult().toString();
-                                            completedTasks++; // Increment the counter
+                                            completedTasks++;
                                             checkAndPost();
                                         }
                                     }
@@ -370,7 +370,7 @@ public class NewPostActivity extends AppCompatActivity {
                     });
         }
         if (imagePath4 != null) {
-            totalTasks++; // Increment the total tasks count
+            totalTasks++;
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Chargement...");
             progressDialog.show();
@@ -384,7 +384,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Uri> task) {
                                         if (task.isSuccessful()) {
                                             pictureUrl4 = task.getResult().toString();
-                                            completedTasks++; // Increment the counter
+                                            completedTasks++;
                                             checkAndPost();
                                         }
                                     }
