@@ -3,12 +3,15 @@ package com.example.ensicom;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -23,19 +26,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    ListView postsListView;
+    RecyclerView postsListView;
     TextView userName;
     Button settings;
     Button newPostButton;
     Button testButton;
-    List<String> userNameList = new ArrayList<>();
-    List<String> postList = new ArrayList<>();
+    List<ClassicPost> postsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,71 +55,25 @@ public class HomeActivity extends AppCompatActivity {
                 //finish();
             }
         });
-        List<HashMap<String, String>> itemsList = new ArrayList<>();
-        SimpleAdapter adapter = new SimpleAdapter(
-                HomeActivity.this,
-                itemsList,
-                R.layout.user_and_post_item,
-                new String[]{"Profile Picture","First Line", "Second Line"},
-                new int[]{R.id.userProfilePicture, R.id.userName, R.id.postContent});
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String currentUserName = currentUser.getDisplayName();
+        // Adding the latest posts to the posts list
+        DatabaseReference postsRef = FirebaseDatabase
+                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("posts");
 
-        postsListView = findViewById(R.id.postsList);
-        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
-        postsRef.limitToLast(10).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+        postsRef.limitToLast(20).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                    String postContent = post.getContent();
-
-                    DatabaseReference user = FirebaseDatabase
-                            .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("user")
-                            .child(post.getUserId());
-                    user.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            User postUser = dataSnapshot.getValue(User.class);
-                            String postUserName;
-                            if (postUser == null) {
-                                postUserName = "Sad User";
-                            } else {
-                                postUserName = postUser.getUsername();
-                            }
-                            userNameList.add(postUserName);
-                            postList.add(postContent);
-
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put("First Line", userNameList.get(userNameList.size()-1));
-                            map.put("Second Line", postList.get(postList.size()-1));
-                            itemsList.add(map);
-
-                            postsListView.setAdapter(adapter);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(HomeActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
-                            userNameList.add("User Not Found");
-                            postList.add(postContent);
-
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put("First Line", userNameList.get(userNameList.size()-1));
-                            map.put("Second Line", postList.get(postList.size()-1));
-                            itemsList.add(map);
-
-                            postsListView.setAdapter(adapter);
-                        }
-                    });
+                    postsList.add(post);
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("Une erreur est survenue, veuillez réessayer.");
+                Collections.reverse(postsList);
+
+                // Showing the posts using the recycler view
+                postsListView = findViewById(R.id.postsListView);
+                postsListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
             }
         });
 
