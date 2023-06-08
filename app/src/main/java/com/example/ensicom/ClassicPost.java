@@ -13,7 +13,7 @@ public class ClassicPost {
     private Integer likeCount;
     private Integer commentCount;
     private final ArrayList<String> LikeUserList = new ArrayList<String>();
-
+    private ArrayList<String> tagsList = new ArrayList<>();
     private String pictureUrl1;
     private String pictureUrl2;
     private String pictureUrl3;
@@ -22,7 +22,7 @@ public class ClassicPost {
     public ClassicPost() {
     }
 
-    public ClassicPost(String postId, String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4) {
+    public ClassicPost(String postId, String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4, ArrayList<String> tagsList) {
         this.postId = postId;
         this.content = content;
         this.userId = userId;
@@ -31,8 +31,15 @@ public class ClassicPost {
         this.pictureUrl2 = pictureUrl2;
         this.pictureUrl3 = pictureUrl3;
         this.pictureUrl4 = pictureUrl4;
+        this.tagsList=tagsList;
+    }
+    public ArrayList<String> getTagsList() {
+        return tagsList;
     }
 
+    public ArrayList<String> setTagsList(ArrayList<String> tagList) {
+        return tagsList;
+    }
 
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;

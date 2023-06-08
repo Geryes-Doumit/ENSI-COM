@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,14 +39,17 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
 
 public class NewPostActivity extends AppCompatActivity {
-    EditText textContainer;
+    EditText textContainer, tagsContainer;
     Button postButton;
     private ArrayList<ImageView> imageViewsList = new ArrayList<>();
     private ArrayList<String> pictureUrlsList = new ArrayList<>();
+    ArrayList<String> arrayTagsList = new ArrayList<>();
     ImageButton delete1, delete2, delete3, delete4;
     ImageView pictureToPost1, pictureToPost2, pictureToPost3, pictureToPost4, pictureToPost5;
     Uri imagePath1, imagePath2, imagePath3, imagePath4;
     String pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4;
+    String tags;
+    String[] tagsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,9 +423,15 @@ public class NewPostActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String content = textContainer.getText().toString();
 
-        ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4);
+        tagsContainer = findViewById(R.id.tagsContent);
+        String tags=tagsContainer.getText().toString();
+        String[] tagsList = tags.split(";");
+        arrayTagsList.addAll(Arrays.asList(tagsList));
+        Toast.makeText(NewPostActivity.this , tags, Toast.LENGTH_SHORT).show();
+        ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4,arrayTagsList);
         post.setLikeCount(0);
         post.setLikeUserList(new ArrayList<>());
+
         DatabaseReference postsRef = ref.child("posts");
         String postId = postsRef.push().getKey();
         post.setPostId(postId);
