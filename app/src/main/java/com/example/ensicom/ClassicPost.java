@@ -12,7 +12,7 @@ public class ClassicPost {
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
-    private ArrayList<String> likes;
+    private final ArrayList<String> LikeUserList = new ArrayList<String>();
 
     private String pictureUrl1;
     private String pictureUrl2;
@@ -33,9 +33,6 @@ public class ClassicPost {
         this.pictureUrl4 = pictureUrl4;
     }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
-    }
 
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
@@ -49,14 +46,29 @@ public class ClassicPost {
         return userId;
     }
 
+
+    public ArrayList<String> getLikeUserList() {
+        return LikeUserList;
+    }
+
+    public ArrayList<String> setLikeUserList(ArrayList<String> likeUserList) {
+        return LikeUserList;
+    }
+
     public Integer getLikeCount() {
         return likeCount;
     }
-    public ArrayList<String> getLikeUserList() {
-        ArrayList<String> ar = new ArrayList<String>();
-        ar.add("toto");
-        ar.add("tata");
-        return ar;
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public void addLike(String userId) {
+        LikeUserList.add(userId);
+    }
+
+    public void removeLike(String userId) {
+        LikeUserList.remove(userId);
     }
 
     public Integer getCommentCount() {
@@ -106,5 +118,6 @@ public class ClassicPost {
     public String getPostId() {
         return this.postId;
     }
+
 }
 

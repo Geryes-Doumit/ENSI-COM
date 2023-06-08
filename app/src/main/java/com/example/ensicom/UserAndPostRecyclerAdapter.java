@@ -18,7 +18,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
@@ -44,7 +46,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
-        String postPicture1= post.getPictureUrl1();
+        String postPicture1 = post.getPictureUrl1();
+        Integer likeCount = post.getLikeCount();
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -59,8 +62,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 String postId = post.getPostId();
                 if (dataSnapshot.getKey().equals(currentUserUid)) {
                     holder.getDeletePostButton().setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     holder.getDeletePostButton().setVisibility(View.GONE);
                 }
                 holder.getDeletePostButton().setOnClickListener(new View.OnClickListener() {
@@ -87,8 +89,43 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 });
                 holder.getUserName().setText(postUserName);
                 holder.getPostContent().setText(postContent);
+                holder.getLikeCount().setText(likeCount.toString());
                 Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
                 Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
+            }
+        });
+        holder.getLikeButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String postId = post.getPostId();
+                DatabaseReference postRef = FirebaseDatabase
+                        .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                        .getReference("posts")
+                        .child(postId);
+                postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        //Toast.makeText(holder.getLikeButton().getContext(), "Like", Toast.LENGTH_SHORT).show();
+                        ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
+//                        if (post.getLikeUserList().contains(currentUserUid)) {
+//                            Toast.makeText(holder.getLikeButton().getContext(), "Vous avez déjà liké ce post", Toast.LENGTH_SHORT).show();
+//                            Integer likeCount = post.getLikeCount();
+//                            likeCount--;
+//                            post.setLikeCount(likeCount);
+//                            post.removeLike(currentUserUid);
+//                            postRef.setValue(post);
+//                            holder.getLikeCount().setText(likeCount.toString());
+//                        } else {
+                            Integer likeCount = post.getLikeCount();
+                            likeCount++;
+                            post.setLikeCount(likeCount);
+                            post.addLike(currentUserUid);
+                            postRef.setValue(post);
+                            Toast.makeText(holder.getLikeButton().getContext(), "Liked by " + post.getLikeUserList().toString(), Toast.LENGTH_SHORT).show();
+                            holder.getLikeCount().setText(likeCount.toString());
+                        //}
+                    }
+                });
             }
         });
     }
