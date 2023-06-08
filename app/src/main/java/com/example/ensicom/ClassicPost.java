@@ -61,10 +61,12 @@ public class ClassicPost {
     }
 
     public void addLike(String userId) {
+        setLikeCount(getLikeCount() + 1);
         this.LikeUserList.add(userId);
     }
 
     public void removeLike(String userId) {
+        setLikeCount(getLikeCount() - 1);
         this.LikeUserList.remove(userId);
     }
 

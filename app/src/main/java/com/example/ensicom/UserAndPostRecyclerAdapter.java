@@ -108,15 +108,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                         ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
                         if (post.getLikeUserList().toString().contains(currentUserUid)){
                             Integer likeCount = post.getLikeCount();
-                            likeCount--;
-                            post.setLikeCount(likeCount);
                             post.removeLike(currentUserUid);
                             postRef.setValue(post);
                             holder.getLikeCount().setText(likeCount.toString());
                         } else {
                             Integer likeCount = post.getLikeCount();
-                            likeCount++;
-                            post.setLikeCount(likeCount);
                             post.addLike(currentUserUid);
                             postRef.setValue(post);
                             holder.getLikeCount().setText(likeCount.toString());
