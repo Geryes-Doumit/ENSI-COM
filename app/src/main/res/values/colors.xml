@@ -6,4 +6,6 @@
     <color name="jaune">#FCDC06</color>
     <color name="post_background">#E9ECF2</color>
     <color name="post_text">#0060a9</color>
+    <color name="gris">#E9E9E9</color>
+    <color name="beige">#F8F8FF</color>
 </resources>
