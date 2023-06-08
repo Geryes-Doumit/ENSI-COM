@@ -2,6 +2,7 @@ package com.example.ensicom;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,16 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                         }
                     }
                 });
+            }
+        });
+
+        holder.getCommentButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postId = post.getPostId();
+                Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
+                intent.putExtra("postId", postId);
+                v.getContext().startActivity(intent);
             }
         });
     }

@@ -9,7 +9,8 @@ public class ClassicPost {
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
-    private ArrayList<String> LikeUserList;
+    private ArrayList<String> likeUserList;
+    private ArrayList<Comment> commentsList;
 
     private String pictureUrl1;
     private String pictureUrl2;
@@ -28,6 +29,12 @@ public class ClassicPost {
         this.pictureUrl2 = pictureUrl2;
         this.pictureUrl3 = pictureUrl3;
         this.pictureUrl4 = pictureUrl4;
+        this.commentsList = new ArrayList<>();
+        this.commentsList.add(new Comment("", "", 0));
+        this.commentCount = 0;
+        this.likeUserList = new ArrayList<>();
+        this.likeUserList.add("");
+        this.likeCount = 0;
     }
 
 
@@ -45,11 +52,11 @@ public class ClassicPost {
 
 
     public ArrayList<String> getLikeUserList() {
-        return LikeUserList;
+        return likeUserList;
     }
 
     public void setLikeUserList(ArrayList<String> likeUserList) {
-        this.LikeUserList = likeUserList;
+        this.likeUserList = likeUserList;
     }
 
     public Integer getLikeCount() {
@@ -62,12 +69,12 @@ public class ClassicPost {
 
     public void addLike(String userId) {
         setLikeCount(getLikeCount() + 1);
-        this.LikeUserList.add(userId);
+        this.likeUserList.add(userId);
     }
 
     public void removeLike(String userId) {
         setLikeCount(getLikeCount() - 1);
-        this.LikeUserList.remove(userId);
+        this.likeUserList.remove(userId);
     }
 
     public Integer getCommentCount() {
@@ -118,5 +125,18 @@ public class ClassicPost {
         return this.postId;
     }
 
+    public ArrayList<Comment> getCommentsList() {
+        return commentsList;
+    }
+
+    public void addComment(Comment comment) {
+        this.commentsList.add(comment);
+        this.commentCount++;
+    }
+
+    public void removeComment(Comment comment) {
+        this.commentsList.remove(comment);
+        this.commentCount--;
+    }
 }
 

@@ -3,15 +3,15 @@ package com.example.ensicom;
 public class Comment {
     private String content;
     private String userId;
-    private String postId;
+    private Integer commentId;
 
     public Comment() {
     }
 
-    public Comment(String content, String userId, String postId) {
+    public Comment(String content, String userId, Integer commentId) {
         this.content = content;
         this.userId = userId;
-        this.postId = postId;
+        this.commentId = commentId;
     }
 
     public String getContent() {
@@ -20,9 +20,5 @@ public class Comment {
 
     public String getUserId() {
         return userId;
-    }
-
-    public String getPostId() {
-        return postId;
     }
 }

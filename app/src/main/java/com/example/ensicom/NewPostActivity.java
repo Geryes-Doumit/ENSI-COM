@@ -421,9 +421,6 @@ public class NewPostActivity extends AppCompatActivity {
 
         ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4);
         post.setLikeCount(0);
-        ArrayList<String> ar = new ArrayList<String>();
-        ar.add("");
-        post.setLikeUserList(ar);
         DatabaseReference postsRef = ref.child("posts");
         String postId = postsRef.push().getKey();
         post.setPostId(postId);
