@@ -2,61 +2,34 @@ package com.example.ensicom;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ClassicPost {
     private String content;
+    private String postId;
     private Long date;
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
+    private ArrayList<String> likes;
+
     private String pictureUrl1;
     private String pictureUrl2;
     private String pictureUrl3;
     private String pictureUrl4;
 
-    public String getPictureUrl2() {
-        return pictureUrl2;
-    }
-
-    public void setPictureUrl2(String getPictureUrl2) {
-        this.pictureUrl2 = getPictureUrl2;
-    }
-
-    public String getPictureUrl3() {
-        return pictureUrl3;
-    }
-
-    public void setPictureUrl3(String getPictureUrl3) {
-        this.pictureUrl3 = getPictureUrl3;
-    }
-
-    public String getPictureUrl4() {
-        return pictureUrl4;
-    }
-
-    public void setPictureUrl4(String getPictureUrl4) {
-        this.pictureUrl4 = getPictureUrl4;
-    }
-
-    public String getPictureUrl1() {
-        return pictureUrl1;
-    }
-
-    public void setPictureUrl1(String pictureUrl1) {
-        this.pictureUrl1 = pictureUrl1;
-    }
-
-    private String pictureUrl1;
-
     public ClassicPost() {
     }
 
-    public ClassicPost(String content, String userId, Long date, String pictureUrl1) {
+    public ClassicPost(String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4) {
         this.content = content;
         this.userId = userId;
         this.date = date;
         this.pictureUrl1 = pictureUrl1;
+        this.pictureUrl2 = pictureUrl2;
+        this.pictureUrl3 = pictureUrl3;
+        this.pictureUrl4 = pictureUrl4;
     }
 
     public void setLikeCount(Integer likeCount) {
@@ -78,6 +51,12 @@ public class ClassicPost {
     public Integer getLikeCount() {
         return likeCount;
     }
+    public ArrayList<String> getLikeUserList() {
+        ArrayList<String> ar = new ArrayList<String>();
+        ar.add("toto");
+        ar.add("tata");
+        return ar;
+    }
 
     public Integer getCommentCount() {
         return commentCount;
@@ -91,7 +70,32 @@ public class ClassicPost {
         return pictureUrl1;
     }
 
-    public void setPictureUrl1(String pictureUrl) {
-        this.pictureUrl1 = pictureUrl;
+    public void setPictureUrl1(String pictureUrl1) {
+        this.pictureUrl1 = pictureUrl1;
+    }
+
+    public String getPictureUrl2() {
+        return pictureUrl2;
+    }
+
+    public void setPictureUrl2(String pictureUrl2) {
+        this.pictureUrl2 = pictureUrl2;
+    }
+
+    public String getPictureUrl3() {
+        return pictureUrl3;
+    }
+
+    public void setPictureUrl3(String pictureUrl3) {
+        this.pictureUrl3 = pictureUrl3;
+    }
+
+    public String getPictureUrl4() {
+        return pictureUrl4;
+    }
+
+    public void setPictureUrl4(String pictureUrl4) {
+        this.pictureUrl4 = pictureUrl4;
     }
 }
+
