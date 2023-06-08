@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Thème de l'application -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Couleur de l'actionBar -->
+        <item name="colorPrimary">@color/primary</item>
+        <!-- Couleur du texte de l'actionBar -->
+        <item name="android:textColorPrimary">@color/text</item>
+        <!-- Couleur de l'arrière-plan de l'actionBar -->
+        <item name="android:background">@color/background</item>
+        <!-- Couleur de l'arrière-plan de l'application -->
+        <item name="android:windowBackground">@color/background</item>
+        <!-- Autres attributs de style -->
+    </style>
+    <!-- Thème de l'application sans actionBar -->
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Autres styles et thèmes -->
+</resources>

@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Thème de l'application pour le mode sombre -->
+    <style name="AppThemeNight" parent="Theme.AppCompat">
+        <!-- Couleur de l'actionBar en mode sombre -->
+        <item name="colorPrimary">@color/primary</item>
+        <!-- Couleur du texte de l'actionBar en mode sombre -->
+        <item name="android:textColorPrimary">@color/text</item>
+        <!-- Couleur de l'arrière-plan de l'actionBar en mode sombre -->
+        <item name="android:background">@color/background</item>
+        <!-- Couleur de l'arrière-plan de l'application en mode sombre -->
+        <item name="android:windowBackground">@color/background</item>
+        <!-- Autres attributs de style en mode sombre -->
+    </style>
+
+    <!-- Autres styles et thèmes en mode sombre -->
+</resources>
