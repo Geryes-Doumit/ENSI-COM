@@ -6,6 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".NewPostActivity">
 
+    <ImageView
+        android:id="@+id/imageViewPostPicture4"
+        android:layout_width="158dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="200dp"
+        android:contentDescription="Profile picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <ImageView
+        android:id="@+id/imageViewPostPicture3"
+        android:layout_width="158dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="200dp"
+        android:contentDescription="Profile picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewPostPicture1"
+        android:layout_width="158dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="60dp"
+        android:contentDescription="Profile picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <ImageView
+        android:id="@+id/imageViewPostPicture2"
+        android:layout_width="158dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="60dp"
+        android:contentDescription="Profile picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 
     <EditText
         android:id="@+id/postContent"
@@ -14,18 +72,84 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:hint="J'ai fait caca hier"
         app:layout_constraintBottom_toTopOf="@+id/postButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.849" />
 
     <Button
         android:id="@+id/postButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
         android:text="Post"
+        android:background="@drawable/login_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.865" />
+
+    <ImageView
+        android:id="@+id/imageViewPostPicture5"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="96dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture4"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPostPicture4"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <ImageButton
+        android:id="@+id/deleteButton1"
+        android:layout_width="55dp"
+        android:contentDescription="delete button 1"
+        android:layout_height="52dp"
+        android:layout_marginBottom="108dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewPostPicture3"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture1"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture1"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <ImageButton
+        android:id="@+id/deleteButton2"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:contentDescription="delete button 2"
+        android:layout_marginBottom="108dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewPostPicture4"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture2"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <ImageButton
+        android:id="@+id/deleteButton3"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="176dp"
+        android:contentDescription="delete button 3"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture3"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <ImageButton
+        android:id="@+id/deleteButton4"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:contentDescription="delete button 4"
+        android:layout_marginTop="176dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture4"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

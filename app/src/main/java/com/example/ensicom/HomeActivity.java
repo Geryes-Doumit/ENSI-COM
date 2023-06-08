@@ -3,12 +3,15 @@ package com.example.ensicom;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -23,105 +26,55 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    ListView postsListView;
+    RecyclerView postsListView;
     TextView userName;
     Button settings;
     Button newPostButton;
-    Button buttonProfile;
-    Button buttonHomeSettings;
-    Button buttonActuality;
-    Button ButtonEvent;
-    List<String> userNameList = new ArrayList<>();
-    List<String> postList = new ArrayList<>();
-
-
-    Button evenementsButton = findViewById(R.id.ButtonEvent);
-
+    Button testButton;
+    List<ClassicPost> postsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        testButton=findViewById(R.id.buttonTest);
 
-        List<HashMap<String, String>> itemsList = new ArrayList<>();
-        SimpleAdapter adapter = new SimpleAdapter(
-                HomeActivity.this,
-                itemsList,
-                R.layout.user_and_post_item,
-                new String[]{"Profile Picture","First Line", "Second Line"},
-                new int[]{R.id.userProfilePicture, R.id.userName, R.id.postContent});
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String currentUserName = currentUser.getDisplayName();
-
-        postsListView = findViewById(R.id.postsList);
-        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
-
-
-        buttonActuality.setOnClickListener(new View.OnClickListener() {
+        testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onActualitesButtonClick(v);
+                Intent mainIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mainIntent);
+                //finish();
             }
         });
-        postsRef.limitToLast(10).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+
+        // Adding the latest posts to the posts list
+        DatabaseReference postsRef = FirebaseDatabase
+                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("posts");
+
+        postsRef.limitToLast(20).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                    String postContent = post.getContent();
-
-                    DatabaseReference user = FirebaseDatabase
-                            .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("user")
-                            .child(post.getUserId());
-                    user.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            User postUser = dataSnapshot.getValue(User.class);
-                            String postUserName;
-                            if (postUser == null) {
-                                postUserName = "Sad User";
-                            } else {
-                                postUserName = postUser.getUsername();
-                            }
-                            userNameList.add(postUserName);
-                            postList.add(postContent);
-
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put("First Line", userNameList.get(userNameList.size()-1));
-                            map.put("Second Line", postList.get(postList.size()-1));
-                            itemsList.add(map);
-
-                            postsListView.setAdapter(adapter);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(HomeActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
-                            userNameList.add("User Not Found");
-                            postList.add(postContent);
-
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put("First Line", userNameList.get(userNameList.size()-1));
-                            map.put("Second Line", postList.get(postList.size()-1));
-                            itemsList.add(map);
-
-                            postsListView.setAdapter(adapter);
-                        }
-                    });
+                    postsList.add(post);
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("Une erreur est survenue, veuillez réessayer.");
+                Collections.reverse(postsList);
+
+                // Showing the posts using the recycler view
+                postsListView = findViewById(R.id.postsListView);
+                postsListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
             }
         });
 
@@ -133,14 +86,14 @@ public class HomeActivity extends AppCompatActivity {
         String name = user.getDisplayName();
         userName=findViewById(R.id.textView_userName);
         userName.setText(name);
-        settings=findViewById(R.id.buttonActuality);
+        settings=findViewById(R.id.buttonHomeSettings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mainIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainIntent);
-                finish();
+                //finish();
             }
         });
 
@@ -150,18 +103,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mainIntent = new Intent(HomeActivity.this, NewPostActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainIntent);
-                finish();
+                //finish();
             }
         });
     }
-
-    public void onActualitesButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Actualités" est cliqué
-        Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
-    }
-
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
