@@ -20,10 +20,12 @@ public class ClassicPost {
     private String pictureUrl3;
     private String pictureUrl4;
 
+    private String videoUrl;
+
     public ClassicPost() {
     }
 
-    public ClassicPost(String postId, String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4, ArrayList<String> tagsList) {
+    public ClassicPost(String postId, String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4, ArrayList<String> tagsList, String videoUrl) {
         this.postId = postId;
         this.content = content;
         this.userId = userId;
@@ -39,6 +41,7 @@ public class ClassicPost {
         this.likeUserList.add("");
         this.likeCount = 0;
         this.tagsList=tagsList;
+        this.videoUrl = videoUrl;
     }
 
     public ArrayList<String> getTagsList() {
@@ -149,5 +152,14 @@ public class ClassicPost {
         this.commentsList.remove(comment);
         this.commentCount--;
     }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
 }
 
