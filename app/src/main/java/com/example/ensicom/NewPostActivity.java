@@ -424,8 +424,8 @@ public class NewPostActivity extends AppCompatActivity {
         String content = textContainer.getText().toString();
 
         tagsContainer = findViewById(R.id.tagsContent);
-        String tags=tagsContainer.getText().toString();
-        String[] tagsList = tags.split(";");
+        tags=tagsContainer.getText().toString();
+        tagsList = tags.split(";");
         arrayTagsList.addAll(Arrays.asList(tagsList));
         Toast.makeText(NewPostActivity.this , tags, Toast.LENGTH_SHORT).show();
         ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4, arrayTagsList);
