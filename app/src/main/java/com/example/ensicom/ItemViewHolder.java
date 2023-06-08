@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ItemViewHolder extends RecyclerView.ViewHolder{
     private TextView userName;
     private ImageView userProfilePicture;
+    private ImageView postPicture1;
     private TextView postContent;
 //    private TextView postDate;
     private TextView likeCount;
@@ -29,9 +30,13 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         commentCount = itemView.findViewById(R.id.commentCount);
         likeButton = itemView.findViewById(R.id.likeButton);
         commentButton = itemView.findViewById(R.id.commentButton);
+        postPicture1 = itemView.findViewById(R.id.imageContent1);
     }
 
     // All the getters
+    public ImageView getPostPicture1() {
+        return postPicture1;
+    }
     public TextView getUserName() {
         return userName;
     }

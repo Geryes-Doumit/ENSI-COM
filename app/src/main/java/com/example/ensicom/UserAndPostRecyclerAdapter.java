@@ -38,6 +38,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
+        String postPicture1= post.getPictureUrl1();
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -53,6 +54,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 holder.getUserName().setText(postUserName);
                 holder.getPostContent().setText(postContent);
                 Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
+                Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
             }
         });
     }

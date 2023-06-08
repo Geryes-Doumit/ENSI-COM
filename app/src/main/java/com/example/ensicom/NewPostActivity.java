@@ -51,7 +51,7 @@ public class NewPostActivity extends AppCompatActivity {
                     return;
                 }
 
-                ClassicPost post = new ClassicPost(content, user.getUid(), new Date().getTime());
+                ClassicPost post = new ClassicPost(content, user.getUid(), new Date().getTime(), "");
                 DatabaseReference postsRef = ref.child("posts");
                 DatabaseReference current = postsRef.push().getRef();
 
