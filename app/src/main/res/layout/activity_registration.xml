@@ -97,7 +97,7 @@
         android:background="@drawable/login_button"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:text="Vous avez déjà un compte ? Se connecter"
+        android:text="Déjà un compte ? Se connecter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

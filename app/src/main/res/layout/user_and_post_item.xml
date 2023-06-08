@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:circularflow_radiusInDP="20">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,12 +20,14 @@
             android:layout_marginBottom="3pt"
             android:orientation="horizontal">
 
-            <!--    We should put this before TextView, this is only for testing purposes    -->
-
             <ImageView
                 android:id="@+id/userProfilePicture"
-                android:layout_width="25pt"
-                android:layout_height="match_parent" />
+                android:layout_width="20pt"
+                android:layout_height="20pt"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/profil_rounded"
+                android:scaleType="centerInside"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/userName"
@@ -31,9 +35,12 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5pt"
                 android:fontFamily="@font/barlow"
+                android:gravity="center_vertical"
+                android:textAlignment="viewStart"
                 android:textColor="@color/jaune"
-                android:textSize="55px"
-                android:textStyle="bold" />
+                android:textSize="60px"
+                android:textStyle="bold"
+                tools:text="@tools:sample/first_names" />
 
             <ImageButton
                 android:id="@+id/deletePostButton"
