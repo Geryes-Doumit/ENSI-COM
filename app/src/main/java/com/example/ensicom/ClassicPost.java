@@ -51,8 +51,12 @@ public class ClassicPost {
         return LikeUserList;
     }
 
+    public ArrayList<String> setLikeUserList(ArrayList<String> likeUserList) {
+        return LikeUserList;
+    }
+
     public Integer getLikeCount() {
-        return LikeUserList.size();
+        return likeCount;
     }
 
     public void setLikeCount(Integer likeCount) {

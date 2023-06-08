@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
@@ -78,18 +79,25 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        Toast.makeText(holder.getLikeButton().getContext(), "Like", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(holder.getLikeButton().getContext(), "Like", Toast.LENGTH_SHORT).show();
                         ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
 //                        if (post.getLikeUserList().contains(currentUserUid)) {
 //                            Toast.makeText(holder.getLikeButton().getContext(), "Vous avez déjà liké ce post", Toast.LENGTH_SHORT).show();
+//                            Integer likeCount = post.getLikeCount();
+//                            likeCount--;
+//                            post.setLikeCount(likeCount);
+//                            post.removeLike(currentUserUid);
+//                            postRef.setValue(post);
+//                            holder.getLikeCount().setText(likeCount.toString());
 //                        } else {
                             Integer likeCount = post.getLikeCount();
                             likeCount++;
                             post.setLikeCount(likeCount);
                             post.addLike(currentUserUid);
                             postRef.setValue(post);
+                            Toast.makeText(holder.getLikeButton().getContext(), "Liked by " + post.getLikeUserList().toString(), Toast.LENGTH_SHORT).show();
                             holder.getLikeCount().setText(likeCount.toString());
-//                        }
+                        //}
                     }
                 });
             }
