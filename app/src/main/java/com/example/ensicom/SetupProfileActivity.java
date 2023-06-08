@@ -40,7 +40,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup_profile);
         nameSettings=findViewById(R.id.editTextUpdateProfileNameSettings);
         updateButton=findViewById(R.id.buttonUpdateProfileSettings);
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class SetupProfileActivity extends AppCompatActivity {
             }
 
         });
-        profilePicture=findViewById(R.id.imageViewProfilePicture);
+        profilePicture=findViewById(R.id.imageViewPostPicture);
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,17 +94,22 @@ public class SetupProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1 && resultCode==RESULT_OK && data!=null){
             imagePath=data.getData();
-            getImageinImageView();
+            getImageInImageView();
         }
     }
-    private void getImageinImageView(){
+    private void getImageInImageView(){
         Bitmap bitmap = null;
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imagePath);
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        profilePicture.setImageBitmap(bitmap);
+        if (bitmap != null) {
+            profilePicture.setImageBitmap(bitmap);
+        } else {
+            profilePicture.setImageResource(R.drawable.ic_launcher_foreground);
+            Toast.makeText(this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void uploadImage() {

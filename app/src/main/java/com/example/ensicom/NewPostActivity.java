@@ -3,6 +3,7 @@ package com.example.ensicom;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -53,9 +54,7 @@ public class NewPostActivity extends AppCompatActivity {
 
                 ClassicPost post = new ClassicPost(content, user.getUid(), new Date().getTime());
                 DatabaseReference postsRef = ref.child("posts");
-                DatabaseReference current = postsRef.push().getRef();
-
-                current.setValue(post).addOnFailureListener(new OnFailureListener() {
+                postsRef.push().setValue(post).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
