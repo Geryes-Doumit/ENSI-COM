@@ -419,9 +419,11 @@ public class NewPostActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String content = textContainer.getText().toString();
 
-        ClassicPost post = new ClassicPost(content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4);
+        ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4);
         DatabaseReference postsRef = ref.child("posts");
-        postsRef.push().setValue(post).addOnFailureListener(new OnFailureListener() {
+        String postId = postsRef.push().getKey();
+        post.setPostId(postId);
+        postsRef.child(postId).setValue(post).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();

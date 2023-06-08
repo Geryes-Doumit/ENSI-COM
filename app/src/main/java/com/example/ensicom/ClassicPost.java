@@ -22,7 +22,8 @@ public class ClassicPost {
     public ClassicPost() {
     }
 
-    public ClassicPost(String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4) {
+    public ClassicPost(String postId, String content, String userId, Long date, String pictureUrl1, String pictureUrl2, String pictureUrl3, String pictureUrl4) {
+        this.postId = postId;
         this.content = content;
         this.userId = userId;
         this.date = date;
@@ -96,6 +97,14 @@ public class ClassicPost {
 
     public void setPictureUrl4(String pictureUrl4) {
         this.pictureUrl4 = pictureUrl4;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getPostId() {
+        return this.postId;
     }
 }
 
