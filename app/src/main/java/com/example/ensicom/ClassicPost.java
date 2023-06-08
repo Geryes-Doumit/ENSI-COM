@@ -1,9 +1,6 @@
 package com.example.ensicom;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ClassicPost {
     private String content;
@@ -12,7 +9,7 @@ public class ClassicPost {
     private String userId;
     private Integer likeCount;
     private Integer commentCount;
-    private final ArrayList<String> LikeUserList = new ArrayList<String>();
+    private ArrayList<String> LikeUserList;
 
     private String pictureUrl1;
     private String pictureUrl2;
@@ -51,8 +48,8 @@ public class ClassicPost {
         return LikeUserList;
     }
 
-    public ArrayList<String> setLikeUserList(ArrayList<String> likeUserList) {
-        return LikeUserList;
+    public void setLikeUserList(ArrayList<String> likeUserList) {
+        this.LikeUserList = likeUserList;
     }
 
     public Integer getLikeCount() {
@@ -64,11 +61,11 @@ public class ClassicPost {
     }
 
     public void addLike(String userId) {
-        LikeUserList.add(userId);
+        this.LikeUserList.add(userId);
     }
 
     public void removeLike(String userId) {
-        LikeUserList.remove(userId);
+        this.LikeUserList.remove(userId);
     }
 
     public Integer getCommentCount() {

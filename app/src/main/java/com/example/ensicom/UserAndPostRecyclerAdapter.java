@@ -105,31 +105,29 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        //Toast.makeText(holder.getLikeButton().getContext(), "Like", Toast.LENGTH_SHORT).show();
                         ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
-//                        if (post.getLikeUserList().contains(currentUserUid)) {
-//                            Toast.makeText(holder.getLikeButton().getContext(), "Vous avez déjà liké ce post", Toast.LENGTH_SHORT).show();
-//                            Integer likeCount = post.getLikeCount();
-//                            likeCount--;
-//                            post.setLikeCount(likeCount);
-//                            post.removeLike(currentUserUid);
-//                            postRef.setValue(post);
-//                            holder.getLikeCount().setText(likeCount.toString());
-//                        } else {
+                        if (post.getLikeUserList().toString().contains(currentUserUid)){
+                            Integer likeCount = post.getLikeCount();
+                            likeCount--;
+                            post.setLikeCount(likeCount);
+                            post.removeLike(currentUserUid);
+                            postRef.setValue(post);
+                            holder.getLikeCount().setText(likeCount.toString());
+                        } else {
                             Integer likeCount = post.getLikeCount();
                             likeCount++;
                             post.setLikeCount(likeCount);
                             post.addLike(currentUserUid);
                             postRef.setValue(post);
-                            Toast.makeText(holder.getLikeButton().getContext(), "Liked by " + post.getLikeUserList().toString(), Toast.LENGTH_SHORT).show();
                             holder.getLikeCount().setText(likeCount.toString());
-                        //}
+                        }
                     }
                 });
             }
         });
     }
-    public void deletePost(String postId) {
+
+        public void deletePost(String postId) {
         DatabaseReference postRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("posts")
