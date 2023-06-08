@@ -2,6 +2,7 @@ package com.example.ensicom;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     private TextView commentCount;
     private Button likeButton;
     private Button commentButton;
+    private ImageButton deletePostButton;
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -31,6 +33,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         likeButton = itemView.findViewById(R.id.likeButton);
         commentButton = itemView.findViewById(R.id.commentButton);
         postPicture1 = itemView.findViewById(R.id.imageContent1);
+        deletePostButton = itemView.findViewById(R.id.deletePostButton);
     }
 
     // All the getters
@@ -67,5 +70,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
 
     public Button getCommentButton() {
         return commentButton;
+    }
+
+    public ImageButton getDeletePostButton() {
+        return deletePostButton;
     }
 }

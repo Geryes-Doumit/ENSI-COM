@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +36,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
@@ -50,6 +52,12 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 User postUser = dataSnapshot.getValue(User.class);
                 String postUserName = postUser.getUsername();
                 String profilePictureUrl = postUser.getProfilePicture();
+                if (dataSnapshot.getKey().equals(currentUserUid)) {
+                    holder.getDeletePostButton().setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.getDeletePostButton().setVisibility(View.GONE);
+                }
 
                 holder.getUserName().setText(postUserName);
                 holder.getPostContent().setText(postContent);
