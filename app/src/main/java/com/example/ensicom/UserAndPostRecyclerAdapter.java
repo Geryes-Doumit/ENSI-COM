@@ -49,6 +49,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         String postContent = post.getContent();
         String postPicture1 = post.getPictureUrl1();
         Integer likeCount = post.getLikeCount();
+        String videoUrl = post.getVideoUrl();
+        ArrayList<String> tags = post.getTagsList();
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -92,8 +94,23 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 holder.getPostContent().setText(postContent);
                 holder.getLikeCount().setText(likeCount.toString());
                 holder.getCommentCount().setText(post.getCommentCount().toString());
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String tag : tags) {
+                    if (!tag.equals("")) {
+                        stringBuilder.append("#").append(tag).append("; ");
+                    }
+                }
+                String tag = stringBuilder.toString();
+                holder.getTagList().setText(tag);
                 Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
                 Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
+                if (videoUrl != null) {
+                    holder.getVideoView().setVisibility(View.VISIBLE);
+                    holder.getVideoView().setVideoPath(videoUrl);
+                    holder.getVideoView().start();
+                } else {
+                    holder.getVideoView().setVisibility(View.GONE);
+                }
             }
         });
         holder.getLikeButton().setOnClickListener(new View.OnClickListener() {

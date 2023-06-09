@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     private Button likeButton;
     private Button commentButton;
     private ImageButton deletePostButton;
+    private TextView tagList;
+    private VideoView videoView;
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -34,9 +37,17 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         commentButton = itemView.findViewById(R.id.commentButton);
         postPicture1 = itemView.findViewById(R.id.imageContent1);
         deletePostButton = itemView.findViewById(R.id.deletePostButton);
+        tagList = itemView.findViewById(R.id.postTags);
+        videoView= itemView.findViewById(R.id.videoView);
     }
 
     // All the getters
+    public VideoView getVideoView() {
+        return videoView;
+    }
+    public TextView getTagList() {
+        return tagList;
+    }
     public ImageView getPostPicture1() {
         return postPicture1;
     }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     app:circularflow_radiusInDP="20">
 
@@ -31,7 +31,7 @@
 
             <TextView
                 android:id="@+id/userName"
-                android:layout_width="210dp"
+                android:layout_width="85pt"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5pt"
                 android:fontFamily="@font/barlow"
@@ -44,11 +44,9 @@
 
             <ImageButton
                 android:id="@+id/deletePostButton"
-                android:layout_width="73dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/login_button"
                 android:contentDescription="delete post button"
                 app:srcCompat="@android:drawable/ic_menu_delete" />
 
@@ -84,24 +82,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/likeCount"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
-            android:layout_marginLeft="20pt"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="60px"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/likeButton"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
-            android:layout_marginStart="5pt"
-            android:contentDescription="like button"
-            android:background="@drawable/heart_empty" />
-
-        <TextView
             android:id="@+id/commentCount"
             android:layout_width="15pt"
             android:layout_height="15pt"
@@ -112,13 +92,42 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/likeButton"
+            android:layout_width="15pt"
+            android:layout_height="15pt"
+            android:layout_marginStart="5pt"
+            android:background="@drawable/heart_empty"
+            android:contentDescription="like button" />
+
+        <TextView
+            android:id="@+id/likeCount"
+            android:layout_width="15pt"
+            android:layout_height="15pt"
+            android:layout_marginLeft="20pt"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="60px"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/commentButton"
             android:layout_width="15pt"
             android:layout_height="15pt"
             android:layout_marginStart="5pt"
-            android:contentDescription="comment button"
-            android:background="@drawable/comment_button" />
+            android:background="@drawable/comment_button"
+            android:contentDescription="comment button" />
+
+        <TextView
+            android:id="@+id/postTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </LinearLayout>
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
