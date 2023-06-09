@@ -16,6 +16,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!-- Base application theme. -->
+    <style name="Theme.CalendarAppExample" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
 
     <!-- Autres styles et thèmes -->
 </resources>

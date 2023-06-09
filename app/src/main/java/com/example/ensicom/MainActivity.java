@@ -14,12 +14,40 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.content.Intent;
 import com.example.ensicom.R;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
+
+    public void onActualitesButtonClick(View view) {
+        // Code à exécuter lorsque le bouton "Actualités" est cliqué
+        Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onEvenementsButtonClick(View view) {
+        Intent intent = new Intent(MainActivity.this, EvenementActivity.class);
+        startActivity(intent);
+    }
+
+    public void onLogoClick(View view) {
+        // Code à exécuter lorsque le logo est cliqué
+        Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onProfileRubriqueClick(View view) {
+        // Handle profile button click
+    }
+
+    public void onSettingsRubriqueClick(View view) {
+        // Handle settings button click
+    }
+
+    public void onLogoutRubriqueClick(View view) {
+        // Handle logout button click
+    }
 
     private void showMenuDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -105,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
         evenementsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEvenementsButtonClick(v);
+                Intent intent = new Intent(MainActivity.this, EvenementActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -125,32 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onActualitesButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Actualités" est cliqué
-        Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
-    }
 
-    public void onEvenementsButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Événements" est cliqué
-        Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onLogoClick(View view) {
-        // Code à exécuter lorsque le logo est cliqué
-        Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onProfileRubriqueClick(View view) {
-        // Handle profile button click
-    }
-
-    public void onSettingsRubriqueClick(View view) {
-        // Handle settings button click
-    }
-
-    public void onLogoutRubriqueClick(View view) {
-        // Handle logout button click
-    }
 
 
     public void onMenuButtonClick(View view) {

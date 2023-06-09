@@ -26,5 +26,34 @@
             android:label="ENSICOM"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".EvenementActivity"
+            android:label="Événements"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".MenuActivity"
+            android:label="Menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".BonhommeActivity"
+            android:label="Profil"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="CalendarAdapter"
+            android:label="Calendrier_adapteur"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="CalendarViewHolder"
+            android:label="Calendier_vue"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Logo_textActivity"
+            android:label="Logo_text"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
