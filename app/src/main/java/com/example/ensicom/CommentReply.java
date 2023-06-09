@@ -1,28 +1,33 @@
 package com.example.ensicom;
 
 public class CommentReply {
+    private String userId;
     private String content;
-    private String postId;
     private String commentId;
+    private Integer replyId;
 
     public CommentReply() {
     }
 
-    public CommentReply(String content, String postId, String commentId) {
+    public CommentReply(String content, String userId, String commentId) {
+        this.userId = userId;
         this.content = content;
-        this.postId = postId;
         this.commentId = commentId;
     }
 
     public String getContent() {
         return content;
     }
-
-    public String getPostId() {
-        return postId;
-    }
-
     public String getCommentId() {
         return commentId;
+    }
+    public Integer getReplyId() {
+        return replyId;
+    }
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
+    }
+    public String getUserId() {
+        return userId;
     }
 }

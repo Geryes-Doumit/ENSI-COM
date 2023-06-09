@@ -34,6 +34,7 @@ public class ClassicPost {
         this.pictureUrl2 = pictureUrl2;
         this.pictureUrl3 = pictureUrl3;
         this.pictureUrl4 = pictureUrl4;
+        this.videoUrl = "";
 
         this.commentId = ""; // Initialize the commentId to be able to check if it's empty
         this.commentCount = 0;

@@ -50,10 +50,8 @@ public class HomeActivity extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(HomeActivity.this, ProfileActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-                //finish();
+                finish();
+                startActivity(getIntent());
             }
         });
 
