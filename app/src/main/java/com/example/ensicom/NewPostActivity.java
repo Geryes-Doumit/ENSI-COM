@@ -549,6 +549,7 @@ public class NewPostActivity extends AppCompatActivity {
         postsRef.child(postId).setValue(post).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                postsRef.child(postId).removeValue(); // Not sure if this is necessary
                 Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {

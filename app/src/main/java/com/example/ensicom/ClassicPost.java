@@ -10,10 +10,10 @@ public class ClassicPost {
     private String postId;
     private Long date;
     private String userId;
+    private String commentId; // To get to the comments
     private Integer likeCount;
     private Integer commentCount;
     private ArrayList<String> likeUserList;
-    private ArrayList<Comment> commentsList;
     private ArrayList<String> tagsList = new ArrayList<>();
     private String pictureUrl1;
     private String pictureUrl2;
@@ -34,8 +34,8 @@ public class ClassicPost {
         this.pictureUrl2 = pictureUrl2;
         this.pictureUrl3 = pictureUrl3;
         this.pictureUrl4 = pictureUrl4;
-        this.commentsList = new ArrayList<>();
-        this.commentsList.add(new Comment("", "", 0));
+
+        this.commentId = ""; // Initialize the commentId to be able to check if it's empty
         this.commentCount = 0;
         this.likeUserList = new ArrayList<>();
         this.likeUserList.add("");
@@ -139,17 +139,11 @@ public class ClassicPost {
         return this.postId;
     }
 
-    public ArrayList<Comment> getCommentsList() {
-        return commentsList;
-    }
-
-    public void addComment(Comment comment) {
-        this.commentsList.add(comment);
+    public void increaseCommentCount() {
         this.commentCount++;
     }
 
-    public void removeComment(Comment comment) {
-        this.commentsList.remove(comment);
+    public void decreaseCommentCount() {
         this.commentCount--;
     }
 
@@ -159,6 +153,14 @@ public class ClassicPost {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public String getCommentId() {
+        return this.commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
 }

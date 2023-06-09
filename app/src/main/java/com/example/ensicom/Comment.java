@@ -1,24 +1,34 @@
 package com.example.ensicom;
 
 public class Comment {
-    private String content;
-    private String userId;
-    private Integer commentId;
+    String userId;
+    Integer commentId;
+    String content;
+    Long date;
 
     public Comment() {
     }
 
-    public Comment(String content, String userId, Integer commentId) {
-        this.content = content;
+    public Comment(String userId, Integer commentId, String content, Long date) {
         this.userId = userId;
         this.commentId = commentId;
+        this.content = content;
+        this.date = date;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public Integer getCommentId() {
+        return commentId;
     }
 
     public String getContent() {
         return content;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getDate() {
+        return date;
     }
 }

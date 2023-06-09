@@ -91,6 +91,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 holder.getUserName().setText(postUserName);
                 holder.getPostContent().setText(postContent);
                 holder.getLikeCount().setText(likeCount.toString());
+                holder.getCommentCount().setText(post.getCommentCount().toString());
                 Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
                 Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
             }
@@ -134,11 +135,23 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         });
     }
 
-        public void deletePost(String postId) {
+    public void deletePost(String postId) {
         DatabaseReference postRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("posts")
                 .child(postId);
+
+        postRef.child("commentId").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                String commentId = dataSnapshot.getValue(String.class);
+                DatabaseReference commentsRef = FirebaseDatabase
+                        .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                        .getReference("commentLists")
+                        .child(commentId);
+                commentsRef.removeValue();
+            }
+        });
         postRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -146,7 +159,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
             }
         });
     }
