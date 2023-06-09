@@ -8,4 +8,13 @@
     <color name="post_text">#0060a9</color>
     <color name="gris">#E9E9E9</color>
     <color name="beige">#F8F8FF</color>
+    <color name="primary">#3F51B5</color>
+    <color name="primaryDark">#303F9F</color>
+    <color name="accent">#FF4081</color>
+    <color name="background">#ECEFF1</color>
+    <color name="text">#212121</color>
+    <color name="button_background_color">#FFAABBCC</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="dark_gray">#FF444444</color>
+    <color name="foreground_text_color">#000000</color>
 </resources>
