@@ -71,5 +71,24 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     public interface OnItemListener {
         void onItemClick(int position, String dayText);
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        // Ajoutez un écouteur de clic à l'élément de la liste
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Récupérez les détails de l'événement sélectionné
+                String eventTitle = events.get(position).getTitle();
+                String eventDescription = events.get(position).getDescription();
+
+                // Affichez la fenêtre contextuelle avec les détails de l'événement
+                showEventDetailsPopup(eventTitle, eventDescription);
+            }
+        });
+    }
+
+
 }
 

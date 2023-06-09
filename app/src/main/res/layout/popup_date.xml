@@ -16,20 +16,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popupRecyclerView"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/popupDateText"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_above="@+id/popupAddButton"
+        android:layout_marginTop="16dp"
         android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/popupAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/popupRecyclerView"
-        android:layout_marginTop="100dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
         android:text="@string/add"
         android:textSize="24sp" />
 
 </RelativeLayout>
+
