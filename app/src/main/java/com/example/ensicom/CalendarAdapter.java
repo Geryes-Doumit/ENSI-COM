@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ensicom.CalendarViewHolder;
-import com.example.ensicom.R;
-
 import java.util.ArrayList;
 
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {

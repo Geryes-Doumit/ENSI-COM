@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,8 +21,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-
-import com.example.ensicom.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.threeten.bp.LocalDate;
@@ -39,11 +39,11 @@ public class EvenementActivity extends AppCompatActivity implements CalendarAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_evenements);
         initWidgets();
         selectedDate = LocalDate.now();
         setMonthView();
-        AndroidThreeTen.init(this);
 
         ImageView menuButton = findViewById(R.id.menu_button);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -204,8 +204,8 @@ public class EvenementActivity extends AppCompatActivity implements CalendarAdap
     }
 
     public void onEvenementsButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Événements" est cliqué
-        Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(EvenementActivity.this, EvenementActivity.class);
+        startActivity(intent);
     }
 
     public void onLogoClick(View view) {

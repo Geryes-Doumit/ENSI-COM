@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -19,10 +20,10 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         // Référence au bouton du menu
-        Button menuButton = findViewById(R.id.menu_button);
+        ImageView menuButton = findViewById(R.id.menu_button);
 
         // Référence à la vue du contenu de la fenêtre contextuelle
-        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null);
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, (ViewGroup) getWindow().getDecorView().getRootView(), false);
 
         // Création de la fenêtre contextuelle avec les dimensions souhaitées
         popupWindow = new PopupWindow(

@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.content.Intent;
-import com.example.ensicom.R;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,18 +34,6 @@ public class MainActivity extends AppCompatActivity {
     public void onLogoClick(View view) {
         // Code à exécuter lorsque le logo est cliqué
         Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onProfileRubriqueClick(View view) {
-        // Handle profile button click
-    }
-
-    public void onSettingsRubriqueClick(View view) {
-        // Handle settings button click
-    }
-
-    public void onLogoutRubriqueClick(View view) {
-        // Handle logout button click
     }
 
     private void showMenuDialog() {
@@ -82,27 +69,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProfileDialog();
-            }
-        });
-
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSettingsRubriqueClick(v);
-            }
-        });
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLogoutRubriqueClick(v);
-            }
-        });
-
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -133,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
         evenementsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EvenementActivity.class);
-                startActivity(intent);
+                onEvenementsButtonClick(v);
             }
         });
 
@@ -153,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
     public void onMenuButtonClick(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
