@@ -23,9 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class NewEventActivity extends AppCompatActivity{
-
-    //based on the NewPostActivity.java file from the same folder create the NewEventActivity.java file
-    //add the following code to the onCreate method:
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
