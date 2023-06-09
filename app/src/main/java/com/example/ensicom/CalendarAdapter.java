@@ -31,8 +31,34 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     // Méthode pour lier les données à la vue de l'élément de la liste
     @Override
-    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        holder.dayOfMonth.setText(daysOfMonth.get(position));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String dayText = daysList.get(position);
+
+        if (!dayText.equals("")) {
+            holder.dayTextView.setText(dayText);
+
+            // Customize the appearance for days with events
+            if (dayText.startsWith("[") && dayText.endsWith("]")) {
+                holder.dayTextView.setTextColor(ContextCompat.getColor(context, R.color.event_day_text_color));
+                holder.dayTextView.setBackgroundResource(R.drawable.event_day_background);
+            } else {
+                // Reset the appearance for other days
+                holder.dayTextView.setTextColor(ContextCompat.getColor(context, R.color.default_day_text_color));
+                holder.dayTextView.setBackgroundResource(0);
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle item click
+                    if (onItemListener != null) {
+                        onItemListener.onItemClick(position, dayText);
+                    }
+                }
+            });
+        } else {
+            holder.itemView.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Méthode pour obtenir le nombre d'éléments dans la liste

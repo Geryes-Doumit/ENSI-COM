@@ -27,14 +27,28 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.YearMonth;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Locale;
+import java.time.LocalDate;
 
 public class EvenementActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private DrawerLayout drawerLayout;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+
+    private FrameLayout popupContainer;
+    private TextView popupDateText;
+    private RecyclerView popupRecyclerView;
+    private Button popupAddButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +67,44 @@ public class EvenementActivity extends AppCompatActivity implements CalendarAdap
         Button actualitesButton = findViewById(R.id.button_actualites);
         Button evenementsButton = findViewById(R.id.button_evenements);
 
+        // Initialisez les vues du pop-up
+        popupContainer = findViewById(R.id.popupContainer);
+        popupDateText = findViewById(R.id.popupDateText);
+        popupRecyclerView = findViewById(R.id.popupRecyclerView);
+        popupAddButton = findViewById(R.id.popupAddButton);
+        popupAddButton.setOnClickListener(this);
+
+        // Créez votre boîte de dialogue avec le bouton "OK" qui ne fait rien
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Erreur");
+        builder.setMessage("La requête a été annulée ou a échoué.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Ne rien faire
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+        // Affichez la boîte de dialogue lorsqu'il y a une erreur
+        if (erreur) {
+            dialog.show();
+        }
+
         actualitesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onActualitesButtonClick(v);
+                // Rediriger vers la page ActualitesActivity
+                Intent intent = new Intent(EvenementActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
         evenementsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEvenementsButtonClick(v);
+                // Restez sur la même page (EvenementActivity)
+                Toast.makeText(EvenementActivity.this, " Événements", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -169,10 +210,54 @@ public class EvenementActivity extends AppCompatActivity implements CalendarAdap
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add("");
             } else {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+                String day = String.valueOf(i - dayOfWeek);
+                // Check if the day has an event
+                if (hasEvent(date.withDayOfMonth(Integer.parseInt(day)))) {
+                    day = String.format(Locale.getDefault(), "[ %s ]", day); // Enclose the day in brackets
+                }
+                daysInMonthArray.add(day);
             }
         }
         return daysInMonthArray;
+    }
+
+    private void hasEvent(LocalDate date) {
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+        Query query = eventsRef.orderByChild("date").equalTo(date.toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Event found for the given date
+                    for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                        String title = eventSnapshot.child("title").getValue(String.class);
+                        // Perform necessary actions with the event data
+                        // For example, display the event title or handle it accordingly
+                        Toast.makeText(EvenementActivity.this, "Event found: " + title, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // No event found for the given date
+                    Toast.makeText(EvenementActivity.this, "No event found for the date", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Affichez un message d'erreur dans une boîte de dialogue
+                AlertDialog.Builder builder = new AlertDialog.Builder(EvenementActivity.this);
+                builder.setTitle("Erreur");
+                builder.setMessage("La requête a été annulée ou a échoué : " + databaseError.getMessage());
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Code à exécuter lorsque l'utilisateur appuie sur OK
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
+        });
     }
 
     private String monthYearFromDate(LocalDate date) {
@@ -195,6 +280,174 @@ public class EvenementActivity extends AppCompatActivity implements CalendarAdap
         if (!dayText.equals("")) {
             String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            showPopup(dayText);
+        }
+    }
+
+    private void showPopup(String date) {
+        // Définissez la date dans le TextView du pop-up
+        popupDateText.setText(date);
+
+        // Récupérez les événements pour la date sélectionnée à partir de votre base de données ou de votre source de données
+
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+        Query query = eventsRef.orderByChild("date").equalTo(date);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // La requête a réussi, vous pouvez maintenant traiter les données des événements
+
+                // Initialisez une liste pour stocker les événements
+                List<Event> events = new ArrayList<>();
+
+                // Parcourez les données des événements
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Obtenez les détails de l'événement
+                    Event event = snapshot.getValue(Event.class);
+                    // Ajoutez l'événement à la liste
+                    events.add(event);
+                }
+
+                // Initialisez l'adaptateur avec les données des événements
+                EventAdapter eventAdapter = new EventAdapter(events);
+
+                // Configurez le RecyclerView avec l'adaptateur
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                popupRecyclerView.setLayoutManager(layoutManager);
+                popupRecyclerView.setAdapter(eventAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // La requête a été annulée ou a échoué, vous pouvez gérer cette situation ici si nécessaire
+
+                // Affichez un message d'erreur dans une boîte de dialogue
+                AlertDialog.Builder builder = new AlertDialog.Builder(EvenementActivity.this);
+                builder.setTitle("Erreur");
+                builder.setMessage("La requête a été annulée ou a échoué.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Code à exécuter lorsque l'utilisateur appuie sur OK
+
+                        resetFields();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
+        });
+
+        // Affichez le pop-up
+        popupContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void addEvent() {
+        // Créez une boîte de dialogue ou une autre activité pour saisir les détails de l'événement
+        AlertDialog.Builder builder = new AlertDialog.Builder(EvenementActivity.this);
+        builder.setTitle("Ajouter un événement");
+
+        // Créez les champs de saisie pour les détails de l'événement
+        EditText titleEditText = new EditText(EvenementActivity.this);
+        titleEditText.setHint("Titre de l'événement");
+        builder.setView(titleEditText);
+
+        // Définissez les boutons "Ajouter" et "Annuler"
+        builder.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String eventTitle = titleEditText.getText().toString();
+
+                // Vérifiez si les détails de l'événement sont valides
+                if (eventTitle.isEmpty()) {
+                    Toast.makeText(EvenementActivity.this, "Veuillez saisir un titre pour l'événement", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Obtenez une référence à la base de données
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    // Référence à la collection "events"
+                    DatabaseReference eventsRef = database.getReference("events");
+
+                    // Créez un nouvel identifiant unique pour l'événement
+                    String eventId = eventsRef.push().getKey();
+
+                    // Créez un objet Event avec les détails de l'événement
+                    Event event = new Event(eventId, eventTitle, eventDescription, eventDate);
+
+                    event.setTitle(eventTitle);
+
+                    // Ajoutez l'événement à votre base de données ou source de données
+                    eventsRef.child(eventId).setValue(event)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(EvenementActivity.this, "Événement ajouté avec succès", Toast.LENGTH_SHORT).show();
+
+                                    // Rafraîchissez la liste des événements dans le pop-up
+                                    refreshEventList();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Une erreur s'est produite lors de l'ajout de l'événement à la base de données
+                                    Toast.makeText(EvenementActivity.this, "Erreur lors de l'ajout de l'événement", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Ne rien faire, l'utilisateur a annulé l'ajout de l'événement
+            }
+        });
+
+        // Affichez la boîte de dialogue pour ajouter l'événement
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void refreshEventList() {
+        // Récupérez les événements pour la date sélectionnée à partir de votre base de données ou de votre source de données
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+        eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Event> eventList = new ArrayList<>();
+
+                // Parcourez les données des événements
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    // Obtenez les détails de chaque événement
+                    Event event = eventSnapshot.getValue(Event.class);
+                    // Ajoutez l'événement à la liste
+                    eventList.add(event);
+                }
+
+                // Initialisez l'adaptateur avec les données des événements
+                EventAdapter eventAdapter = new EventAdapter(eventList);
+
+                // Configurez le RecyclerView pour afficher la liste des événements
+                LinearLayoutManager layoutManager = new LinearLayoutManager(EvenementActivity.this);
+                eventRecyclerView.setLayoutManager(layoutManager);
+                eventRecyclerView.setAdapter(eventAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // La requête a été annulée ou a échoué, vous pouvez gérer cette situation ici si nécessaire
+                Toast.makeText(EvenementActivity.this, "Erreur lors du chargement des événements", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.popupAddButton) {
+            // Gérez le clic sur le bouton "+" dans le pop-up
+            addEvent();
         }
     }
 
