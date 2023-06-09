@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class NewEventActivity extends AppCompatActivity{
@@ -45,7 +48,7 @@ public class NewEventActivity extends AppCompatActivity{
              }
              String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
              DatabaseReference postRef = FirebaseDatabase
-                     .getInstance(DATABASE_URL)
+                     .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
                      .getReference("event")
                      .push();
              String postId = postRef.getKey();
@@ -66,7 +69,7 @@ public class NewEventActivity extends AppCompatActivity{
              }
          });
     }
-    
+
      @Override
      public boolean onOptionsItemSelected(@NonNull MenuItem item) {
          if (item.getItemId() == android.R.id.home) {
