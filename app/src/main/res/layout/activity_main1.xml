@@ -7,19 +7,24 @@
 
     <!-- Contenu principal -->
 
-    <androidx.fragment.app.FragmentContainerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.example.com.HomeActivity" />
-
     <!-- Menu de navigation -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <!-- Barre supérieure -->
+
+        <FrameLayout
+            android:id="@+id/fragment_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_ribbon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_ribbon" />
+
         <LinearLayout
             android:id="@+id/top_ribbon"
             android:layout_width="0dp"
@@ -27,7 +32,8 @@
             android:background="#87CEFA"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
 
             <!-- Bouton du menu -->
             <ImageView

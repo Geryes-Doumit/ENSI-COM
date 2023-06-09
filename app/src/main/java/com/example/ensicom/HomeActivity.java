@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     Button testButton;
     List<ClassicPost> postsList = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +71,7 @@ public class HomeActivity extends AppCompatActivity {
             postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
         });
 
-        Toolbar toolbar=findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String name = user.getDisplayName();
         userName=findViewById(R.id.textView_userName);
