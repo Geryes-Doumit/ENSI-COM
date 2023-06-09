@@ -37,62 +37,50 @@ public class    RegistrationActivity extends AppCompatActivity {
         registerPassword=findViewById(R.id.editTextPasswordRegister);
         mRegister = findViewById(R.id.button_register);
         mAuth = FirebaseAuth.getInstance();
-        mRegister.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View view) {
-                String email= registerEmail.getText().toString();
-                String password= registerPassword.getText().toString();
-                if (email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(RegistrationActivity.this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                createAccount(email,password);
+        mRegister.setOnClickListener(view -> {
+            String email= registerEmail.getText().toString();
+            String password= registerPassword.getText().toString();
+            if (email.isEmpty() || password.isEmpty()){
+                Toast.makeText(RegistrationActivity.this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
+                return;
             }
+            createAccount(email,password);
         });
-        Button Register_To_Login = findViewById(R.id.buttonRegisterToLogin);
-        Register_To_Login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-                //finish();
-            }
+        Button registerToLogin = findViewById(R.id.buttonRegisterToLogin);
+        registerToLogin.setOnClickListener(view -> {
+            Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mainIntent);
         });
     }
     private void createAccount(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
-                                    .getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(new User("",email,""));
-                            Toast.makeText(RegistrationActivity.this, "Compte créé", Toast.LENGTH_SHORT).show();
-                            Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(mainIntent);
-                            finish();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
+                                .getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .setValue(new User("",email,""));
+                        Toast.makeText(RegistrationActivity.this, "Compte créé", Toast.LENGTH_SHORT).show();
+                        Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
+                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mainIntent);
+                        finish();
 
-                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (e.getMessage().equals("The email address is badly formatted.")){
-                            Toast.makeText(RegistrationActivity.this, "Veuillez entrer un email valide", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (e.getMessage().equals("The given password is invalid. [ Password should be at least 6 characters ]")){
-                            Toast.makeText(RegistrationActivity.this, "Veuillez entrer un mot de passe d'au moins 6 caractères", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (e.getMessage().equals("The email address is already in use by another account.")){
-                            Toast.makeText(RegistrationActivity.this, "Cet email est déjà utilisé, veuillez en choisir un autre", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        Toast.makeText(RegistrationActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> {
+                    if (e.getMessage().equals("The email address is badly formatted.")){
+                        Toast.makeText(RegistrationActivity.this, "Veuillez entrer un email valide", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    if (e.getMessage().equals("The given password is invalid. [ Password should be at least 6 characters ]")){
+                        Toast.makeText(RegistrationActivity.this, "Veuillez entrer un mot de passe d'au moins 6 caractères", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (e.getMessage().equals("The email address is already in use by another account.")){
+                        Toast.makeText(RegistrationActivity.this, "Cet email est déjà utilisé, veuillez en choisir un autre", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Toast.makeText(RegistrationActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 }

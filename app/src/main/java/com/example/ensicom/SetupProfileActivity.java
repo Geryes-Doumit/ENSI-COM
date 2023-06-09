@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,75 +42,73 @@ public class SetupProfileActivity extends AppCompatActivity {
         nameSettings=findViewById(R.id.editTextUpdateProfileNameSettings);
         updateButton=findViewById(R.id.buttonUpdateProfileSettings);
         profilePicture=findViewById(R.id.imageViewPostPicture);
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name= nameSettings.getText().toString();
-                if (nameSettings.getText().toString().isEmpty()) {
-                    Toast.makeText(SetupProfileActivity.this, "Veuillez entrer un nom", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (imagePath!=null && !nameSettings.getText().toString().isEmpty()){
-                    uploadImage();
-                    Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
-                }
-                if (!nameSettings.getText().toString().isEmpty()) {
-                    updateProfileName(name);
-                    Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build();
-                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Intent intent = new Intent(SetupProfileActivity.this, HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
+        updateButton.setOnClickListener(v -> {
+            String name= nameSettings.getText().toString();
+            if (nameSettings.getText().toString().isEmpty()) {
+                Toast.makeText(SetupProfileActivity.this, "Veuillez entrer un nom", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (imagePath!=null && !nameSettings.getText().toString().isEmpty()){
+                uploadImage();
+                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
+            }
+            if (!nameSettings.getText().toString().isEmpty()) {
+                updateProfileName(name);
+                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build();
+                user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        Intent intent = new Intent(SetupProfileActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
 
-                            }
-                            else {
-                                Toast.makeText(SetupProfileActivity.this, "Le profil n'a pas pu être crée.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-
+                    }
+                    else {
+                        Toast.makeText(SetupProfileActivity.this, "Le profil n'a pas pu être crée.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         });
         profilePicture=findViewById(R.id.imageViewPostPicture);
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pictureIntent= new Intent(Intent.ACTION_PICK);
-                pictureIntent.setType("image/*");
-                startActivityForResult(pictureIntent,1);
-            }
+        profilePicture.setOnClickListener(v -> {
+            Intent pictureIntent= new Intent(Intent.ACTION_PICK);
+            pictureIntent.setType("image/*");
+            startActivityForResult(pictureIntent,1);
         });
     }
+
+    /**
+     * @deprecated Use the new {@link #onActivityResult(int, int, Intent)} with Intent#FLAG_ACTIVITY_CLEAR_TOP and Intent#FLAG_ACTIVITY_SINGLE_TOP}.
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     */
+    @Override
+    @Deprecated
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==1 && resultCode==RESULT_OK && data!=null){
-            imagePath=data.getData();
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            imagePath = data.getData();
             getImageInImageView();
         }
     }
     private void getImageInImageView(){
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (bitmap != null) {
-            profilePicture.setImageBitmap(bitmap);
-        } else {
-            profilePicture.setImageResource(R.drawable.ic_launcher_foreground);
-            Toast.makeText(this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
-        }
+        Glide .with(this)
+                .load(imagePath)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(profilePicture);
     }
 
     private void uploadImage() {
@@ -117,31 +116,22 @@ public class SetupProfileActivity extends AppCompatActivity {
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        updateProfilePicture(task.getResult().toString());
-                                    }
-                                }
-                            });
-                            progressDialog.dismiss();
-                        }
-                        else {
-                            progressDialog.dismiss();
-                            Toast.makeText(SetupProfileActivity.this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                updateProfilePicture(task1.getResult().toString());
+                            }
+                        });
+                        progressDialog.dismiss();
                     }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        double progress = 100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount();
-                        progressDialog.setMessage("Chargement "+(int)progress+"%");
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(SetupProfileActivity.this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnProgressListener(snapshot -> {
+                    double progress = (double)100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount();
+                    progressDialog.setMessage("Chargement "+(int)progress+"%");
                 });
 
     }

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+    public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
 
     List<ClassicPost> postsList;
 
@@ -53,130 +54,98 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         ArrayList<String> tags = post.getTagsList();
 
         DatabaseReference userRef = FirebaseDatabase
-                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getInstance(DATABASE_URL)
                 .getReference("user")
                 .child(post.getUserId());
-        userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                User postUser = dataSnapshot.getValue(User.class);
-                String postUserName = postUser.getUsername();
-                String profilePictureUrl = postUser.getProfilePicture();
-                String postId = post.getPostId();
-                if (dataSnapshot.getKey().equals(currentUserUid)) {
-                    holder.getDeletePostButton().setVisibility(View.VISIBLE);
-                } else {
-                    holder.getDeletePostButton().setVisibility(View.GONE);
+        userRef.get().addOnSuccessListener(dataSnapshot -> {
+            User postUser = dataSnapshot.getValue(User.class);
+            String postUserName = postUser.getUsername();
+            String profilePictureUrl = postUser.getProfilePicture();
+            String postId = post.getPostId();
+            if (dataSnapshot.getKey().equals(currentUserUid)) {
+                holder.getDeletePostButton().setVisibility(View.VISIBLE);
+            } else {
+                holder.getDeletePostButton().setVisibility(View.GONE);
+            }
+            holder.getDeletePostButton().setOnClickListener(v -> new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
+                    .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
+                    .setPositiveButton("Oui", (dialog, which) -> {
+                        deletePost(postId);
+                        Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
+                        postsList.remove(currentPosition);
+                        notifyDataSetChanged();
+                       })
+                    .setNegativeButton("Non", null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show());
+            holder.getUserName().setText(postUserName);
+            holder.getPostContent().setText(postContent);
+            holder.getLikeCount().setText(likeCount.toString());
+            holder.getCommentCount().setText(post.getCommentCount().toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String tag : tags) {
+                if (!tag.equals("")) {
+                    stringBuilder.append("#").append(tag).append("; ");
                 }
-                holder.getDeletePostButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
-                                .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
-                                .setPositiveButton(android.R.string.yes,null)
-                                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deletePost(postId);
-                                        Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
-                                        postsList.remove(currentPosition);
-                                        notifyDataSetChanged();
-                                       }
-
-                                })
-                                .setNegativeButton(android.R.string.no, null)
-                                .setNegativeButton("Non", null)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
-                    }
-                });
-                holder.getUserName().setText(postUserName);
-                holder.getPostContent().setText(postContent);
-                holder.getLikeCount().setText(likeCount.toString());
-                holder.getCommentCount().setText(post.getCommentCount().toString());
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String tag : tags) {
-                    if (!tag.equals("")) {
-                        stringBuilder.append("#").append(tag).append("; ");
-                    }
-                }
-                String tag = stringBuilder.toString();
-                holder.getTagList().setText(tag);
-                Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
-                Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
-                if (videoUrl != null) {
-                    holder.getVideoView().setVisibility(View.VISIBLE);
-                    holder.getVideoView().setVideoPath(videoUrl);
-                    holder.getVideoView().start();
-                } else {
-                    holder.getVideoView().setVisibility(View.GONE);
-                }
+            }
+            String tag = stringBuilder.toString();
+            holder.getTagList().setText(tag);
+            Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
+            Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
+            if (videoUrl != null) {
+                holder.getVideoView().setVisibility(View.VISIBLE);
+                holder.getVideoView().setVideoPath(videoUrl);
+                holder.getVideoView().start();
+            } else {
+                holder.getVideoView().setVisibility(View.GONE);
             }
         });
-        holder.getLikeButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String postId = post.getPostId();
-                DatabaseReference postRef = FirebaseDatabase
-                        .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                        .getReference("posts")
-                        .child(postId);
-                postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
-                        if (post.getLikeUserList().toString().contains(currentUserUid)){
-                            Integer likeCount = post.getLikeCount();
-                            post.removeLike(currentUserUid);
-                            postRef.setValue(post);
-                            holder.getLikeCount().setText(likeCount.toString());
-                        } else {
-                            Integer likeCount = post.getLikeCount();
-                            post.addLike(currentUserUid);
-                            postRef.setValue(post);
-                            holder.getLikeCount().setText(likeCount.toString());
-                        }
-                    }
-                });
-            }
+        holder.getLikeButton().setOnClickListener(view -> {
+            String postId = post.getPostId();
+            DatabaseReference postRef = FirebaseDatabase
+                    .getInstance(DATABASE_URL)
+                    .getReference("posts")
+                    .child(postId);
+            postRef.get().addOnSuccessListener(dataSnapshot -> {
+                ClassicPost post1 = dataSnapshot.getValue(ClassicPost.class);
+                if (post1.getLikeUserList().toString().contains(currentUserUid)){
+                    Integer likeCount1 = post1.getLikeCount();
+                    post1.removeLike(currentUserUid);
+                    postRef.setValue(post1);
+                    holder.getLikeCount().setText(likeCount1.toString());
+                } else {
+                    Integer likeCount1 = post1.getLikeCount();
+                    post1.addLike(currentUserUid);
+                    postRef.setValue(post1);
+                    holder.getLikeCount().setText(likeCount1.toString());
+                }
+            });
         });
 
-        holder.getCommentButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String postId = post.getPostId();
-                Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
-                intent.putExtra("postId", postId);
-                v.getContext().startActivity(intent);
-            }
+        holder.getCommentButton().setOnClickListener(v -> {
+            String postId = post.getPostId();
+            Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
+            intent.putExtra("postId", postId);
+            v.getContext().startActivity(intent);
         });
     }
 
     public void deletePost(String postId) {
         DatabaseReference postRef = FirebaseDatabase
-                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getInstance(DATABASE_URL)
                 .getReference("posts")
                 .child(postId);
 
-        postRef.child("commentId").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                String commentId = dataSnapshot.getValue(String.class);
-                DatabaseReference commentsRef = FirebaseDatabase
-                        .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                        .getReference("commentLists")
-                        .child(commentId);
-                commentsRef.removeValue();
-            }
+        postRef.child("commentId").get().addOnSuccessListener(dataSnapshot -> {
+            String commentId = dataSnapshot.getValue(String.class);
+            DatabaseReference commentsRef = FirebaseDatabase
+                    .getInstance(DATABASE_URL)
+                    .getReference("commentLists")
+                    .child(commentId);
+            commentsRef.removeValue();
         });
-        postRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
+        postRef.removeValue().addOnSuccessListener(unused -> {
+        }).addOnFailureListener(e -> {
         });
     }
 

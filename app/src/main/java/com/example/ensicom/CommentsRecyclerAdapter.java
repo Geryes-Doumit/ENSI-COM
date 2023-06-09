@@ -38,15 +38,12 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsViewHo
                 .getReference("user")
                 .child(comment.getUserId());
 
-        userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                User commentUser = dataSnapshot.getValue(User.class);
-                String commentUserName = commentUser.getUsername();
+        userRef.get().addOnSuccessListener(dataSnapshot -> {
+            User commentUser = dataSnapshot.getValue(User.class);
+            String commentUserName = commentUser.getUsername();
 
-                holder.getCommentUserName().setText(commentUserName);
-                holder.getCommentContent().setText(commentContent);
-            }
+            holder.getCommentUserName().setText(commentUserName);
+            holder.getCommentContent().setText(commentContent);
         });
     }
 

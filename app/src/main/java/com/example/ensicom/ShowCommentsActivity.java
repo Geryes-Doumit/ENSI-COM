@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,10 +28,13 @@ import java.util.Date;
 import java.util.List;
 
 public class ShowCommentsActivity extends AppCompatActivity {
+    public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
+    public static final String ILIA = "Il y a ";
+    public static final String COMMENTAIRES = " commentaire(s) sous ce post.";
+    public static final String COMMENT_LIST = "commentList";
+    public static final String POSTS = "posts";
     private String postId;
     private FirebaseUser currentUser;
-    private ImageButton sendCommentButton;
-    private TextView commentContent;
     private RecyclerView commentsRecyclerView;
     private List<Comment> commentsList = new ArrayList<>();
     private TextView commentCount;
@@ -42,6 +46,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ImageButton sendCommentButton;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_comments);
 
@@ -51,77 +56,63 @@ public class ShowCommentsActivity extends AppCompatActivity {
         commentCount = findViewById(R.id.commentCount);
 
         FirebaseDatabase database = FirebaseDatabase
-                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/");
-        DatabaseReference postRef = database.getReference("posts").child(postId);
+                .getInstance(DATABASE_URL);
+        DatabaseReference postRef = database.getReference(POSTS).child(postId);
 
-        postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
+        postRef.get().addOnSuccessListener(dataSnapshot -> {
+            ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
 
-                // Showing the post information
-                postContent = findViewById(R.id.postContent);
-                postContent.setText(post.getContent());
+            // Showing the post information
+            postContent = findViewById(R.id.postContent);
+            postContent.setText(post.getContent());
 
-                userName = findViewById(R.id.userName);
-                // Get the user name
-                DatabaseReference userRef = database.getReference("user").child(post.getUserId());
-                userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        String username = user.getUsername();
-                        userName.setText(username);
+            userName = findViewById(R.id.userName);
+            // Get the user name
+            DatabaseReference userRef = database.getReference("user").child(post.getUserId());
+            userRef.get().addOnSuccessListener(dataSnapshot1 -> {
+                User user = dataSnapshot1.getValue(User.class);
+                String username = user.getUsername();
+                userName.setText(username);
 
-                        deletePostButton = findViewById(R.id.deletePostButton);
-                        if (!currentUser.getUid().equals(post.getUserId())) {
-                            deletePostButton.setVisibility(ImageButton.GONE);
-                        } else {
-                            deletePostButton.setVisibility(ImageButton.VISIBLE);
-                        }
-
-                        deletePostButton.setOnClickListener(v -> deletePost(postId));
-
-                        userProfilePicture = findViewById(R.id.userProfilePicture);
-                        Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).into(userProfilePicture);
-
-                        imageContent1 = findViewById(R.id.imageContent1);
-                        Glide.with(imageContent1.getContext()).load(post.getPictureUrl1()).into(imageContent1);
-                    }
-                });
-
-                // Showing the comments
-                if (post.getCommentId().equals("")) {
-                    commentCount.setText("Il n'y a aucun commentaire sous ce post.");
-                    return;
+                deletePostButton = findViewById(R.id.deletePostButton);
+                if (!currentUser.getUid().equals(post.getUserId())) {
+                    deletePostButton.setVisibility(View.GONE);
+                } else {
+                    deletePostButton.setVisibility(View.VISIBLE);
                 }
 
-                database.getReference("commentLists")
-                        .child(post.getCommentId())
-                        .child("comments")
-                        .limitToLast(50)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                            @Override
-                            public void onSuccess(DataSnapshot dataSnapshot) {
-                                commentsList.clear();
-                                for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
-                                    Comment comment = commentSnapshot.getValue(Comment.class);
-                                    commentsList.add(comment);
-                                }
-                                Collections.reverse(commentsList);
-                                commentCount.setText("Il y a " + post.getCommentCount().toString() + " commentaire(s) sous ce post.");
-                                commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
-                            }
-                        });
+                deletePostButton.setOnClickListener(v -> deletePost(postId));
+
+                userProfilePicture = findViewById(R.id.userProfilePicture);
+                Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).into(userProfilePicture);
+
+                imageContent1 = findViewById(R.id.imageContent1);
+                Glide.with(imageContent1.getContext()).load(post.getPictureUrl1()).into(imageContent1);
+            });
+
+            // Showing the comments
+            if (post.getCommentId().equals("")) {
+                commentCount.setText("Il n'y a aucun commentaire sous ce post.");
+                return;
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ShowCommentsActivity.this, "Erreur lors du chargement des commentaires.", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+            database.getReference(COMMENT_LIST)
+                    .child(post.getCommentId())
+                    .child("comments")
+                    .limitToLast(50)
+                    .get()
+                    .addOnSuccessListener(dataSnapshot12 -> {
+                        commentsList.clear();
+                        for (DataSnapshot commentSnapshot : dataSnapshot12.getChildren()) {
+                            Comment comment = commentSnapshot.getValue(Comment.class);
+                            commentsList.add(comment);
+                        }
+                        Collections.reverse(commentsList);
+                        commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
+                        commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
+                    });
+        }).addOnFailureListener(e -> Toast.makeText(ShowCommentsActivity.this, "Erreur lors du chargement des commentaires.", Toast.LENGTH_SHORT).show());
 
         sendCommentButton = findViewById(R.id.sendCommentButton);
         sendCommentButton.setOnClickListener(v -> sendComment());
@@ -132,6 +123,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
     }
 
     public void sendComment() {
+        TextView commentContent;
         commentContent = findViewById(R.id.newCommentContent);
         String content = commentContent.getText().toString();
 
@@ -142,120 +134,85 @@ public class ShowCommentsActivity extends AppCompatActivity {
 
         // get the post from the database
         FirebaseDatabase database = FirebaseDatabase
-                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/");
-        DatabaseReference postRef = database.getReference("posts").child(postId);
+                .getInstance(DATABASE_URL);
+        DatabaseReference postRef = database.getReference(POSTS).child(postId);
 
-        postRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
+        postRef.get().addOnSuccessListener(dataSnapshot -> {
+            ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
 
-                if (post.getCommentId().equals("")) {
-                    CommentsList commentsListObject = new CommentsList("");
-                    commentsListObject.setCommentsListId(database.getReference().child("commentLists").push().getKey());
-                    post.setCommentId(commentsListObject.getCommentsListId());
+            if (post.getCommentId().equals("")) {
+                CommentsList commentsListObject = new CommentsList("");
+                commentsListObject.setCommentsListId(database.getReference().child(COMMENT_LIST).push().getKey());
+                post.setCommentId(commentsListObject.getCommentsListId());
+                Integer commentId = commentsListObject.getComments().get(commentsListObject.getComments().size()-1).getCommentId()+1;
+                Comment comment = new Comment(currentUser.getUid(), commentId, content, new Date().getTime());
+                commentsListObject.addComment(comment);
+
+                DatabaseReference commentsListRef = database.getReference().child(COMMENT_LIST)
+                        .child(commentsListObject.getCommentsListId());
+                commentsListRef.setValue(commentsListObject).addOnSuccessListener(unused -> {
+                    post.setCommentCount(post.getCommentCount() + 1);
+                    postRef.setValue(post);
+                    commentsListRef.get().addOnSuccessListener(dataSnapshot1 -> {
+                        CommentsList commentsListObject1 = dataSnapshot1.getValue(CommentsList.class);
+                        commentsList = commentsListObject1.getComments();
+                        Collections.reverse(commentsList);
+                        commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
+                        commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
+                        commentContent.setText("");
+                        Toast.makeText(ShowCommentsActivity.this, "Commentaire envoyé.", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e ->
+                            Toast.makeText(ShowCommentsActivity.this, "Erreur lors de l'envoi du commentaire.", Toast.LENGTH_SHORT).show());
+                });
+                commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
+            }
+            else {
+                DatabaseReference commentsListRef = database.getReference("commentLists")
+                        .child(post.getCommentId());
+                commentsListRef.get().addOnSuccessListener(dataSnapshot12 -> {
+                    CommentsList commentsListObject = dataSnapshot12.getValue(CommentsList.class);
                     Integer commentId = commentsListObject.getComments().get(commentsListObject.getComments().size()-1).getCommentId()+1;
                     Comment comment = new Comment(currentUser.getUid(), commentId, content, new Date().getTime());
                     commentsListObject.addComment(comment);
-
-                    DatabaseReference commentsListRef = database.getReference().child("commentLists")
-                            .child(commentsListObject.getCommentsListId());
-                    commentsListRef.setValue(commentsListObject).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            post.setCommentCount(post.getCommentCount() + 1);
-                            postRef.setValue(post);
-                            commentsListRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                                @Override
-                                public void onSuccess(DataSnapshot dataSnapshot) {
-                                    CommentsList commentsListObject = dataSnapshot.getValue(CommentsList.class);
-                                    commentsList = commentsListObject.getComments();
-                                    Collections.reverse(commentsList);
-                                    commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                    commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
-                                    commentCount.setText("Il y a " + post.getCommentCount().toString() + " commentaire(s) sous ce post.");
-                                    commentContent.setText("");
-                                    Toast.makeText(ShowCommentsActivity.this, "Commentaire envoyé.", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(ShowCommentsActivity.this, "Erreur lors de l'envoi du commentaire.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                    commentsListRef.setValue(commentsListObject).addOnSuccessListener(unused -> {
+                        post.setCommentCount(post.getCommentCount() + 1);
+                        postRef.setValue(post);
+                        commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
+                        commentsListRef.child("comments").limitToLast(50).get().addOnSuccessListener(dataSnapshot121 -> {
+                            commentsList.clear();
+                            for (DataSnapshot commentSnapshot : dataSnapshot121.getChildren()) {
+                                Comment comment1 = commentSnapshot.getValue(Comment.class);
+                                commentsList.add(comment1);
+                            }
+                            Collections.reverse(commentsList);
+                            commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
+                            commentContent.setText("");
+                            Toast.makeText(ShowCommentsActivity.this, "Commentaire envoyé.", Toast.LENGTH_SHORT).show();
+                        }).addOnFailureListener(e ->
+                                Toast.makeText(ShowCommentsActivity.this, "Erreur lors de l'envoi du commentaire.", Toast.LENGTH_SHORT).show());
                     });
-                    commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
-                }
-                else {
-                    DatabaseReference commentsListRef = database.getReference("commentLists")
-                            .child(post.getCommentId());
-                    commentsListRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            CommentsList commentsListObject = dataSnapshot.getValue(CommentsList.class);
-                            Integer commentId = commentsListObject.getComments().get(commentsListObject.getComments().size()-1).getCommentId()+1;
-                            Comment comment = new Comment(currentUser.getUid(), commentId, content, new Date().getTime());
-                            commentsListObject.addComment(comment);
-                            commentsListRef.setValue(commentsListObject).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    post.setCommentCount(post.getCommentCount() + 1);
-                                    postRef.setValue(post);
-                                    commentCount.setText("Il y a " + post.getCommentCount().toString() + " commentaire(s) sous ce post.");
-                                    commentsListRef.child("comments").limitToLast(50).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DataSnapshot dataSnapshot) {
-                                            commentsList.clear();
-                                            for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
-                                                Comment comment = commentSnapshot.getValue(Comment.class);
-                                                commentsList.add(comment);
-                                            }
-                                            Collections.reverse(commentsList);
-                                            commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
-                                            commentContent.setText("");
-                                            Toast.makeText(ShowCommentsActivity.this, "Commentaire envoyé.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(ShowCommentsActivity.this, "Erreur lors de l'envoi du commentaire.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
+                });
             }
         });
     }
 
     public void deletePost(String postId) {
         DatabaseReference postRef = FirebaseDatabase
-                .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("posts")
+                .getInstance(DATABASE_URL)
+                .getReference(POSTS)
                 .child(postId);
 
-        postRef.child("commentId").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                String commentId = dataSnapshot.getValue(String.class);
-                DatabaseReference commentsRef = FirebaseDatabase
-                        .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
-                        .getReference("commentLists")
-                        .child(commentId);
-                commentsRef.removeValue();
-            }
+        postRef.child("commentId").get().addOnSuccessListener(dataSnapshot -> {
+            String commentId = dataSnapshot.getValue(String.class);
+            DatabaseReference commentsRef = FirebaseDatabase
+                    .getInstance(DATABASE_URL)
+                    .getReference("commentLists")
+                    .child(commentId);
+            commentsRef.removeValue();
         });
-        postRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
+        postRef.removeValue().addOnSuccessListener(unused -> {
+        }).addOnFailureListener(e -> {
         });
 
         Intent intent = new Intent(this, HomeActivity.class);

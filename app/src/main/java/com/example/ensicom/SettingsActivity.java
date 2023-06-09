@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class SettingsActivity extends AppCompatActivity {
+    public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app";
     Button updateButton;
     Button logout;
     EditText nameSettings;
@@ -60,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         profilePicture=findViewById(R.id.imageViewPostPicture);
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
+        DatabaseReference userRef = FirebaseDatabase.getInstance(DATABASE_URL)
                 .getReference().child("user").child(currentUserId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -72,8 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
                             .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
                             .into(profilePicture);
-                    if (profilePictureUrl != null) {
-                    } else {
+                    if (profilePictureUrl == null) {
                         Toast.makeText(SettingsActivity.this, "Impossible de charger l'image", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -87,57 +87,58 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         updateButton=findViewById(R.id.buttonUpdateProfileSettings);
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name= nameSettings.getText().toString();
-                if (imagePath!=null){
-                    uploadImage();
-                    Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
-                }
-                if (!nameSettings.getText().toString().isEmpty()) {
-                    updateProfileName(name);
-                    Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build();
-                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                userName.setText(name);
-                            }
-                            else {
-                                Toast.makeText(SettingsActivity.this, "Le profil n'a pas pu être mis à jour", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+        updateButton.setOnClickListener(v -> {
+            String name1 = nameSettings.getText().toString();
+            if (imagePath!=null){
+                uploadImage();
+                Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
             }
-
+            if (!nameSettings.getText().toString().isEmpty()) {
+                updateProfileName(name1);
+                Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
+                FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(name1)
+                        .build();
+                user1.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        userName.setText(name1);
+                    }
+                    else {
+                        Toast.makeText(SettingsActivity.this, "Le profil n'a pas pu être mis à jour", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
         logout=findViewById(R.id.buttonLogout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent mainIntent = new Intent(SettingsActivity.this, LoginActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(mainIntent);
-                finish();
-            }
+        logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent mainIntent = new Intent(SettingsActivity.this, LoginActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(mainIntent);
+            finish();
         });
         profilePicture=findViewById(R.id.imageViewPostPicture);
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pictureIntent= new Intent(Intent.ACTION_PICK);
-                pictureIntent.setType("image/*");
-                startActivityForResult(pictureIntent,1);
-            }
+        profilePicture.setOnClickListener(v -> {
+            Intent pictureIntent= new Intent(Intent.ACTION_PICK);
+            pictureIntent.setType("image/*");
+            startActivityForResult(pictureIntent,1);
         });
     }
+
+    /**
+     * @deprecated 
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     */
+    @Override
+    @Deprecated
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1 && resultCode==RESULT_OK && data!=null){
@@ -146,18 +147,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
     private void getImageInImageView(){
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (bitmap != null) {
-            profilePicture.setImageBitmap(bitmap);
-        } else {
-            profilePicture.setImageResource(R.drawable.ic_launcher_foreground);
-            Toast.makeText(this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
-        }
+        Glide .with(this)
+                .load(imagePath)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(profilePicture);
     }
 
     private void uploadImage() {
@@ -165,44 +159,37 @@ public class SettingsActivity extends AppCompatActivity {
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        updateProfilePicture(task.getResult().toString());
-                                    }
-                                }
-                            });
-                            progressDialog.dismiss();
-                        }
-                        else {
-                            progressDialog.dismiss();
-                            Toast.makeText(SettingsActivity.this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                updateProfilePicture(task1.getResult().toString());
+                            }
+                        });
+                        progressDialog.dismiss();
                     }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        double progress = 100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount();
-                        progressDialog.setMessage("Chargement "+(int)progress+"%");
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(SettingsActivity.this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnProgressListener(snapshot -> {
+                    double progress = (double)100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount();
+                    progressDialog.setMessage("Chargement "+(int)progress+"%");
                 });
 
     }
     private void updateProfilePicture(String url){
-        FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").
+        FirebaseDatabase.getInstance(DATABASE_URL).
                 getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/profilePicture")
                 .setValue(url);
     }
     private void updateProfileName(String name){
-        FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").
+        FirebaseDatabase.getInstance(DATABASE_URL).
                 getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/username")
                 .setValue(name);
     }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         finish();

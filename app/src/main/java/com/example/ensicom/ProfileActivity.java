@@ -51,8 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
                             .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
                             .into(profilePicture);
-                    if (profilePictureUrl != null) {
-                    } else {
+                    if (profilePictureUrl == null) {
                         Toast.makeText(ProfileActivity.this, "Impossible de charger l'image", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -64,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

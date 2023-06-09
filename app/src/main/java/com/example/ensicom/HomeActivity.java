@@ -47,12 +47,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         testButton=findViewById(R.id.buttonTest);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                startActivity(getIntent());
-            }
+        testButton.setOnClickListener(v -> {
+            finish();
+            startActivity(getIntent());
         });
 
         // Adding the latest posts to the posts list
@@ -60,20 +57,17 @@ public class HomeActivity extends AppCompatActivity {
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("posts");
 
-        postsRef.limitToLast(20).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                    postsList.add(post);
-                }
-                Collections.reverse(postsList);
-
-                // Showing the posts using the recycler view
-                postsListView = findViewById(R.id.postsListView);
-                postsListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
+        postsRef.limitToLast(20).get().addOnSuccessListener(dataSnapshot -> {
+            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                postsList.add(post);
             }
+            Collections.reverse(postsList);
+
+            // Showing the posts using the recycler view
+            postsListView = findViewById(R.id.postsListView);
+            postsListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
         });
 
         Toolbar toolbar=findViewById(R.id.toolBar);
@@ -85,32 +79,37 @@ public class HomeActivity extends AppCompatActivity {
         userName=findViewById(R.id.textView_userName);
         userName.setText(name);
         settings=findViewById(R.id.buttonHomeSettings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-                //finish();
-            }
+        settings.setOnClickListener(v -> {
+            Intent mainIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mainIntent);
         });
 
         newPostButton=findViewById(R.id.newPost);
 
-        newPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(HomeActivity.this, NewPostActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-                //finish();
-            }
+        newPostButton.setOnClickListener(v -> {
+            Intent mainIntent = new Intent(HomeActivity.this, NewPostActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mainIntent);
         });
     }
+
+    /**
+     * @deprecated Use {@link #onSupportNavigateUp()} instead.
+     * @return
+     */
+    @Override
+    @Deprecated
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
+    /**
+     * @deprecated Use {@link #onBackPressed()} instead.
+     */
+    @Override
+    @Deprecated
     public void onBackPressed(){
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);

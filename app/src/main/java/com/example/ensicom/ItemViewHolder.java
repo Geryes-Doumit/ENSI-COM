@@ -15,7 +15,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     private ImageView userProfilePicture;
     private ImageView postPicture1;
     private TextView postContent;
-//    private TextView postDate;
     private TextView likeCount;
     private TextView commentCount;
     private Button likeButton;
@@ -30,7 +29,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         userName = itemView.findViewById(R.id.userName);
         userProfilePicture = itemView.findViewById(R.id.userProfilePicture);
         postContent = itemView.findViewById(R.id.postContent);
-//        postDate = itemView.findViewById(R.id.postDate);
         likeCount = itemView.findViewById(R.id.likeCount);
         commentCount = itemView.findViewById(R.id.commentCount);
         likeButton = itemView.findViewById(R.id.likeButton);
@@ -62,11 +60,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     public TextView getPostContent() {
         return postContent;
     }
-
-//    public TextView getPostDate() {
-//        return postDate;
-//    }
-
+    
     public TextView getLikeCount() {
         return likeCount;
     }

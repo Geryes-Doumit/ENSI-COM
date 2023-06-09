@@ -1,9 +1,6 @@
 package com.example.ensicom;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ClassicPost {
     private String content;
@@ -45,10 +42,6 @@ public class ClassicPost {
     }
 
     public ArrayList<String> getTagsList() {
-        return tagsList;
-    }
-
-    public ArrayList<String> setTagsList(ArrayList<String> tagList) {
         return tagsList;
     }
 
