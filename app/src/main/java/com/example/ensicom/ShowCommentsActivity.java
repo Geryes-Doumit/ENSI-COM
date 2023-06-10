@@ -102,15 +102,22 @@ public class ShowCommentsActivity extends AppCompatActivity {
                     .limitToLast(50)
                     .get()
                     .addOnSuccessListener(dataSnapshot12 -> {
-                        commentsList.clear();
-                        for (DataSnapshot commentSnapshot : dataSnapshot12.getChildren()) {
-                            Comment comment = commentSnapshot.getValue(Comment.class);
-                            commentsList.add(comment);
+                        if (dataSnapshot12.exists()) {
+                            commentsList.clear();
+                            for (DataSnapshot commentSnapshot : dataSnapshot12.getChildren()) {
+                                Comment comment = commentSnapshot.getValue(Comment.class);
+                                commentsList.add(comment);
+                            }
+                            Collections.reverse(commentsList);
+                            commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
+                            commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
                         }
-                        Collections.reverse(commentsList);
-                        commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
-                        commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
+                        else {
+                            post.setCommentId("");
+                            post.setCommentCount(0);
+                            postRef.setValue(post);
+                        }
                     });
         }).addOnFailureListener(e -> Toast.makeText(ShowCommentsActivity.this, "Erreur lors du chargement des commentaires.", Toast.LENGTH_SHORT).show());
 
@@ -171,6 +178,13 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 DatabaseReference commentsListRef = database.getReference("commentLists")
                         .child(post.getCommentId());
                 commentsListRef.get().addOnSuccessListener(dataSnapshot12 -> {
+                    if (!dataSnapshot12.exists()) {
+                        post.setCommentId("");
+                        post.setCommentCount(0);
+                        postRef.setValue(post);
+                        sendComment();
+                        return;
+                    }
                     CommentsList commentsListObject = dataSnapshot12.getValue(CommentsList.class);
                     Integer commentId = commentsListObject.getComments().get(commentsListObject.getComments().size()-1).getCommentId()+1;
                     Comment comment = new Comment(currentUser.getUid(), commentId, content, new Date().getTime());

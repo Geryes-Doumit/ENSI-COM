@@ -70,8 +70,6 @@ public class MainFragment extends Fragment {
                         }
                         Collections.reverse(postsList);
 
-                        view.findViewById(R.id.buttonHomeSettings).setBackgroundColor(Color.YELLOW);
-
                         // Showing the posts using the recycler view
                         postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
