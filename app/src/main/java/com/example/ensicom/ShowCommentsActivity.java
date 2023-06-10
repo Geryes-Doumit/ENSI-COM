@@ -105,6 +105,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                                 Comment comment = commentSnapshot.getValue(Comment.class);
                                 commentsList.add(comment);
                             }
+                            commentsList.remove(0);
                             Collections.reverse(commentsList);
                             commentCount.setText(ILIA + post.getCommentCount().toString() + COMMENTAIRES);
                             commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -160,6 +161,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                     commentsListRef.get().addOnSuccessListener(dataSnapshot1 -> {
                         CommentsList commentsListObject1 = dataSnapshot1.getValue(CommentsList.class);
                         commentsList = commentsListObject1.getComments();
+                        commentsList.remove(0);
                         Collections.reverse(commentsList);
                         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
@@ -196,6 +198,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                                 Comment comment1 = commentSnapshot.getValue(Comment.class);
                                 commentsList.add(comment1);
                             }
+                            commentsList.remove(0);
                             Collections.reverse(commentsList);
                             commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
                             commentContent.setText("");

@@ -210,7 +210,7 @@ public class NewPostActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, MainActivity1.class);
             startActivity(intent);
             return true;
         }
@@ -484,7 +484,7 @@ public class NewPostActivity extends AppCompatActivity {
             Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
         }).addOnSuccessListener(unused -> {
             Toast.makeText(NewPostActivity.this, "Votre contenu a été posté.", Toast.LENGTH_SHORT).show();
-            Intent mainIntent = new Intent(NewPostActivity.this, HomeActivity.class);
+            Intent mainIntent = new Intent(NewPostActivity.this, MainActivity1.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(mainIntent);
             finish();

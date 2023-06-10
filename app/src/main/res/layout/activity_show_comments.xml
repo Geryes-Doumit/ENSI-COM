@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3pt"
@@ -35,22 +35,29 @@
                 android:id="@+id/userProfilePicture"
                 android:layout_width="20pt"
                 android:layout_height="20pt"
-                android:layout_marginStart="10dp"
                 android:background="@drawable/profil_rounded"
                 android:scaleType="centerInside"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/marginRightView"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/userProfilePicture"
+                tools:layout_editor_absoluteY="25dp" />
 
             <TextView
                 android:id="@+id/userName"
-                android:layout_width="85pt"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5pt"
                 android:fontFamily="@font/barlow"
-                android:gravity="center_vertical"
-                android:textAlignment="viewStart"
+                android:gravity="center"
                 android:textColor="@color/jaune"
                 android:textSize="60px"
                 android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/marginRightView"
+                tools:layout_editor_absoluteY="10dp"
                 tools:text="@tools:sample/first_names" />
 
             <ImageButton
@@ -58,9 +65,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                tools:layout_editor_absoluteY="0dp" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/postContent"

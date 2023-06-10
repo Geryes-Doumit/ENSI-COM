@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,8 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsViewHo
     public void onBindViewHolder(@NonNull CommentsViewHolder holder, int position) {
         Comment comment = comments.get(position);
         String commentContent = comment.getContent();
+        holder.getShowRepliesButton().setBackground(null);
+        holder.getShowMoreArrow().setBackground(null);
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -44,6 +47,7 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsViewHo
 
             holder.getCommentUserName().setText(commentUserName);
             holder.getCommentContent().setText(commentContent);
+            Glide.with(holder.getCommentProfilePicture().getContext()).load(commentUser.getProfilePicture()).circleCrop().into(holder.getCommentProfilePicture());
         });
     }
 

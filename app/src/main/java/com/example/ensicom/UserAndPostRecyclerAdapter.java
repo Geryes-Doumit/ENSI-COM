@@ -85,12 +85,12 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
             StringBuilder stringBuilder = new StringBuilder();
             for (String tag : tags) {
                 if (!tag.equals("")) {
-                    stringBuilder.append("#").append(tag).append("; ");
+                    stringBuilder.append("#").append(tag).append(" ");
                 }
             }
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
-            Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).into(holder.getUserProfilePicture());
+            Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
             Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
@@ -136,17 +136,18 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
                 .getReference("posts")
                 .child(postId);
 
-        postRef.child("commentId").get().addOnSuccessListener(dataSnapshot -> {
-            String commentId = dataSnapshot.getValue(String.class);
-            DatabaseReference commentsRef = FirebaseDatabase
-                    .getInstance(DATABASE_URL)
-                    .getReference("commentLists")
-                    .child(commentId);
-            commentsRef.removeValue();
+        postRef.get().addOnSuccessListener(dataSnapshot -> {
+            ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
+            String commentId = post.getCommentId();
+            if (!commentId.equals("")) {
+                DatabaseReference commentsRef = FirebaseDatabase
+                        .getInstance(DATABASE_URL)
+                        .getReference("commentLists")
+                        .child(commentId);
+                commentsRef.removeValue();
+            }
         });
-        postRef.removeValue().addOnSuccessListener(unused -> {
-        }).addOnFailureListener(e -> {
-        });
+        postRef.removeValue();
     }
 
     @Override

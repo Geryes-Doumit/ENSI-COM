@@ -2,28 +2,93 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="0dp"
+    android:background="@drawable/comment_background"
+    android:layout_margin="10dp"
+    android:padding="5dp">
 
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="18dp"
-        android:id="@+id/commentUserName"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/commentProfilePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/profil_rounded"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="2dp"/>
+
+        <ImageView
+            android:id="@+id/marginRightView"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@+id/commentProfilePicture"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/commentUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="userName"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/marginRightView"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="16dp"
-        android:id="@+id/commentContent"
-        android:layout_marginBottom="10dp"/>
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/commentContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:text=""
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="5dp">
+
+            <Button
+                android:id="@+id/showRepliesButton"
+                android:layout_width="60dp"
+                android:layout_height="15dp"
+                android:background="@color/gris"
+                android:text="Réponses"
+                android:textAllCaps="false"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/arrow_down"
+                android:id="@+id/showMoreArrow"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
