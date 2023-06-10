@@ -1,6 +1,5 @@
 package com.example.ensicom;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +28,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String ILIA = "Il y a ";
     public static final String COMMENTAIRES = " commentaire(s) sous ce post.";
-    public static final String COMMENT_LIST = "commentList";
+    public static final String COMMENT_LISTS = "commentLists";
     public static final String POSTS = "posts";
     private String postId;
     private FirebaseUser currentUser;
@@ -96,7 +93,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 return;
             }
 
-            database.getReference(COMMENT_LIST)
+            database.getReference(COMMENT_LISTS)
                     .child(post.getCommentId())
                     .child("comments")
                     .limitToLast(50)
@@ -149,13 +146,13 @@ public class ShowCommentsActivity extends AppCompatActivity {
 
             if (post.getCommentId().equals("")) {
                 CommentsList commentsListObject = new CommentsList("");
-                commentsListObject.setCommentsListId(database.getReference().child(COMMENT_LIST).push().getKey());
+                commentsListObject.setCommentsListId(database.getReference().child(COMMENT_LISTS).push().getKey());
                 post.setCommentId(commentsListObject.getCommentsListId());
                 Integer commentId = commentsListObject.getComments().get(commentsListObject.getComments().size()-1).getCommentId()+1;
                 Comment comment = new Comment(currentUser.getUid(), commentId, content, new Date().getTime());
                 commentsListObject.addComment(comment);
 
-                DatabaseReference commentsListRef = database.getReference().child(COMMENT_LIST)
+                DatabaseReference commentsListRef = database.getReference().child(COMMENT_LISTS)
                         .child(commentsListObject.getCommentsListId());
                 commentsListRef.setValue(commentsListObject).addOnSuccessListener(unused -> {
                     post.setCommentCount(post.getCommentCount() + 1);
@@ -175,7 +172,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 commentsRecyclerView.setAdapter(new CommentsRecyclerAdapter(commentsList));
             }
             else {
-                DatabaseReference commentsListRef = database.getReference("commentLists")
+                DatabaseReference commentsListRef = database.getReference(COMMENT_LISTS)
                         .child(post.getCommentId());
                 commentsListRef.get().addOnSuccessListener(dataSnapshot12 -> {
                     if (!dataSnapshot12.exists()) {
@@ -221,7 +218,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
             String commentId = dataSnapshot.getValue(String.class);
             DatabaseReference commentsRef = FirebaseDatabase
                     .getInstance(DATABASE_URL)
-                    .getReference("commentLists")
+                    .getReference(COMMENT_LISTS)
                     .child(commentId);
             commentsRef.removeValue();
         });
