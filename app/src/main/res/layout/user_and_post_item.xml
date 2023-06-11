@@ -79,13 +79,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:background="@color/post_background"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageContent1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -102,17 +105,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20pt"
-        android:layout_marginTop="5dp"
+        android:layout_height="15pt"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/post_background"
+        android:background="@drawable/like_background"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/likeCount"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_marginStart="25pt"
             android:text="0"
             android:textAlignment="center"
@@ -121,17 +123,18 @@
 
         <Button
             android:id="@+id/likeButton"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
+            android:layout_width="12pt"
+            android:layout_height="12pt"
             android:layout_marginStart="5pt"
             android:background="@drawable/heart_empty"
-            android:contentDescription="like button" />
+            android:contentDescription="like button"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/commentCount"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
-            android:layout_marginLeft="20pt"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="25pt"
             android:text="0"
             android:textAlignment="center"
             android:textSize="60px"
@@ -139,11 +142,12 @@
 
         <Button
             android:id="@+id/commentButton"
-            android:layout_width="15pt"
-            android:layout_height="15pt"
+            android:layout_width="12pt"
+            android:layout_height="12pt"
             android:layout_marginStart="5pt"
             android:background="@drawable/comment_button"
-            android:contentDescription="comment button" />
+            android:contentDescription="comment button"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
 

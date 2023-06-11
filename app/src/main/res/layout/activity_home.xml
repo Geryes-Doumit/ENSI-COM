@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gris"
+    android:background="@color/white"
     tools:context=".HomeActivity">
 
     <Button
@@ -35,7 +35,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="45dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/gris"
         app:layout_constraintBottom_toTopOf="@+id/newPost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
