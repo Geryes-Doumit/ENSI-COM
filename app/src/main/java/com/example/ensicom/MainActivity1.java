@@ -105,8 +105,10 @@ public class MainActivity1 extends AppCompatActivity {
                 if (id == R.id.button_actualites) {
                     getSupportFragmentManager().beginTransaction().replace(fragment_layout, homeFragment).commit();
                     return true;
-                } else if (id == R.id.button_evenements) {
+                }
+                else if (id == R.id.button_evenements) {
                     getSupportFragmentManager().beginTransaction().replace(fragment_layout, evenementFragment).commit();
+                    return true;
                 }
                 return false;
 
