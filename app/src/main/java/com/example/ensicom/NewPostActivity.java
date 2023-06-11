@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -156,10 +157,16 @@ public class NewPostActivity extends AppCompatActivity {
                         for(int i = 0; i < count; i++) {
                             Uri imageUri = data.getClipData().getItemAt(i).getUri();
                             ImageView imageView = new ImageView(this);
-                            imageView.setPadding(0, 10, 0, 10);
                             getImageInImageView(imageUri, imageView);
                             pictureUriList.add(imageUri);
                             scrollableLayout.addView(imageView);
+                            imageView.setOnClickListener(v -> {
+                                ViewGroup parentView = (ViewGroup) imageView.getParent();
+                                if (parentView != null) {
+                                    parentView.removeView(imageView);
+                                    pictureUriList.remove(imageUri);
+                                }
+                            });
                         }
                     }
                     else {
@@ -168,6 +175,13 @@ public class NewPostActivity extends AppCompatActivity {
                         getImageInImageView(imageUri, imageView);
                         pictureUriList.add(imageUri);
                         scrollableLayout.addView(imageView);
+                        imageView.setOnClickListener(v -> {
+                            ViewGroup parentView = (ViewGroup) imageView.getParent();
+                            if (parentView != null) {
+                                parentView.removeView(imageView);
+                                pictureUriList.remove(imageUri);
+                            }
+                        });
                     }
                 }
                 break;
