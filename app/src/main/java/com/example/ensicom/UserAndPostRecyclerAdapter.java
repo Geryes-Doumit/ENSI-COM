@@ -48,10 +48,10 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
-        String postPicture1 = post.getPictureUrl1();
+        List<String> pictureUrlList = post.getPictureUrlList();
         Integer likeCount = post.getLikeCount();
         String videoUrl = post.getVideoUrl();
-        ArrayList<String> tags = post.getTagsList();
+        List<String> tags = post.getTagsList();
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance(DATABASE_URL)
@@ -91,7 +91,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
-            Glide.with(holder.getPostPicture1().getContext()).load(postPicture1).into(holder.getPostPicture1());
+            Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
                 holder.getVideoView().setVideoPath(videoUrl);

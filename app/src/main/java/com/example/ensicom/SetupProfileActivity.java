@@ -61,7 +61,7 @@ public class SetupProfileActivity extends AppCompatActivity {
                         .build();
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
-                        Intent intent = new Intent(SetupProfileActivity.this, HomeActivity.class);
+                        Intent intent = new Intent(SetupProfileActivity.this, MainActivity1.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();

@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, MainActivity1.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
             finish();
@@ -67,16 +67,16 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(LoginActivity.this, "Connecté", Toast.LENGTH_SHORT).show();
-            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, MainActivity1.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(mainIntent);
             }
         }).addOnFailureListener(e -> {
             if (e.getMessage().equals("The password is invalid or the user does not have a password.")) {
-                Toast.makeText(LoginActivity.this, "Mot de passe incorrect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Mot de passe ou email incorrect", Toast.LENGTH_SHORT).show();
             }
             if (e.getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
-                Toast.makeText(LoginActivity.this, "Email incorrect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Mot de passe ou email incorrect", Toast.LENGTH_SHORT).show();
             }
         })
         ;

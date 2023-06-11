@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -45,33 +48,16 @@ public class NewPostActivity extends AppCompatActivity {
     EditText textContainer;
     EditText tagsContainer;
     Button postButton;
-    private ArrayList<ImageView> imageViewsList = new ArrayList<>();
-    private ArrayList<String> pictureUrlsList = new ArrayList<>();
-    ArrayList<String> arrayTagsList = new ArrayList<>();
-    ImageButton delete1;
-    ImageButton delete2;
-    ImageButton delete3;
-    ImageButton delete4;
+    List<String> pictureUrlList= new ArrayList<>();
+    List<Uri> pictureUriList= new ArrayList<>();
+    List<String> tagsList = new ArrayList<>();
     ImageButton addVideo;
     ImageButton addPicture;
-    ImageView pictureToPost1;
-    ImageView pictureToPost2;
-    ImageView pictureToPost3;
-    ImageView pictureToPost4;
-    ImageView pictureToPost5;
     ImageView videoThumbnail;
-    Uri imagePath1;
-    Uri imagePath2;
-    Uri imagePath3;
-    Uri imagePath4;
+    LinearLayout scrollableLayout;
     Uri videoUri;
-    String pictureUrl1;
-    String pictureUrl2;
-    String pictureUrl3;
-    String pictureUrl4;
     String videoUrl;
     String tags;
-    String[] tagsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,62 +67,10 @@ public class NewPostActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        pictureToPost1=findViewById(R.id.imageViewPostPicture1);
-        pictureToPost2=findViewById(R.id.imageViewPostPicture2);
-        pictureToPost3=findViewById(R.id.imageViewPostPicture3);
-        pictureToPost4=findViewById(R.id.imageViewPostPicture4);
-        pictureToPost5=findViewById(R.id.imageViewPostPicture5);
-        imageViewsList.add(pictureToPost1);
-        imageViewsList.add(pictureToPost2);
-        imageViewsList.add(pictureToPost3);
-        imageViewsList.add(pictureToPost4);
-        delete1=findViewById(R.id.deleteButton1);
-        delete2=findViewById(R.id.deleteButton2);
-        delete3=findViewById(R.id.deleteButton3);
-        delete4=findViewById(R.id.deleteButton4);
-        pictureUrlsList.add(pictureUrl1);
-        pictureUrlsList.add(pictureUrl2);
-        pictureUrlsList.add(pictureUrl3);
-        pictureUrlsList.add(pictureUrl4);
-        postButton = findViewById(R.id.postButton);
-        videoThumbnail = findViewById(R.id.imageViewVideoThumbnail);
-        addVideo = findViewById(R.id.imageButtonVideo);
-        videoThumbnail.setVisibility(View.GONE);
-        addPicture = findViewById(R.id.imageButtonPicture);
-        addPicture.setVisibility(View.GONE);
-
-        addPicture.setOnClickListener(v -> {
-            videoThumbnail.setVisibility(View.GONE);
-            pictureToPost1.setVisibility(View.VISIBLE);
-            pictureToPost2.setVisibility(View.VISIBLE);
-            pictureToPost3.setVisibility(View.VISIBLE);
-            pictureToPost4.setVisibility(View.VISIBLE);
-            pictureToPost5.setVisibility(View.VISIBLE);
-            delete1.setVisibility(View.VISIBLE);
-            delete2.setVisibility(View.VISIBLE);
-            delete3.setVisibility(View.VISIBLE);
-            delete4.setVisibility(View.VISIBLE);
-            addPicture.setVisibility(View.GONE);
-        });
-
-        addVideo.setOnClickListener(v -> {
-            videoThumbnail.setVisibility(View.VISIBLE);
-            addPicture.setVisibility(View.VISIBLE);
-            pictureToPost1.setVisibility(View.GONE);
-            pictureToPost2.setVisibility(View.GONE);
-            pictureToPost3.setVisibility(View.GONE);
-            pictureToPost4.setVisibility(View.GONE);
-            pictureToPost5.setVisibility(View.GONE);
-            delete1.setVisibility(View.GONE);
-            delete2.setVisibility(View.GONE);
-            delete3.setVisibility(View.GONE);
-            delete4.setVisibility(View.GONE);
-        });
-        videoThumbnail.setOnClickListener(v -> {
-            Intent videoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(videoIntent, 6);
-        });
-
+        addPicture=findViewById(R.id.pictureButton);
+        addVideo=findViewById(R.id.videoButton);
+        scrollableLayout=findViewById(R.id.scrollableLayout);
+        postButton=findViewById(R.id.postButton);
         postButton.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             String content = textContainer.getText().toString();
@@ -150,55 +84,27 @@ public class NewPostActivity extends AppCompatActivity {
                 Toast.makeText(NewPostActivity.this, "Veuillez entrer un contenu.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (imagePath1 == null && imagePath2 == null && imagePath3 == null && imagePath4 == null && videoUri==null) {
+            if (pictureUriList.isEmpty() && videoUri==null) {
                 post();
             }
             if (videoUri!=null){
                 uploadVideo();
             }
             else {
-                uploadPost();
+                uploadPicture();
             }
         });
-        delete1.setOnClickListener(v -> {
-            pictureToPost1.setImageResource(R.drawable.ic_launcher_foreground);
-            imagePath1=null;
-        });
-        delete2.setOnClickListener(v -> {
-            pictureToPost2.setImageResource(R.drawable.ic_launcher_foreground);
-            imagePath2=null;
-        });
-        delete3.setOnClickListener(v -> {
-            pictureToPost3.setImageResource(R.drawable.ic_launcher_foreground);
-            imagePath3=null;
-        });
-        delete4.setOnClickListener(v -> {
-            pictureToPost4.setImageResource(R.drawable.ic_launcher_foreground);
-            imagePath4=null;
-        });
-
-        pictureToPost5.setOnClickListener(v -> {
-            for (int j = 0; j < 4; j++) {
-                ImageView imageViewToDelete = imageViewsList.get(j);
-                imageViewToDelete.setImageResource(R.drawable.ic_launcher_foreground);
-            }
-            Intent intent = new Intent();
-            intent.setType("image/*");
+        addPicture.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"), 5);
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
         });
-        for (int i=0; i<4; i++) {
-            ImageView imageView = imageViewsList.get(i);
-            int finalI = i;
-            imageView.setOnClickListener(v -> {
-                Intent pictureIntent= new Intent(Intent.ACTION_PICK);
-                pictureIntent.setType("image/*");
-                startActivityForResult(pictureIntent, finalI);
-            });
-        }
-
-
+        addVideo.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("video/*");
+            startActivityForResult(intent, 2);
+        });
         textContainer = findViewById(R.id.postContent);
     }
 
@@ -218,7 +124,7 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     /**
-     * @deprecated
+     * @deprecated!v
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
      *                    result came from.
@@ -233,83 +139,36 @@ public class NewPostActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case 6:
+            case 2:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     videoUri = data.getData();
                     String videoPath = getVideoPath(videoUri);
-                    if (videoPath != null) {
-                        Glide.with(NewPostActivity.this)
-                                .applyDefaultRequestOptions(RequestOptions.centerCropTransform()
-                                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
-                                .load(videoPath)
-                                .into(videoThumbnail);
-                    } else {
-                        Toast.makeText(NewPostActivity.this, "Impossible de récupérer la vidéo.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-            case 5:
-                if(resultCode == Activity.RESULT_OK) {
-                    if(data.getClipData() != null) {
-                        int count = data.getClipData().getItemCount();
-                        if (count > 4) {
-                            Toast.makeText(NewPostActivity.this, "Vous ne pouvez pas sélectionner plus de 4 images.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        ArrayList<Uri> imageUris = new ArrayList<>();
-                        for(int i = 0; i < count; i++) {
-                            Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                            ImageView imageView = imageViewsList.get(i);
-                            getImageInImageView(imageUri, imageView);
-                            imageUris.add(imageUri);
-                        }
-                        if (!imageUris.isEmpty()) {
-                                imagePath1 = imageUris.get(0);
-                        }
-                        if (imageUris.size() >= 2) {
-                            imagePath2 = imageUris.get(1);
-                        }
-                        if (imageUris.size() >= 3) {
-                            imagePath3 = imageUris.get(2);
-                        }
-                        if (imageUris.size() >= 4) {
-                            imagePath4 = imageUris.get(3);
-                        }
-
-                    }
-                    else {
-                        Uri imageUri = data.getData();
-                        ImageView imageView = imageViewsList.get(0);
-                        getImageInImageView(imageUri, imageView);
-                    }
-                }
-                break;
-            case 0:
-                if(resultCode == Activity.RESULT_OK) {
-                    imagePath1 = data.getData();
-                    ImageView imageView = imageViewsList.get(0);
-                    getImageInImageView(imagePath1, imageView);
+//                    File file = new File(videoPath);
+//                    long length = file.length();
+//                    length = length/1024;
+//                    Toast.makeText(NewPostActivity.this, "Video size:"+length+"KB", Toast.LENGTH_LONG).show();
                 }
                 break;
             case 1:
                 if(resultCode == Activity.RESULT_OK) {
-                    imagePath2 = data.getData();
-                    ImageView imageView = imageViewsList.get(1);
-                    getImageInImageView(imagePath2, imageView);
-                }
-                break;
-            case 2:
-                if(resultCode == Activity.RESULT_OK) {
-                    imagePath3 = data.getData();
-                    ImageView imageView = imageViewsList.get(2);
-                    getImageInImageView(imagePath3, imageView);
-                }
-                break;
-            case 3:
-                if(resultCode == Activity.RESULT_OK) {
-                    imagePath4 = data.getData();
-                    ImageView imageView = imageViewsList.get(3);
-                    getImageInImageView(imagePath4, imageView);
+                    if(data.getClipData() != null) {
+                        int count = data.getClipData().getItemCount();
+                        for(int i = 0; i < count; i++) {
+                            Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                            ImageView imageView = new ImageView(this);
+                            imageView.setPadding(0, 10, 0, 10);
+                            getImageInImageView(imageUri, imageView);
+                            pictureUriList.add(imageUri);
+                            scrollableLayout.addView(imageView);
+                        }
+                    }
+                    else {
+                        Uri imageUri = data.getData();
+                        ImageView imageView = new ImageView(this);
+                        getImageInImageView(imageUri, imageView);
+                        pictureUriList.add(imageUri);
+                        scrollableLayout.addView(imageView);
+                    }
                 }
                 break;
             default:
@@ -352,107 +211,34 @@ public class NewPostActivity extends AppCompatActivity {
     }
     int totalTasks = 0;
     int completedTasks = 0;
-    private void uploadPost() {
-        if (imagePath1 != null) {
-            totalTasks++;
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle(CHARGEMENT_STRING);
-            progressDialog.show();
-            FirebaseStorage.getInstance().getReference(IMAGE_STRING + UUID.randomUUID().toString()).putFile(imagePath1)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    pictureUrl1 = task1.getResult().toString();
-                                    completedTasks++;
-                                    checkAndPost();
-                                }
-                            });
-                            progressDialog.dismiss();
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(NewPostActivity.this, CHARGEMENT_IMAGEVIEW_STRING, Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(snapshot -> {
-                        double progress = (double)100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                        progressDialog.setMessage(CHARGEMENT_STRING + (int) progress + "%");
-                    });
-        }
-        if (imagePath2 != null) {
-            totalTasks++;
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle(CHARGEMENT_STRING);
-            progressDialog.show();
-            FirebaseStorage.getInstance().getReference(IMAGE_STRING + UUID.randomUUID().toString()).putFile(imagePath2)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task12 -> {
-                                if (task12.isSuccessful()) {
-                                    pictureUrl2 = task12.getResult().toString();
-                                    completedTasks++;
-                                    checkAndPost();
-                                }
-                            });
-                            progressDialog.dismiss();
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(NewPostActivity.this, CHARGEMENT_IMAGEVIEW_STRING, Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(snapshot -> {
-                        double progress = (double)100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                        progressDialog.setMessage(CHARGEMENT_STRING + (int) progress + "%");
-                    });
-        }
-        if (imagePath3 != null) {
-            totalTasks++;
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle(CHARGEMENT_STRING);
-            progressDialog.show();
-            FirebaseStorage.getInstance().getReference(IMAGE_STRING + UUID.randomUUID().toString()).putFile(imagePath3)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task13 -> {
-                                if (task13.isSuccessful()) {
-                                    pictureUrl3 = task13.getResult().toString();
-                                    completedTasks++;
-                                    checkAndPost();
-                                }
-                            });
-                            progressDialog.dismiss();
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(NewPostActivity.this, CHARGEMENT_IMAGEVIEW_STRING, Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(snapshot -> {
-                        double progress = (double)100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                        progressDialog.setMessage(CHARGEMENT_STRING + (int) progress + "%");
-                    });
-        }
-        if (imagePath4 != null) {
-            totalTasks++;
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle(CHARGEMENT_STRING);
-            progressDialog.show();
-            FirebaseStorage.getInstance().getReference(IMAGE_STRING + UUID.randomUUID().toString()).putFile(imagePath4)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task14 -> {
-                                if (task14.isSuccessful()) {
-                                    pictureUrl4 = task14.getResult().toString();
-                                    completedTasks++;
-                                    checkAndPost();
-                                }
-                            });
-                            progressDialog.dismiss();
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(NewPostActivity.this, CHARGEMENT_IMAGEVIEW_STRING, Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(snapshot -> {
-                        double progress = (double)100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                        progressDialog.setMessage(CHARGEMENT_PROGRESS_BAR_STRING + (int) progress + "%");
-                    });
-        }
+    private void uploadPicture() {
+        if (!pictureUriList.isEmpty()) {
+            for (int i=0;i<pictureUriList.size();i++) {
+                totalTasks++;
+                ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle(CHARGEMENT_STRING);
+                progressDialog.show();
+                FirebaseStorage.getInstance().getReference(IMAGE_STRING + UUID.randomUUID().toString()).putFile(pictureUriList.get(i))
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        pictureUrlList.add(task1.getResult().toString());
+                                        completedTasks++;
+                                        checkAndPost();
+                                    }
+                                });
+                                progressDialog.dismiss();
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(NewPostActivity.this, CHARGEMENT_IMAGEVIEW_STRING, Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnProgressListener(snapshot -> {
+                            double progress = (double)100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
+                            progressDialog.setMessage(CHARGEMENT_STRING + (int) progress + "%");
+                        });
+            }
+            }
     }
     private void checkAndPost() {
         if (completedTasks == totalTasks) {
@@ -472,9 +258,9 @@ public class NewPostActivity extends AppCompatActivity {
 
         tagsContainer = findViewById(R.id.tagsContent);
         tags=tagsContainer.getText().toString();
-        tagsList = tags.split(";");
-        arrayTagsList.addAll(Arrays.asList(tagsList));
-        ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(), pictureUrl1, pictureUrl2, pictureUrl3, pictureUrl4, arrayTagsList,videoUrl);
+        String[] tagsListSplit = tags.split(";");
+        tagsList.addAll(Arrays.asList(tagsListSplit));
+        ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(),pictureUrlList , tagsList,videoUrl);
         post.setLikeCount(0);
         DatabaseReference postsRef = ref.child("posts");
         String postId = postsRef.push().getKey();
@@ -483,7 +269,7 @@ public class NewPostActivity extends AppCompatActivity {
             postsRef.child(postId).removeValue(); // Not sure if this is necessary
             Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
         }).addOnSuccessListener(unused -> {
-            Toast.makeText(NewPostActivity.this, "Votre contenu a été posté.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewPostActivity.this,"Votre contenu a été posté", Toast.LENGTH_SHORT).show();
             Intent mainIntent = new Intent(NewPostActivity.this, MainActivity1.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(mainIntent);
@@ -498,6 +284,7 @@ public class NewPostActivity extends AppCompatActivity {
             String videoPath = cursor.getString(columnIndex);
             cursor.close();
             Toast.makeText(NewPostActivity.this, videoPath, Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewPostActivity.this, "Video path:"+videoPath, Toast.LENGTH_LONG).show();
             return videoPath;
         }
         return null;

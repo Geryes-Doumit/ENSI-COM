@@ -84,7 +84,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).into(userProfilePicture);
 
                 imageContent1 = findViewById(R.id.imageContent1);
-                Glide.with(imageContent1.getContext()).load(post.getPictureUrl1()).into(imageContent1);
+                Glide.with(imageContent1.getContext()).load(post.getPictureUrlList().get(0)).into(imageContent1);
             });
 
             // Showing the comments

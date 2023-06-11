@@ -6,64 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".NewPostActivity">
 
-    <ImageView
-        android:id="@+id/imageViewPostPicture4"
-        android:layout_width="158dp"
-        android:layout_height="131dp"
-        android:layout_marginTop="200dp"
-        android:contentDescription="Profile picture"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
-
-    <ImageView
-        android:id="@+id/imageViewPostPicture3"
-        android:layout_width="158dp"
-        android:layout_height="131dp"
-        android:layout_marginTop="200dp"
-        android:contentDescription="Profile picture"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
-
     <include
         android:id="@+id/toolBar"
         layout="@layout/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewPostPicture1"
-        android:layout_width="162dp"
-        android:layout_height="132dp"
-        android:layout_marginTop="60dp"
-        android:contentDescription="Profile picture"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
-
-    <ImageView
-        android:id="@+id/imageViewPostPicture2"
-        android:layout_width="158dp"
-        android:layout_height="131dp"
-        android:layout_marginTop="60dp"
-        android:contentDescription="Profile picture"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 
     <EditText
         android:id="@+id/postContent"
@@ -93,65 +42,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.865" />
 
-    <ImageView
-        android:id="@+id/imageViewPostPicture5"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="280dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.906"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <ImageButton
-        android:id="@+id/deleteButton1"
-        android:layout_width="55dp"
-        android:contentDescription="delete button 1"
-        android:layout_height="52dp"
-        android:layout_marginBottom="108dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewPostPicture3"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture1"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture1"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <ImageButton
-        android:id="@+id/deleteButton2"
-        android:layout_width="55dp"
-        android:layout_height="52dp"
-        android:contentDescription="delete button 2"
-        android:layout_marginBottom="108dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewPostPicture4"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture2"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <ImageButton
-        android:id="@+id/deleteButton3"
-        android:layout_width="55dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="176dp"
-        android:contentDescription="delete button 3"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture3"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture3"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <ImageButton
-        android:id="@+id/deleteButton4"
-        android:layout_width="55dp"
-        android:layout_height="52dp"
-        android:contentDescription="delete button 4"
-        android:layout_marginTop="176dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture4"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageViewPostPicture4"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
     <EditText
         android:id="@+id/tagsContent"
         android:layout_width="wrap_content"
@@ -163,39 +53,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postContent" />
 
-    <ImageView
-        android:id="@+id/imageViewVideoThumbnail"
-        android:layout_width="167dp"
-        android:layout_height="153dp"
-        android:layout_marginTop="116dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
     <ImageButton
-        android:id="@+id/imageButtonVideo"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="268dp"
-        android:contentDescription="video button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <ImageButton
-        android:id="@+id/imageButtonPicture"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="280dp"
+        android:id="@+id/pictureButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:contentDescription="picture button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintHorizontal_bias="0.284"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@android:drawable/ic_menu_crop" />
+
+    <ImageButton
+        android:id="@+id/videoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="video button"
+        app:layout_constraintHorizontal_bias="0.718"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:srcCompat="@android:drawable/ic_menu_slideshow" />
+
+    <HorizontalScrollView
+        android:id="@+id/scrollableView"
+        android:layout_width="410dp"
+        android:layout_height="223dp"
+        android:layout_marginTop="116dp"
+        android:contentDescription="scrollable view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar">
+
+        <LinearLayout
+            android:id="@+id/scrollableLayout"
+            android:layout_width="wrap_content"
+            android:dividerPadding="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
     <string name="textview_registerMail">Email :</string>
     <string name="textview_registerPasswordContent">Mot de passe :</string>
     <string name="textView_registerNameDisplay">Votre prénom</string>
-    <string name="adresse_mail">Email</string>
+    <string name="adresse_mail">john.smith@uha.fr</string>
     <string name="button_register">Créer un compte</string>
     <string name="button_login">Se connecter</string>
     <string name="temp_email">prénom.nom@uha.fr</string>
