@@ -21,12 +21,11 @@
             android:id="@+id/fragment_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_ribbon"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_ribbon"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/top_ribbon" />
 
         <LinearLayout
             android:id="@+id/top_ribbon"
@@ -59,54 +58,30 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/logo_header2" />
 
+                <Button
+                    android:id="@+id/profil_button"
+                    android:layout_width="46dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="50dp"
+                    android:background="@drawable/header_person"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-        <!-- Conteneur des boutons Actualités et Événements -->
-        <LinearLayout
-            android:id="@+id/bottom_ribbon"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#87CEFA"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:layout_height="69dp"
+            android:background="@color/bottom_purple"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <!-- Bouton Actualités -->
-
-            <!-- Bouton Événements -->
-            <ImageButton
-                android:id="@+id/button_actualites"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="2"
-                android:background="@color/bottom_purple"
-                android:contentDescription="actuality"
-                android:onClick="onActualitesButtonClick"
-                android:paddingStart="10dp"
-                android:scaleX="2"
-                android:scaleY="2"
-                android:src="@drawable/footer_article" />
-
-            <ImageButton
-                android:id="@+id/button_evenements"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="2"
-                android:background="@color/bottom_purple"
-                android:contentDescription="Calendar"
-                android:onClick="onEvenementsButtonClick"
-                android:paddingEnd="10dp"
-                android:scaleX="1.8"
-                android:scaleY="2"
-                android:src="@drawable/footer_calendar" />
-
-        </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
