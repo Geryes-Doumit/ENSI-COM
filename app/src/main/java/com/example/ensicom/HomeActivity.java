@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     RecyclerView postsListView;
     TextView userName;
     Button settings;
-    Button newPostButton;
+    FloatingActionButton newPostButton;
     Button testButton;
     List<ClassicPost> postsList = new ArrayList<>();
 

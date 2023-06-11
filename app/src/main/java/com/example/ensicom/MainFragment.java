@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +35,7 @@ public class MainFragment extends Fragment {
     private RecyclerView postsListView;
 
     private Button settings;
-    private Button newPostButton;
+    private FloatingActionButton newPostButton;
     private Button testButton;
     private List<ClassicPost> postsList = new ArrayList<>();
     private View view;
