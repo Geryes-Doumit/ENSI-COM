@@ -45,6 +45,5 @@
     <string name="filters_title">Filtres d\'actualités</string>
     <string name="important_dates">Dates importantes :</string>
     <string name="event_description">Description de événement</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Ca marche</string>
 </resources>

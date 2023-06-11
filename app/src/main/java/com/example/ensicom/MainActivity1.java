@@ -1,30 +1,24 @@
 package com.example.ensicom;
 
+import static com.example.ensicom.R.id.fragment_layout;
+
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity1 extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
-    private MainFragment main_fragment = new MainFragment();
 
 
 
@@ -89,12 +83,35 @@ public class MainActivity1 extends AppCompatActivity {
     }
 
 */
+
+    BottomNavigationView bottomNavigationView;
+
+    MainFragment homeFragment = new MainFragment();
+    EvenementFragment evenementFragment = new EvenementFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
-        setNewFragment(main_fragment);
-    }
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        getSupportFragmentManager().beginTransaction().replace(fragment_layout, homeFragment).commit();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+
+            @SuppressLint("NonConstantResourceId")
+            public boolean onNavigationItemSelected(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.button_actualites) {
+                    getSupportFragmentManager().beginTransaction().replace(fragment_layout, homeFragment).commit();
+                    return true;
+                } else if (id == R.id.button_evenements) {
+                    getSupportFragmentManager().beginTransaction().replace(fragment_layout, evenementFragment).commit();
+                }
+                return false;
+
+            }
+        });
 
 
 /*
@@ -106,11 +123,9 @@ public class MainActivity1 extends AppCompatActivity {
 
         ImageView profileButton = findViewById(R.id.user_menu_button);
 
-    */
 
 
 
-        /*
         Button actualitesButton = findViewById(R.id.button_actualites);
         Button evenementsButton = findViewById(R.id.button_evenements);
 
@@ -141,23 +156,22 @@ public class MainActivity1 extends AppCompatActivity {
         });
 
     }
-*/
-    private void setNewFragment(Fragment fragment) {
-        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_layout,fragment);
-        ft.commit();
-    }
+        private void setNewFragment (MainActivity1 fragment){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(fragment_layout, fragment);
+            ft.commit();
+        }
 
-    public void onActualitesButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Actualités" est cliqué
-        Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
-    }
+        public void onActualitesButtonClick (View view){
+            // Code à exécuter lorsque le bouton "Actualités" est cliqué
+            Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
+        }
 
-    public void onEvenementsButtonClick(View view) {
-        // Code à exécuter lorsque le bouton "Événements" est cliqué
-        Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
-    }
-/*
+        public void onEvenementsButtonClick (View view){
+            // Code à exécuter lorsque le bouton "Événements" est cliqué
+            Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
+        }
+
     public void onLogoClick(View view) {
         // Code à exécuter lorsque le logo est cliqué
         Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();
@@ -228,4 +242,6 @@ public class MainActivity1 extends AppCompatActivity {
 }
 
      */
+    }
+
 }
