@@ -19,19 +19,15 @@ public class CommentsList {
     public String getCommentsListId() {
         return commentsListId;
     }
-
     public void setCommentsListId(String commentsListId) {
         this.commentsListId = commentsListId;
     }
-
     public void addComment(Comment comment) {
         this.comments.add(comment);
     }
-
     public void removeComment(Comment comment) {
         this.comments.remove(comment);
     }
-
     public List<Comment> getComments() {
         return comments;
     }

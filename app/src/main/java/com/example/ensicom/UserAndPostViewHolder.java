@@ -10,7 +10,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemViewHolder extends RecyclerView.ViewHolder{
+public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     private TextView userName;
     private ImageView userProfilePicture;
     private ImageView postPicture1;
@@ -23,7 +23,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     private TextView tagList;
     private VideoView videoView;
 
-    public ItemViewHolder(@NonNull View itemView) {
+    public UserAndPostViewHolder(@NonNull View itemView) {
         super(itemView);
 
         userName = itemView.findViewById(R.id.userName);
