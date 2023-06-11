@@ -91,7 +91,9 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<ItemViewHol
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
-            Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
+            if (pictureUrlList != null) {
+                Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
+            }
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
                 holder.getVideoView().setVideoPath(videoUrl);

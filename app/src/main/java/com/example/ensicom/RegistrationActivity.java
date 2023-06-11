@@ -46,6 +46,7 @@ public class    RegistrationActivity extends AppCompatActivity {
             }
             if (!isValidEmail(email)) {
                 Toast.makeText(RegistrationActivity.this, "Veuillez entrer une adresse e-mail valide (john.smith@uha.fr)", Toast.LENGTH_SHORT).show();
+                registerEmail.setText("");
                 return;
             }
             if (!password.equals(confirmPassword)){
