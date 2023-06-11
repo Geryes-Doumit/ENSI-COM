@@ -21,8 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity1 extends AppCompatActivity {
+
     private DrawerLayout drawerLayout;
+
     private MainFragment main_fragment = new MainFragment();
+
+
 
     /*
     private void showMenuDialog() {
@@ -91,6 +95,8 @@ public class MainActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_main1);
         setNewFragment(main_fragment);
     }
+
+
 /*
         ImageView menuButton = findViewById(R.id.menu_button);
 
@@ -99,26 +105,27 @@ public class MainActivity1 extends AppCompatActivity {
 
 
         ImageView profileButton = findViewById(R.id.user_menu_button);
+
+    */
+
+
+
+        /*
         Button actualitesButton = findViewById(R.id.button_actualites);
         Button evenementsButton = findViewById(R.id.button_evenements);
 
-
-
         actualitesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                setNewFragment(main_fragment);
                 onActualitesButtonClick(v);
             }
         });
 
         evenementsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 onEvenementsButtonClick(v);
             }
         });
-
+    }
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +147,7 @@ public class MainActivity1 extends AppCompatActivity {
         ft.replace(R.id.fragment_layout,fragment);
         ft.commit();
     }
-/*
+
     public void onActualitesButtonClick(View view) {
         // Code à exécuter lorsque le bouton "Actualités" est cliqué
         Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
@@ -150,7 +157,7 @@ public class MainActivity1 extends AppCompatActivity {
         // Code à exécuter lorsque le bouton "Événements" est cliqué
         Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
     }
-
+/*
     public void onLogoClick(View view) {
         // Code à exécuter lorsque le logo est cliqué
         Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();

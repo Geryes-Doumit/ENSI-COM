@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/button_actualites"
+        android:enabled="true"
+        android:icon="@drawable/newspaper"
+        android:title="Actualités"/>
+
+    <item
+        android:id="@+id/button_evenements"
+        android:enabled="true"
+        android:icon="@drawable/calendar"
+        android:title="Événements"/>
+</menu>

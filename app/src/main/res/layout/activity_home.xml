@@ -30,13 +30,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postsListView"
-        android:layout_width="296dp"
-        android:layout_height="571dp"
+        android:layout_width="305dp"
+        android:layout_height="593dp"
         android:layout_marginBottom="12dp"
         android:background="@color/gris"
         app:layout_constraintBottom_toTopOf="@+id/newPost"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/buttonTest"
