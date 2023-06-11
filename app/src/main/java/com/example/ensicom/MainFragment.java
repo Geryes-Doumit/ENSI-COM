@@ -32,7 +32,7 @@ import java.util.List;
 
 public class MainFragment extends Fragment {
     private RecyclerView postsListView;
-    private TextView userName;
+
     private Button settings;
     private Button newPostButton;
     private Button testButton;
@@ -75,22 +75,6 @@ public class MainFragment extends Fragment {
                         postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
                     }
                 }
-            }
-        });
-
-        // Get the current user's name and set it in the TextView
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String name = user.getDisplayName();
-        userName = view.findViewById(R.id.textView_userName);
-        userName.setText(name);
-
-        settings = view.findViewById(R.id.buttonHomeSettings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(getActivity(), SettingsActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
             }
         });
 

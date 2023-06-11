@@ -71,11 +71,6 @@ public class HomeActivity extends AppCompatActivity {
             postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
         });
 
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String name = user.getDisplayName();
-        userName=findViewById(R.id.textView_userName);
-        userName.setText(name);
         settings=findViewById(R.id.buttonHomeSettings);
         settings.setOnClickListener(v -> {
             Intent mainIntent = new Intent(HomeActivity.this, SettingsActivity.class);
