@@ -1,8 +1,10 @@
 package com.example.ensicom;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         View view = inflater.inflate(R.layout.user_and_post_item, parent, false);
         return new UserAndPostViewHolder(view);
     }
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull UserAndPostViewHolder holder, int position) {
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -92,7 +94,22 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
                 holder.getVideoView().setVideoPath(videoUrl);
-                holder.getVideoView().start();
+                holder.getVideoView().setOnPreparedListener(mp -> {
+                    mp.setLooping(true);
+                    holder.getVideoView().start();
+                });
+                holder.getVideoView().setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        if (holder.getVideoView().isPlaying()) {
+                            holder.getVideoView().pause();
+                        } else {
+                            holder.getVideoView().start();
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+
             } else {
                 holder.getVideoView().setVisibility(View.GONE);
             }
