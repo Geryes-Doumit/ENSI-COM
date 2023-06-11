@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scaleX="1.2">
+    android:scaleX="1">
 
     <!-- Contenu principal -->
 
@@ -29,8 +29,8 @@
 
         <LinearLayout
             android:id="@+id/top_ribbon"
-            android:layout_width="409dp"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
             android:background="@drawable/header_grad"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
 
                 <Button
                     android:id="@+id/profil_button"
-                    android:layout_width="46dp"
+                    android:layout_width="50dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="50dp"
                     android:background="@drawable/header_person"
@@ -74,8 +74,8 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
-            android:layout_width="0dp"
-            android:layout_height="69dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
             android:background="@color/bottom_purple"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
