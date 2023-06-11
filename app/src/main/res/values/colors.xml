@@ -20,4 +20,5 @@
     <color name="foreground_text_color">#000000</color>
     <color name="grad_blue">#5CE1E6</color>
     <color name="grad_purple">#8C52FF</color>
+    <color name="bottom_purple">#7D80F7</color>
 </resources>

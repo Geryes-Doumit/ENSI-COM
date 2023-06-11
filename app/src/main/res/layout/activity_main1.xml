@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scaleX="1.2">
 
     <!-- Contenu principal -->
 
@@ -22,64 +23,43 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_ribbon"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_ribbon" />
+            app:layout_constraintTop_toBottomOf="@+id/top_ribbon"
+            app:layout_constraintVertical_bias="1.0" />
 
         <LinearLayout
             android:id="@+id/top_ribbon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#87CEFA"
+            android:layout_width="409dp"
+            android:layout_height="80dp"
+            android:background="@drawable/header_grad"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints">
+            tools:ignore="MissingConstraints"
+            android:baselineAligned="false">
 
-            <!-- Bouton du menu -->
-            <ImageView
-                android:id="@+id/menu_button"
-                android:layout_width="60dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:background="#87CEFA"
-                android:clickable="true"
-                android:contentDescription="@string/menu_bouton"
-                android:focusable="true"
-                android:onClick="onMenuButtonClick"
-                android:padding="0dp"
-                android:src="@drawable/menu" />
-
-            <!-- Logo ENSICOM -->
-
-            <!-- Menu utilisateur -->
-
-            <TextView
-                android:id="@+id/logo_text"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_gravity="start"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:background="#87CEFA"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center|center_vertical"
-                android:onClick="onLogoClick"
-                android:text="@string/app_name"
-                android:textSize="48sp" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/user_menu_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_vertical"
-                android:background="#87CEFA"
-                android:clickable="true"
-                android:contentDescription="@string/user_menu_title"
-                android:focusable="true"
-                android:onClick="onUserMenuButtonClick"
-                android:padding="0dp"
-                android:src="@drawable/profil" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_logo"
+
+                    android:contentDescription="Logo"
+                    android:scaleX="1"
+                    android:scaleY="1.3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/logo_header2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -96,91 +76,38 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <!-- Bouton Actualités -->
-            <Button
-                android:id="@+id/button_actualites"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_actualites"
-                android:onClick="onActualitesButtonClick"
-                android:text="@string/button_actualites"
-                android:textColor="#FFFFFF" />
 
             <!-- Bouton Événements -->
-            <Button
+            <ImageButton
+                android:id="@+id/button_actualites"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:background="@color/bottom_purple"
+                android:contentDescription="actuality"
+                android:onClick="onActualitesButtonClick"
+                android:paddingStart="10dp"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:src="@drawable/footer_article" />
+
+            <ImageButton
                 android:id="@+id/button_evenements"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_evenement"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:background="@color/bottom_purple"
+                android:contentDescription="Calendar"
                 android:onClick="onEvenementsButtonClick"
-                android:text="@string/button_evenements"
-                android:textColor="#FFFFFF" />
+                android:paddingEnd="10dp"
+                android:scaleX="1.8"
+                android:scaleY="2"
+                android:src="@drawable/footer_calendar" />
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
-
-        <!-- Contenu du menu de navigation -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <!-- En-tête du menu -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="#87CEFA"
-                android:orientation="vertical">
-
-                <!-- Image/logo -->
-                <!-- Ajoutez ici votre image ou logo -->
-
-                <!-- Nom de l'utilisateur -->
-                <!-- Ajoutez ici le nom de l'utilisateur ou toute autre information pertinente -->
-
-            </LinearLayout>
-
-            <!-- Options du menu -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <!-- Option 1 -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_1"
-                    android:padding="16dp"/>
-
-                <!-- Option 2 -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_2"
-                    android:padding="16dp"/>
-
-                <!-- Option 3 -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_3"
-                    android:padding="16dp"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -24,6 +24,7 @@ public class MainActivity1 extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private MainFragment main_fragment = new MainFragment();
 
+    /*
     private void showMenuDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -83,17 +84,19 @@ public class MainActivity1 extends AppCompatActivity {
         dialog.show();
     }
 
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
-
+        setNewFragment(main_fragment);
+    }
+/*
         ImageView menuButton = findViewById(R.id.menu_button);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         setupNavigationView();
-        setNewFragment(main_fragment);
+
 
         ImageView profileButton = findViewById(R.id.user_menu_button);
         Button actualitesButton = findViewById(R.id.button_actualites);
@@ -131,13 +134,13 @@ public class MainActivity1 extends AppCompatActivity {
         });
 
     }
-
+*/
     private void setNewFragment(Fragment fragment) {
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout,fragment);
         ft.commit();
     }
-
+/*
     public void onActualitesButtonClick(View view) {
         // Code à exécuter lorsque le bouton "Actualités" est cliqué
         Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
@@ -215,4 +218,7 @@ public class MainActivity1 extends AppCompatActivity {
         // Code pour ouvrir le profil utilisateur
         Toast.makeText(this, "Profil", Toast.LENGTH_SHORT).show();
     }
+}
+
+     */
 }
