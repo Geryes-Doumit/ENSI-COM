@@ -96,6 +96,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             }
             else {
                 holder.getPostPicture1().setVisibility(View.GONE);
+
             }
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
