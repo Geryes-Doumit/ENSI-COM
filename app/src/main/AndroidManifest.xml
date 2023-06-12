@@ -23,6 +23,9 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="24">
         <activity
+            android:name=".NewEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ModerationActivity"
             android:exported="false" />
         <activity

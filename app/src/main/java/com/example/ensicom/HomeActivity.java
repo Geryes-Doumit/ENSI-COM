@@ -41,7 +41,6 @@ public class HomeActivity extends AppCompatActivity {
     Button settings;
     FloatingActionButton newPostButton;
     List<ClassicPost> postsList = new ArrayList<>();
-    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override

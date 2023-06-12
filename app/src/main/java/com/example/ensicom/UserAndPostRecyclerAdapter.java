@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +26,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
 
     List<ClassicPost> postsList;
-    List<String> pictureUrlList = new ArrayList<>();
     String videoUrl;
 
     public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
@@ -40,6 +40,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         View view = inflater.inflate(R.layout.user_and_post_item, parent, false);
         return new UserAndPostViewHolder(view);
     }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull UserAndPostViewHolder holder, int position) {
@@ -48,7 +49,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
-        pictureUrlList = post.getPictureUrlList();
         Integer likeCount = post.getLikeCount();
         videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
@@ -78,7 +78,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                         Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
                         postsList.remove(currentPosition);
                         notifyDataSetChanged();
-                       })
+                    })
                     .setNegativeButton("Non", null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show());
@@ -95,8 +95,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
-            if (pictureUrlList != null) {
-                Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
+            if (post.getPictureUrlList() != null) {
+                Glide.with(holder.getPostPicture1().getContext()).load(post.getPictureUrlList().get(0)).into(holder.getPostPicture1());
             }
             else {
                 holder.getPostPicture1().setVisibility(View.GONE);
@@ -150,6 +150,9 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             intent.putExtra("postId", postId);
             v.getContext().startActivity(intent);
         });
+
+        ImageView test = holder.getUserProfilePicture();
+        test.setOnClickListener(v -> Toast.makeText(holder.itemView.getContext(), post.getPictureUrlList().get(0), Toast.LENGTH_SHORT).show());
     }
 
     public void deletePost(String postId) {
@@ -168,14 +171,18 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                         .child(commentId);
                 commentsRef.removeValue();
             }
+
+            if (post.getPictureUrlList() != null) {
+                for (int i=0; i<post.getPictureUrlList().size(); i++) {
+                    FirebaseStorage.getInstance().getReferenceFromUrl(post.getPictureUrlList().get(i)).delete();
+                }
+            }
+
+            if (videoUrl != null) {
+                FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl).delete();
+            }
         });
         postRef.removeValue();
-        for (int i=0; i<pictureUrlList.size(); i++) {
-            FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrlList.get(i)).delete();
-        }
-        if (videoUrl != null) {
-            FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl).delete();
-        }
     }
 
     @Override

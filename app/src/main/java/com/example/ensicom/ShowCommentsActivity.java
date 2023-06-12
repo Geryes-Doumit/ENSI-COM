@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -88,7 +87,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 deletePostButton.setOnClickListener(v -> deletePost(postId));
 
                 userProfilePicture = findViewById(R.id.userProfilePicture);
-                Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).into(userProfilePicture);
+                Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).circleCrop().into(userProfilePicture);
 
                 imageContent1 = findViewById(R.id.imageContent1);
                 List<String> urlList = post.getPictureUrlList();
