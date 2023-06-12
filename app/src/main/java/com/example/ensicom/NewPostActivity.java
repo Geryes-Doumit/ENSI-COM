@@ -17,6 +17,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -88,7 +90,11 @@ public class NewPostActivity extends AppCompatActivity {
             if (pictureUriList.isEmpty() && videoUri==null) {
                 post();
             }
-            if (videoUri!=null){
+            if (videoUri!=null && pictureUriList.isEmpty()){
+                uploadVideo();
+            }
+            if (videoUri!=null && !pictureUriList.isEmpty()){
+                uploadPicture();
                 uploadVideo();
             }
             else {
@@ -143,11 +149,29 @@ public class NewPostActivity extends AppCompatActivity {
             case 2:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     videoUri = data.getData();
-                    String videoPath = getVideoPath(videoUri);
-//                    File file = new File(videoPath);
-//                    long length = file.length();
-//                    length = length/1024;
-//                    Toast.makeText(NewPostActivity.this, "Video size:"+length+"KB", Toast.LENGTH_LONG).show();
+                    videoThumbnail = new ImageView(this);
+                    try {
+                        MediaMetadataRetriever mMMR = new MediaMetadataRetriever();
+                        mMMR.setDataSource(NewPostActivity.this, videoUri);
+                        Glide.with(this)
+                                .load(mMMR.getFrameAtTime())
+                                .apply(new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .placeholder(R.drawable.ic_launcher_background)
+                                        .error(R.drawable.ic_launcher_background))
+                                .into(videoThumbnail);
+                        scrollableLayout.addView(videoThumbnail);
+                        videoThumbnail.setOnClickListener(v -> {
+                            ViewGroup parentView = (ViewGroup) videoThumbnail.getParent();
+                            if (parentView != null) {
+                                parentView.removeView(videoThumbnail);
+                                pictureUriList.remove(videoUri);
+                            }
+                        });
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(NewPostActivity.this, "Erreur lors du chargement de la vidéo", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case 1:
@@ -289,18 +313,5 @@ public class NewPostActivity extends AppCompatActivity {
             startActivity(mainIntent);
             finish();
         });
-    }
-    private String getVideoPath(Uri videoUri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver().query(videoUri, projection, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            String videoPath = cursor.getString(columnIndex);
-            cursor.close();
-            Toast.makeText(NewPostActivity.this, videoPath, Toast.LENGTH_SHORT).show();
-            Toast.makeText(NewPostActivity.this, "Video path:"+videoPath, Toast.LENGTH_LONG).show();
-            return videoPath;
-        }
-        return null;
     }
 }
