@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class    RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPassword;
     EditText registerConfirmPassword;

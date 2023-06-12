@@ -47,4 +47,27 @@
     <string name="important_dates">Dates importantes :</string>
     <string name="event_description">Description de événement</string>
     <string name="hello_blank_fragment">Ca marche</string>
+    <string name="Ajouter">Ajouter</string>
+    <string name="Annuler">Annuler</string>
+    <string name="ajout">Ajouter un événement</string>
+    <string name="titre">Titre de l\'évenement</string>
+    <string name="description">Description de l\'évenement</string>
+    <string name="name">CalendarAppExample</string>
+    <style name="CalendarDateStyle">
+        <item name="android:textSize">14sp</item> <!-- Taille du texte -->
+        <item name="android:textColor">#000000</item> <!-- Couleur du texte -->
+    </style>
+    <string name="sunday">SUN</string>
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thuesday">THU</string>
+    <string name="un">1</string>
+    <string name="friday">FRI</string>
+    <string name="add">+</string>
+    <string name="saturday">SAT</string>
+    <string name="date">Juin 2023</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+
 </resources>
