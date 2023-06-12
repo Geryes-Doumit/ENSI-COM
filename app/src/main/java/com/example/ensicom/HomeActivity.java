@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,20 +40,16 @@ public class HomeActivity extends AppCompatActivity {
     TextView userName;
     Button settings;
     FloatingActionButton newPostButton;
-    Button testButton;
     List<ClassicPost> postsList = new ArrayList<>();
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        testButton=findViewById(R.id.buttonTest);
 
-        testButton.setOnClickListener(v -> {
-            finish();
-            startActivity(getIntent());
-        });
+        UserAndPostRecyclerAdapter adapter = new UserAndPostRecyclerAdapter(postsList);
 
         // Adding the latest posts to the posts list
         DatabaseReference postsRef = FirebaseDatabase
@@ -69,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
             // Showing the posts using the recycler view
             postsListView = findViewById(R.id.postsListView);
             postsListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
+            postsListView.setAdapter(adapter);
         });
 
         settings=findViewById(R.id.buttonHomeSettings);

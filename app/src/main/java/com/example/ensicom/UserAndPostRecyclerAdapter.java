@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
 
     List<ClassicPost> postsList;
+    List<String> pictureUrlList = new ArrayList<>();
+    String videoUrl;
 
     public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
         this.postsList = postsList;
@@ -45,9 +48,9 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
-        List<String> pictureUrlList = post.getPictureUrlList();
+        pictureUrlList = post.getPictureUrlList();
         Integer likeCount = post.getLikeCount();
-        String videoUrl = post.getVideoUrl();
+        videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
 
         DatabaseReference userRef = FirebaseDatabase
@@ -91,13 +94,14 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             if (pictureUrlList != null) {
                 Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
             }
+            else {
+                holder.getPostPicture1().setVisibility(View.GONE);
+
+            }
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
                 holder.getVideoView().setVideoPath(videoUrl);
-                holder.getVideoView().setOnPreparedListener(mp -> {
-                    mp.setLooping(true);
-                    holder.getVideoView().start();
-                });
+                holder.getVideoView().setOnPreparedListener(mp -> mp.setLooping(true));
                 holder.getVideoView().setOnTouchListener((v, event) -> {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         if (holder.getVideoView().isPlaying()) {
@@ -162,6 +166,12 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             }
         });
         postRef.removeValue();
+        for (int i=0; i<pictureUrlList.size(); i++) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrlList.get(i)).delete();
+        }
+        if (videoUrl != null) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl).delete();
+        }
     }
 
     @Override

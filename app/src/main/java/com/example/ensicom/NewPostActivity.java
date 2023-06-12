@@ -3,6 +3,8 @@ package com.example.ensicom;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +17,11 @@ import java.util.UUID;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
+import android.Manifest;
 
 public class NewPostActivity extends AppCompatActivity {
     public static final String CHARGEMENT_PROGRESS_BAR_STRING = "Chargement ";
@@ -59,6 +65,8 @@ public class NewPostActivity extends AppCompatActivity {
     Uri videoUri;
     String videoUrl;
     String tags;
+    private static final int CAMERA_AND_STORAGE_REQUEST = 100;
+    private static final int STORAGE_REQUEST = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,13 @@ public class NewPostActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (!checkStoragePermission() && !checkCameraPermission()) {
+            requestCameraAndStoragePermissions();
+        }
+        if (!checkStoragePermission()) {
+            requestStoragePermission();
+        }
+
         addPicture=findViewById(R.id.pictureButton);
         addVideo=findViewById(R.id.videoButton);
         scrollableLayout=findViewById(R.id.scrollableLayout);
@@ -88,7 +103,11 @@ public class NewPostActivity extends AppCompatActivity {
             if (pictureUriList.isEmpty() && videoUri==null) {
                 post();
             }
-            if (videoUri!=null){
+            if (videoUri!=null && pictureUriList.isEmpty()){
+                uploadVideo();
+            }
+            if (videoUri!=null && !pictureUriList.isEmpty()){
+                uploadPicture();
                 uploadVideo();
             }
             else {
@@ -96,15 +115,24 @@ public class NewPostActivity extends AppCompatActivity {
             }
         });
         addPicture.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.setType("image/*");
-            startActivityForResult(intent, 1);
+            if (!checkStoragePermission()) {
+                Toast.makeText(NewPostActivity.this, "Vous devez autoriser l'accès au stockage pour pouvoir ajouter une photo.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
         });
+
         addVideo.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("video/*");
-            startActivityForResult(intent, 2);
+            if (!checkStoragePermission()) {
+                Toast.makeText(NewPostActivity.this, "Vous devez autoriser l'accès au stockage pour pouvoir ajouter une video.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("video/*");
+                startActivityForResult(intent, 2);
         });
         textContainer = findViewById(R.id.postContent);
     }
@@ -143,11 +171,29 @@ public class NewPostActivity extends AppCompatActivity {
             case 2:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     videoUri = data.getData();
-                    String videoPath = getVideoPath(videoUri);
-//                    File file = new File(videoPath);
-//                    long length = file.length();
-//                    length = length/1024;
-//                    Toast.makeText(NewPostActivity.this, "Video size:"+length+"KB", Toast.LENGTH_LONG).show();
+                    videoThumbnail = new ImageView(this);
+                    try {
+                        MediaMetadataRetriever mMMR = new MediaMetadataRetriever();
+                        mMMR.setDataSource(NewPostActivity.this, videoUri);
+                        Glide.with(this)
+                                .load(mMMR.getFrameAtTime())
+                                .apply(new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .placeholder(R.drawable.ic_launcher_background)
+                                        .error(R.drawable.ic_launcher_background))
+                                .into(videoThumbnail);
+                        scrollableLayout.addView(videoThumbnail);
+                        videoThumbnail.setOnClickListener(v -> {
+                            ViewGroup parentView = (ViewGroup) videoThumbnail.getParent();
+                            if (parentView != null) {
+                                parentView.removeView(videoThumbnail);
+                                pictureUriList.remove(videoUri);
+                            }
+                        });
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(NewPostActivity.this, "Erreur lors du chargement de la vidéo", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case 1:
@@ -290,17 +336,25 @@ public class NewPostActivity extends AppCompatActivity {
             finish();
         });
     }
-    private String getVideoPath(Uri videoUri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver().query(videoUri, projection, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            String videoPath = cursor.getString(columnIndex);
-            cursor.close();
-            Toast.makeText(NewPostActivity.this, videoPath, Toast.LENGTH_SHORT).show();
-            Toast.makeText(NewPostActivity.this, "Video path:"+videoPath, Toast.LENGTH_LONG).show();
-            return videoPath;
-        }
-        return null;
+    private boolean checkCameraPermission() {
+        int cameraPermissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int storagePermissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        return cameraPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                storagePermissionResult == PackageManager.PERMISSION_GRANTED;
     }
+
+    private void requestCameraAndStoragePermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_AND_STORAGE_REQUEST);
+    }
+
+    private boolean checkStoragePermission() {
+        int storagePermissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return storagePermissionResult == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST);
+    }
+
 }
