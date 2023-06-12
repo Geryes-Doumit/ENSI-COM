@@ -60,7 +60,6 @@ public class NewPostActivity extends AppCompatActivity {
     List<String> tagsList = new ArrayList<>();
     ImageButton addVideo;
     ImageButton addPicture;
-    ImageButton addCamera;
     ImageView videoThumbnail;
     LinearLayout scrollableLayout;
     Uri videoUri;
@@ -86,7 +85,6 @@ public class NewPostActivity extends AppCompatActivity {
 
         addPicture=findViewById(R.id.pictureButton);
         addVideo=findViewById(R.id.videoButton);
-        addCamera=findViewById(R.id.cameraButton);
         scrollableLayout=findViewById(R.id.scrollableLayout);
         postButton=findViewById(R.id.postButton);
         postButton.setOnClickListener(v -> {
@@ -136,18 +134,6 @@ public class NewPostActivity extends AppCompatActivity {
                 intent.setType("video/*");
                 startActivityForResult(intent, 2);
         });
-        addCamera.setOnClickListener(v -> {
-            if (!checkCameraPermission()) {
-                Toast.makeText(NewPostActivity.this, "Vous devez autoriser l'accès à la caméra pour pouvoir prendre une photo.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, 3);
-            } else {
-                Toast.makeText(NewPostActivity.this, "Aucune application de caméra disponible.", Toast.LENGTH_SHORT).show();
-            }
-        });
         textContainer = findViewById(R.id.postContent);
     }
 
@@ -182,15 +168,6 @@ public class NewPostActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case 3:
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    ImageView imageView = new ImageView(this);
-                    imageView.setImageBitmap(imageBitmap);
-                    scrollableLayout.addView(imageView);
-                }
-                break;
             case 2:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     videoUri = data.getData();
