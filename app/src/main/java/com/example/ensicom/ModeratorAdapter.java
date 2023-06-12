@@ -21,28 +21,28 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPostViewHolder> {
+public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
 
     List<ClassicPost> postsList;
     List<String> pictureUrlList = new ArrayList<>();
     String videoUrl;
 
-    public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
+    public ModeratorAdapter(List<ClassicPost> postsList) {
         this.postsList = postsList;
     }
 
 
     @NonNull
     @Override
-    public UserAndPostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ModeratorHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.user_and_post_item, parent, false);
-        return new UserAndPostViewHolder(view);
+        return new ModeratorHolder(view);
     }
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull UserAndPostViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ModeratorHolder holder, int position) {
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         int currentPosition = position;
         ClassicPost post = postsList.get(position);
@@ -62,26 +62,52 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             Boolean isAdmin = postUser.isAdmin();
-            String postId = post.getPostId();
-            holder.getRefusePostButton().setVisibility(View.GONE);
-            holder.getValidatePostButton().setVisibility(View.GONE);
-            if (dataSnapshot.getKey().equals(currentUserUid)) {
-                holder.getDeletePostButton().setVisibility(View.VISIBLE);
-            } else {
-                holder.getDeletePostButton().setVisibility(View.GONE);
-            }
-
-            holder.getDeletePostButton().setOnClickListener(v -> new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
-                    .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
-                    .setPositiveButton("Oui", (dialog, which) -> {
-                        deletePost(postId);
-                        Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
-                        postsList.remove(currentPosition);
-                        notifyDataSetChanged();
-                       })
-                    .setNegativeButton("Non", null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show());
+            holder.getRefusePostButton().setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.getRefusePostButton().getContext());
+                builder.setTitle("Refuser le post");
+                builder.setMessage("Êtes-vous sûr de vouloir refuser ce post ?");
+                builder.setPositiveButton("Oui", (dialog, which) -> {
+                    DatabaseReference postRef = FirebaseDatabase
+                            .getInstance(DATABASE_URL)
+                            .getReference("moderationPost")
+                            .child(post.getPostId());
+                    postRef.removeValue();
+                    Toast.makeText(holder.getRefusePostButton().getContext(), "Post refusé", Toast.LENGTH_SHORT).show();
+                    postsList.remove(currentPosition);
+                    notifyItemRemoved(currentPosition);
+                    notifyItemRangeChanged(currentPosition, postsList.size());
+                });
+                builder.setNegativeButton("Non", (dialog, which) -> {
+                    Toast.makeText(holder.getRefusePostButton().getContext(), "Post non refusé", Toast.LENGTH_SHORT).show();
+                });
+                builder.show();
+            });
+            holder.getValidatePostButton().setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.getValidatePostButton().getContext());
+                builder.setTitle("Valider le post");
+                builder.setMessage("Êtes-vous sûr de vouloir valider ce post ?");
+                builder.setPositiveButton("Oui", (dialog, which) -> {
+                    DatabaseReference postRef = FirebaseDatabase
+                            .getInstance(DATABASE_URL)
+                            .getReference("moderationPost")
+                            .child(post.getPostId());
+                    postRef.removeValue();
+                    DatabaseReference postRef2 = FirebaseDatabase
+                            .getInstance(DATABASE_URL)
+                            .getReference("posts")
+                            .child(post.getPostId());
+                    postRef2.setValue(post);
+                    Toast.makeText(holder.getValidatePostButton().getContext(), "Post validé", Toast.LENGTH_SHORT).show();
+                    postsList.remove(currentPosition);
+                    notifyItemRemoved(currentPosition);
+                    notifyItemRangeChanged(currentPosition, postsList.size());
+                });
+                builder.setNegativeButton("Non", (dialog, which) -> {
+                    Toast.makeText(holder.getValidatePostButton().getContext(), "Post non validé", Toast.LENGTH_SHORT).show();
+                });
+                builder.show();
+            });
+            holder.getDeletePostButton().setVisibility(View.GONE);
             holder.getUserName().setText(postUserName);
             holder.getPostContent().setText(postContent);
             holder.getLikeCount().setText(likeCount.toString());
@@ -150,32 +176,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             intent.putExtra("postId", postId);
             v.getContext().startActivity(intent);
         });
-    }
-
-    public void deletePost(String postId) {
-        DatabaseReference postRef = FirebaseDatabase
-                .getInstance(DATABASE_URL)
-                .getReference("posts")
-                .child(postId);
-
-        postRef.get().addOnSuccessListener(dataSnapshot -> {
-            ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
-            String commentId = post.getCommentsId();
-            if (!commentId.equals("")) {
-                DatabaseReference commentsRef = FirebaseDatabase
-                        .getInstance(DATABASE_URL)
-                        .getReference("commentLists")
-                        .child(commentId);
-                commentsRef.removeValue();
-            }
-        });
-        postRef.removeValue();
-        for (int i=0; i<pictureUrlList.size(); i++) {
-            FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrlList.get(i)).delete();
-        }
-        if (videoUrl != null) {
-            FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl).delete();
-        }
     }
 
     @Override
