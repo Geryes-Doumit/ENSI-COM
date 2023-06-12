@@ -16,8 +16,8 @@ public class ModeratorHolder extends RecyclerView.ViewHolder {
     private ImageView userProfilePicture;
     private ImageView postPicture1;
     private TextView postContent;
-    private ImageButton validatePostButton;
-    private ImageButton refusePostButton;
+    private Button validatePostButton;
+    private Button refusePostButton;
     private TextView tagList;
     private VideoView videoView;
 
@@ -33,10 +33,10 @@ public class ModeratorHolder extends RecyclerView.ViewHolder {
         validatePostButton = itemView.findViewById(R.id.adminValidPost);
         refusePostButton = itemView.findViewById(R.id.adminDeletePost);
     }
-    public ImageButton getValidatePostButton() {
+    public Button getValidatePostButton() {
         return validatePostButton;
     }
-    public ImageButton getRefusePostButton() {
+    public Button getRefusePostButton() {
         return refusePostButton;
     }
     public VideoView getVideoView() {

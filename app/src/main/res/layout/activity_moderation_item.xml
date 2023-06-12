@@ -53,29 +53,35 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/first_names" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/adminValidPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="228dp"
                 android:contentDescription="valid Post"
+                android:drawableStart="@drawable/check_circle"
+                android:backgroundTint="@color/dark_green"
+                android:text="Valider"
+                android:textSize="12dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/adminDeletePost"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.769"
-                app:srcCompat="@android:drawable/checkbox_on_background" />
+                app:layout_constraintVertical_bias="0.769" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/adminDeletePost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="36dp"
-                android:contentDescription="delete Post"
+                android:layout_marginEnd="18dp"
+                android:drawableStart="@drawable/remove_circle"
+                android:backgroundTint="@color/danger"
+                android:text="Refuser"
+                android:textSize="12dp"
+                android:contentDescription="Delete post"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

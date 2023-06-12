@@ -23,4 +23,5 @@
     <color name="bottom_purple">#7D80F7</color>
     <color name="cyan">#00C6FF</color>
     <color name="dark_green">#43B147</color>
+    <color name="danger">#E1FF0000</color>
 </resources>
