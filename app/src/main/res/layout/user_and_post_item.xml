@@ -13,7 +13,7 @@
         android:background="@drawable/post_background"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3pt"
@@ -24,22 +24,33 @@
                 android:id="@+id/userProfilePicture"
                 android:layout_width="20pt"
                 android:layout_height="20pt"
-                android:layout_marginStart="10dp"
                 android:background="@drawable/profil_rounded"
                 android:scaleType="centerInside"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/marginRightView"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/userProfilePicture"
+                tools:layout_editor_absoluteY="25dp" />
 
             <TextView
                 android:id="@+id/userName"
-                android:layout_width="85pt"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5pt"
                 android:fontFamily="@font/barlow"
-                android:gravity="center_vertical"
-                android:textAlignment="viewStart"
+                android:gravity="center"
                 android:textColor="@color/bottom_purple"
                 android:textSize="62px"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/marginRightView"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/first_names" />
 
             <ImageButton
@@ -47,10 +58,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="delete post button"
+                android:layout_marginRight="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/ic_menu_delete" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/postTags"
@@ -75,6 +89,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/image_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -101,54 +116,73 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="15pt"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/like_background"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
-        <TextView
-            android:id="@+id/likeCount"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="25pt"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="60px"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="15pt"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/like_background"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/likeButton"
-            android:layout_width="12pt"
-            android:layout_height="12pt"
-            android:layout_marginStart="5pt"
-            android:background="@drawable/like"
-            android:contentDescription="like button"
-            tools:ignore="TouchTargetSizeCheck" />
+            <TextView
+                android:id="@+id/likeCount"
+                android:layout_width="36dp"
+                android:layout_height="35dp"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="60px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="1dp" />
 
-        <TextView
-            android:id="@+id/commentCount"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginLeft="25pt"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="60px"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/likeButton"
+                android:layout_width="14pt"
+                android:layout_height="14pt"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/like"
+                android:contentDescription="like button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/commentCount"
+                app:layout_constraintStart_toEndOf="@+id/likeCount"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
 
-        <Button
-            android:id="@+id/commentButton"
-            android:layout_width="12pt"
-            android:layout_height="12pt"
-            android:layout_marginStart="5pt"
-            android:background="@drawable/comment"
-            android:contentDescription="comment button"
-            tools:ignore="TouchTargetSizeCheck" />
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="60px"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/commentButton"
+                app:layout_constraintStart_toEndOf="@+id/likeCount"
+                tools:layout_editor_absoluteY="1dp" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/commentButton"
+                android:layout_width="14pt"
+                android:layout_height="14pt"
+                android:background="@drawable/comment"
+                android:contentDescription="comment button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/likeCount"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
