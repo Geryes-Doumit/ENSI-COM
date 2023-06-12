@@ -67,13 +67,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        finish();
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
+            onBackPressed();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
