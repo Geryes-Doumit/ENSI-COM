@@ -34,8 +34,6 @@ import java.util.List;
 
 public class MainFragment extends Fragment {
     private RecyclerView postsListView;
-
-    private Button settings;
     private FloatingActionButton newPostButton;
     private List<ClassicPost> postsList = new ArrayList<>();
     private View view;
@@ -47,11 +45,6 @@ public class MainFragment extends Fragment {
         view = inflater.inflate(R.layout.activity_home, container, false);
 
         getPosts();
-        settings=view.findViewById(R.id.buttonHomeSettings);
-        settings.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ModerationActivity.class);
-            startActivity(intent);
-        });
         newPostButton = view.findViewById(R.id.newPost);
         newPostButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NewPostActivity.class);

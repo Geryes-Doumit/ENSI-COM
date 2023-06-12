@@ -8,21 +8,13 @@
     android:background="@color/white"
     tools:context=".HomeActivity">
 
-    <Button
-        android:id="@+id/buttonHomeSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Paramètres"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@color/bottom_purple"
-        android:backgroundTint="@color/jaune"
+        android:backgroundTint="@color/accent"
         android:src="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

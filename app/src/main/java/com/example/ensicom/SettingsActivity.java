@@ -68,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
                     Glide.with(SettingsActivity.this)
-                            .load(profilePictureUrl)
+                            .load(profilePictureUrl).circleCrop()
                             .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
                             .into(profilePicture);

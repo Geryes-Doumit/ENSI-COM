@@ -38,7 +38,6 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     RecyclerView postsListView;
     TextView userName;
-    Button settings;
     FloatingActionButton newPostButton;
     List<ClassicPost> postsList = new ArrayList<>();
 
@@ -68,12 +67,6 @@ public class HomeActivity extends AppCompatActivity {
             postsListView.setAdapter(adapter);
         });
 
-        settings=findViewById(R.id.buttonHomeSettings);
-        settings.setOnClickListener(v -> {
-            Intent mainIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(mainIntent);
-        });
 
         newPostButton=findViewById(R.id.newPost);
 

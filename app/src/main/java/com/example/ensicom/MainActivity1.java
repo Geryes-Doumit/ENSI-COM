@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -113,9 +115,6 @@ public class MainActivity1 extends AppCompatActivity{
            @Override
            public void onViewAttachedToWindow(@NonNull View view) {
                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//               String name = user.getDisplayName();
-//               Toast.makeText(MainActivity1.this, "Bienvenue " + name, Toast.LENGTH_SHORT).show();
-//               profileName = findViewById(R.id.profile_name_side_menu);
            }
 
            @Override
@@ -124,6 +123,21 @@ public class MainActivity1 extends AppCompatActivity{
 
            }
        });
+
+
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user.isAdmin()) {
+                    navigationView.getMenu().findItem(R.id.side_admin).setVisible(true);
+                } else {
+                    navigationView.getMenu().findItem(R.id.side_admin).setVisible(false);
+                }
+            }
+        });
+
+
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -141,6 +155,11 @@ public class MainActivity1 extends AppCompatActivity{
                 lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(lIntent);
                 finish();
+            }
+            else if (id == R.id.side_admin) {
+                Intent aIntent = new Intent(MainActivity1.this, ModerationActivity.class);
+                aIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(aIntent);
             }
             return true;
         });
