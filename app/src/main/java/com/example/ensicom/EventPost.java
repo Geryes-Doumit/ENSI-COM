@@ -1,6 +1,6 @@
 package com.example.ensicom;
 
-public class ClassicEvent {
+public class EventPost {
 
     public String eventId;
     public String eventName;
@@ -8,10 +8,10 @@ public class ClassicEvent {
     public String eventDate;
     public String eventLocation;
 
-    public ClassicEvent() {
+    public EventPost() {
     }
 
-    public ClassicEvent(String eventId, String eventName, String eventDescription, String eventDate, String eventLocation) {
+    public EventPost(String eventId, String eventName, String eventDescription, String eventDate, String eventLocation) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;

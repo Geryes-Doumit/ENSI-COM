@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,61 +37,54 @@ public class MainFragment extends Fragment {
 
     private Button settings;
     private FloatingActionButton newPostButton;
-    private Button testButton;
     private List<ClassicPost> postsList = new ArrayList<>();
     private View view;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_home, container, false);
 
-        testButton = view.findViewById(R.id.buttonTest);
-
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(getActivity(), ProfileActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-            }
-        });
-
-        // Adding the latest posts to the posts list
-        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
-
-        postsRef.limitToLast(20).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                postsListView = view.findViewById(R.id.postsListView);
-                if (isAdded() && (task.isSuccessful())) {
-                        postsList.clear();
-                        for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                            ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            postsList.add(post);
-                        }
-                        Collections.reverse(postsList);
-
-                        // Showing the posts using the recycler view
-                        postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
-
-                }
-            }
-        });
+        getPosts();
 
         newPostButton = view.findViewById(R.id.newPost);
 
-        newPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewPostActivity.class);
-                startActivity(intent);
-            }
+        newPostButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NewPostActivity.class);
+            startActivity(intent);
         });
 
 
+
+        swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getPosts();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
         return view;
+    }
+
+    public void getPosts() {
+        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
+
+        postsRef.limitToLast(20).get().addOnCompleteListener(task -> {
+            postsListView = view.findViewById(R.id.postsListView);
+            if (isAdded() && (task.isSuccessful())) {
+                postsList.clear();
+                for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
+                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                    postsList.add(post);
+                }
+                Collections.reverse(postsList);
+
+                // Showing the posts using the recycler view
+                postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
+
+            }
+        });
     }
 
     public RecyclerView getPostsListView() {
