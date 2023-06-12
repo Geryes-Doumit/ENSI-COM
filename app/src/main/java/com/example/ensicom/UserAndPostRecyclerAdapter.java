@@ -130,13 +130,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             postRef.get().addOnSuccessListener(dataSnapshot -> {
                 ClassicPost post1 = dataSnapshot.getValue(ClassicPost.class);
                 if (post1.getLikeUserList().toString().contains(currentUserUid)){
-                    Toast.makeText(view.getContext(), "Removed like", Toast.LENGTH_SHORT).show();
                     Integer likeCount1 = post1.getLikeCount();
                     post1.removeLike(currentUserUid);
                     postRef.setValue(post1);
                     holder.getLikeCount().setText(post1.getLikeCount().toString());
                 } else {
-                    Toast.makeText(view.getContext(), "Added like", Toast.LENGTH_SHORT).show();
                     Integer likeCount1 = post1.getLikeCount();
                     post1.addLike(currentUserUid);
                     postRef.setValue(post1);
