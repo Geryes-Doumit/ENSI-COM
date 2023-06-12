@@ -91,6 +91,9 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             if (pictureUrlList != null) {
                 Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
             }
+            else {
+                holder.getPostPicture1().setVisibility(View.GONE);
+            }
             if (videoUrl != null) {
                 holder.getVideoView().setVisibility(View.VISIBLE);
                 holder.getVideoView().setVideoPath(videoUrl);
