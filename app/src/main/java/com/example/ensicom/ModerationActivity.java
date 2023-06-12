@@ -36,7 +36,7 @@ public class ModerationActivity extends AppCompatActivity {
         });
     }
     public void getPosts() {
-        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
+        DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("moderationPost");
 
         postsRef.get().addOnCompleteListener(task -> {
             postsListView =findViewById(R.id.postsListViewMod);
@@ -50,7 +50,7 @@ public class ModerationActivity extends AppCompatActivity {
 
                 // Showing the posts using the recycler view
                 postsListView.setLayoutManager(new LinearLayoutManager(ModerationActivity.this));
-                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
+                postsListView.setAdapter(new ModeratorAdapter(postsList));
 
             }
         });
