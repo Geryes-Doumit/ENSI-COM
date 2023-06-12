@@ -61,12 +61,14 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             User postUser = dataSnapshot.getValue(User.class);
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
+            Boolean isAdmin = postUser.isAdmin();
             String postId = post.getPostId();
             if (dataSnapshot.getKey().equals(currentUserUid)) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
                 holder.getDeletePostButton().setVisibility(View.GONE);
             }
+
             holder.getDeletePostButton().setOnClickListener(v -> new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
                     .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
                     .setPositiveButton("Oui", (dialog, which) -> {

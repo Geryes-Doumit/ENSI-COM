@@ -55,6 +55,7 @@ public class SetupProfileActivity extends AppCompatActivity {
             if (!nameSettings.getText().toString().isEmpty()) {
                 updateProfileName(name);
                 Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
+                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue(name);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
@@ -65,7 +66,6 @@ public class SetupProfileActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
-
                     }
                     else {
                         Toast.makeText(SetupProfileActivity.this, "Le profil n'a pas pu être crée.", Toast.LENGTH_SHORT).show();
