@@ -1,29 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/showCommentsParentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:circularflow_radiusInDP="20"
-    android:id="@+id/showCommentsParentLayout">
+    android:visibility="visible"
+    app:circularflow_radiusInDP="20">
+
+    !-- Menu de navigation -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Barre supérieure -->
+
+        <FrameLayout
+            android:id="@+id/fragment_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_ribbon" />
+
+        <LinearLayout
+            android:id="@+id/top_ribbon"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/header_grad"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_logo"
+                    android:contentDescription="Logo"
+                    android:scaleX="1"
+                    android:scaleY="1.3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                    app:srcCompat="@drawable/logo_header2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Toolbar -->
-        <include
-            android:id="@+id/toolBar"
-            layout="@layout/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <!-- Toolbar -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="129dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/post_background"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,7 +110,7 @@
                 android:id="@+id/userProfilePicture"
                 android:layout_width="20pt"
                 android:layout_height="20pt"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/profil_rounded"
                 android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +132,7 @@
                 android:fontFamily="@font/barlow"
                 android:gravity="center"
                 android:textColor="@color/bottom_purple"
-                android:textSize="60px"
+                android:textSize="62px"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/marginRightView"
@@ -69,7 +143,7 @@
                 android:id="@+id/deletePostButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,6 +151,7 @@
                 app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/postContent"
@@ -98,20 +173,18 @@
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
+            android:id="@+id/commentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Il n'y a aucun commentaire sous ce post."
-            android:id="@+id/commentCount"
-            android:textSize="20dp">
-        </TextView>
+            android:textSize="20dp"></TextView>
 
         <!-- Comments RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commentsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginBottom="50dp"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 
