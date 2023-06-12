@@ -58,8 +58,8 @@ public class NewPostActivity extends AppCompatActivity {
     List<String> pictureUrlList= new ArrayList<>();
     List<Uri> pictureUriList= new ArrayList<>();
     List<String> tagsList = new ArrayList<>();
-    ImageButton addVideo;
-    ImageButton addPicture;
+    Button addVideo;
+    Button addPicture;
     ImageView videoThumbnail;
     LinearLayout scrollableLayout;
     Uri videoUri;

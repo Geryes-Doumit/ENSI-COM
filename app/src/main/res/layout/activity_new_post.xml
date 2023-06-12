@@ -16,25 +16,31 @@
 
     <EditText
         android:id="@+id/postContent"
-        android:layout_width="288dp"
-        android:layout_height="99dp"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/custom_input"
+        android:drawablePadding="12dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Entrer votre texte ici"
         android:inputType="textMultiLine"
-        android:hint="Entrez le contenu de votre post..."
-        app:layout_constraintBottom_toTopOf="@+id/postButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
         app:layout_constraintVertical_bias="0.849" />
 
     <Button
         android:id="@+id/postButton"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:text="Poster"
         android:background="@drawable/login_button"
+        android:text="Poster"
+        android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -46,54 +52,77 @@
         android:id="@+id/tagsContent"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="sport;foot;competition"
         android:inputType="text"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postContent" />
 
-    <ImageButton
+    <Button
         android:id="@+id/pictureButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:contentDescription="picture button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.284"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/jaune"
+        android:background="@drawable/login_button"
+        android:drawableStart="@drawable/add_photo"
+        android:text="Ajouter une photo"
+        android:textSize="9dp"
+        android:padding="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/videoButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@android:drawable/ic_menu_crop" />
+        app:layout_constraintTop_toBottomOf="@+id/tagsContent" />
 
-    <ImageButton
+    <Button
         android:id="@+id/videoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/add_video"
+        android:backgroundTint="@color/jaune"
+        android:background="@drawable/login_button"
+        android:text="Ajouter une vidéo"
+        android:textSize="9dp"
+        android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="video button"
-        app:layout_constraintHorizontal_bias="0.718"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:srcCompat="@android:drawable/ic_menu_slideshow" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pictureButton"
+        app:layout_constraintTop_toBottomOf="@+id/tagsContent" />
 
     <HorizontalScrollView
         android:id="@+id/scrollableView"
         android:layout_width="410dp"
         android:layout_height="223dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="scrollable view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar">
+        app:layout_constraintTop_toBottomOf="@+id/pictureButton">
 
         <LinearLayout
             android:id="@+id/scrollableLayout"
             android:layout_width="wrap_content"
-            android:dividerPadding="0dp"
             android:layout_height="match_parent"
+            android:dividerPadding="0dp"
             android:orientation="horizontal" />
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/input_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:text="Entrez votre message :"
+        android:textColor="@color/dark_gray"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/postContent"
+        app:layout_constraintStart_toStartOf="@id/postContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
