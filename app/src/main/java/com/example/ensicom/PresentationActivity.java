@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class PresentationActivity extends AppCompatActivity {
 
-    private static final long DELAY_MILLIS = 3000; // Délai en millisecondes
+    private static final long DELAY_MILLIS = 1500; // Délai en millisecondes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
