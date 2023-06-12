@@ -3,6 +3,7 @@ package com.example.ensicom;
 import static com.example.ensicom.R.id.fragment_layout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity1 extends AppCompatActivity{
 
@@ -125,134 +127,31 @@ public class MainActivity1 extends AppCompatActivity{
             }
         });
 
-/*
-        ImageView menuButton = findViewById(R.id.menu_button);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        setupNavigationView();
-
-
-        ImageView profileButton = findViewById(R.id.user_menu_button);
-
-
-
-
-        Button actualitesButton = findViewById(R.id.button_actualites);
-        Button evenementsButton = findViewById(R.id.button_evenements);
-
-        actualitesButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onActualitesButtonClick(v);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id  == R.id.side_profile) {
+                Intent pIntent = new Intent(MainActivity1.this, ProfileActivity.class);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(pIntent);
+            } else if (id == R.id.side_settings) {
+                Intent sIntent = new Intent(MainActivity1.this, SettingsActivity.class);
+                sIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(sIntent);
+            } else if (id == R.id.side_logout) {
+                FirebaseAuth.getInstance().signOut();
+                Intent lIntent = new Intent(MainActivity1.this, LoginActivity.class);
+                lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(lIntent);
+                finish();
             }
-        });
-
-        evenementsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onEvenementsButtonClick(v);
-            }
+            return true;
         });
     }
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMenuDialog();
-            }
-        });
-
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProfileDialog();
-            }
-        });
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        finish();
+        return true;
     }
-        private void setNewFragment (MainActivity1 fragment){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(fragment_layout, fragment);
-            ft.commit();
-        }
-
-        public void onActualitesButtonClick (View view){
-            // Code à exécuter lorsque le bouton "Actualités" est cliqué
-            Toast.makeText(this, "Actualités", Toast.LENGTH_SHORT).show();
-        }
-
-        public void onEvenementsButtonClick (View view){
-            // Code à exécuter lorsque le bouton "Événements" est cliqué
-            Toast.makeText(this, "Événements", Toast.LENGTH_SHORT).show();
-        }
-
-    public void onLogoClick(View view) {
-        // Code à exécuter lorsque le logo est cliqué
-        Toast.makeText(this, "Logo ENSICOM", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onProfileRubriqueClick(View view) {
-        // Handle profile button click
-    }
-
-    public void onSettingsRubriqueClick(View view) {
-        // Handle settings button click
-    }
-
-    public void onLogoutRubriqueClick(View view) {
-        // Handle logout button click
-    }
-
-
-    public void onMenuButtonClick(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                // Gérer les actions en fonction de l'élément de menu sélectionné
-                int itemId = item.getItemId();
-                @SuppressLint("DiscouragedApi") int menuOption1Id = getResources().getIdentifier("menu_option1", "id", getPackageName());
-                @SuppressLint("DiscouragedApi") int menuOption2Id = getResources().getIdentifier("menu_option2", "id", getPackageName());
-
-                if (itemId == menuOption1Id) {
-                    // Action pour l'option 1 du menu
-                    return true;
-                } else if (itemId == menuOption2Id) {
-                    // Action pour l'option 2 du menu
-                    return true;
-                }
-                // Ajoutez d'autres options de menu au besoin
-                return false;
-            }
-
-        });
-        popupMenu.show();
-    }
-
-    private void setupNavigationView() {
-        NavigationView navigationView = findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.menu_profil) {
-                    openProfile();
-                    return true;
-                } else if (itemId == R.id.menu_parametres) {
-                    // Code pour gérer la sélection de "Paramètres"
-                    Toast.makeText(MainActivity1.this, "Paramètres", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void openProfile() {
-        // Code pour ouvrir le profil utilisateur
-        Toast.makeText(this, "Profil", Toast.LENGTH_SHORT).show();
-    }
-}
-
-     */
-}
-
 }
