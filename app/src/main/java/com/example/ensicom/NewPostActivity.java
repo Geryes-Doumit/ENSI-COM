@@ -329,7 +329,7 @@ public class NewPostActivity extends AppCompatActivity {
             postsRef.child(postId).removeValue(); // Not sure if this is necessary
             Toast.makeText(NewPostActivity.this, "Une erreur est survenue, veuillez réessayer.", Toast.LENGTH_SHORT).show();
         }).addOnSuccessListener(unused -> {
-            Toast.makeText(NewPostActivity.this,"Votre contenu a été posté", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewPostActivity.this,"Votre contenu est en cours de modération", Toast.LENGTH_SHORT).show();
             Intent mainIntent = new Intent(NewPostActivity.this, MainActivity1.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(mainIntent);

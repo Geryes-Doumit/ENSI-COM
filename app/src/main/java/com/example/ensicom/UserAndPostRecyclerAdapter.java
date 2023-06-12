@@ -61,7 +61,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             User postUser = dataSnapshot.getValue(User.class);
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
-            Boolean isAdmin = postUser.isAdmin();
             String postId = post.getPostId();
             holder.getRefusePostButton().setVisibility(View.GONE);
             holder.getValidatePostButton().setVisibility(View.GONE);

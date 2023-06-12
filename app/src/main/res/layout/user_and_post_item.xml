@@ -150,12 +150,15 @@
         android:layout_marginBottom="20dp">
 
         <LinearLayout
+            android:id="@+id/commentLikeLayout"
             android:layout_width="match_parent"
             android:layout_height="15pt"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/like_background"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/likeCount"
