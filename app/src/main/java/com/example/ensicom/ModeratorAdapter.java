@@ -37,7 +37,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
     @Override
     public ModeratorHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.user_and_post_item, parent, false);
+        View view = inflater.inflate(R.layout.activity_moderation_item, parent, false);
         return new ModeratorHolder(view);
     }
     @SuppressLint("ClickableViewAccessibility")
@@ -104,12 +104,6 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                 });
                 builder.show();
             });
-            holder.getDeletePostButton().setVisibility(View.GONE);
-            holder.getCommentButton().setVisibility(View.GONE);
-            holder.getLikeButton().setVisibility(View.GONE);
-            holder.getCommentCount().setVisibility(View.GONE);
-            holder.getLikeCount().setVisibility(View.GONE);
-            holder.getLinearLayout().setVisibility(View.GONE);
             holder.getUserName().setText(postUserName);
             holder.getPostContent().setText(postContent);
             StringBuilder stringBuilder = new StringBuilder();
@@ -121,8 +115,8 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
-            if (pictureUrlList != null) {
-                Glide.with(holder.getPostPicture1().getContext()).load(pictureUrlList.get(0)).into(holder.getPostPicture1());
+            if (post.getPictureUrlList() != null) {
+                Glide.with(holder.getPostPicture1().getContext()).load(post.getPictureUrlList().get(0)).into(holder.getPostPicture1());
             }
             else {
                 holder.getPostPicture1().setVisibility(View.GONE);

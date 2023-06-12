@@ -21,9 +21,7 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     private Button commentButton;
     private ImageButton deletePostButton;
     private TextView tagList;
-    private VideoView videoView;
-    private ImageButton validatePostButton;
-    private ImageButton refusePostButton;
+    private ImageView playVideo;
 
     public UserAndPostViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -38,20 +36,12 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
         postPicture1 = itemView.findViewById(R.id.imageContent1);
         deletePostButton = itemView.findViewById(R.id.deletePostButton);
         tagList = itemView.findViewById(R.id.postTags);
-        videoView= itemView.findViewById(R.id.videoView);
-        validatePostButton = itemView.findViewById(R.id.adminValidPost);
-        refusePostButton = itemView.findViewById(R.id.adminDeletePost);
+        playVideo = itemView.findViewById(R.id.playVideo);
     }
 
     // All the getters
-    public ImageButton getValidatePostButton() {
-        return validatePostButton;
-    }
-    public ImageButton getRefusePostButton() {
-        return refusePostButton;
-    }
-    public VideoView getVideoView() {
-        return videoView;
+    public ImageView getPlayVideo() {
+        return playVideo;
     }
     public TextView getTagList() {
         return tagList;

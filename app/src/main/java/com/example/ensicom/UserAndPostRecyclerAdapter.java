@@ -62,8 +62,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             String postId = post.getPostId();
-            holder.getRefusePostButton().setVisibility(View.GONE);
-            holder.getValidatePostButton().setVisibility(View.GONE);
             if (dataSnapshot.getKey().equals(currentUserUid)) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
@@ -102,23 +100,14 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
 
             }
             if (videoUrl != null) {
-                holder.getVideoView().setVisibility(View.VISIBLE);
-                holder.getVideoView().setVideoPath(videoUrl);
-                holder.getVideoView().setOnPreparedListener(mp -> mp.setLooping(true));
-                holder.getVideoView().setOnTouchListener((v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        if (holder.getVideoView().isPlaying()) {
-                            holder.getVideoView().pause();
-                        } else {
-                            holder.getVideoView().start();
-                        }
-                        return true;
-                    }
-                    return false;
+                holder.getPlayVideo().setVisibility(View.VISIBLE);
+                holder.getPlayVideo().setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), VideoPlayer.class);
+                    intent.putExtra("videoUrl", videoUrl);
+                    v.getContext().startActivity(intent);
                 });
-
             } else {
-                holder.getVideoView().setVisibility(View.GONE);
+                holder.getPlayVideo().setVisibility(View.GONE);
             }
         });
         holder.getLikeButton().setOnClickListener(view -> {
