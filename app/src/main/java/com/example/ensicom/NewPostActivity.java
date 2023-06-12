@@ -322,7 +322,7 @@ public class NewPostActivity extends AppCompatActivity {
         tagsList.addAll(Arrays.asList(tagsListSplit));
         ClassicPost post = new ClassicPost("",content, user.getUid(), new Date().getTime(),pictureUrlList , tagsList,videoUrl);
         post.setLikeCount(0);
-        DatabaseReference postsRef = ref.child("posts");
+        DatabaseReference postsRef = ref.child("moderationPost");
         String postId = postsRef.push().getKey();
         post.setPostId(postId);
         postsRef.child(postId).setValue(post).addOnFailureListener(e -> {

@@ -10,7 +10,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
+public class ModeratorHolder extends RecyclerView.ViewHolder {
     private TextView userName;
     private ImageView userProfilePicture;
     private ImageView postPicture1;
@@ -20,12 +20,12 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     private Button likeButton;
     private Button commentButton;
     private ImageButton deletePostButton;
-    private TextView tagList;
-    private VideoView videoView;
     private ImageButton validatePostButton;
     private ImageButton refusePostButton;
+    private TextView tagList;
+    private VideoView videoView;
 
-    public UserAndPostViewHolder(@NonNull View itemView) {
+    public ModeratorHolder(@NonNull View itemView) {
         super(itemView);
 
         userName = itemView.findViewById(R.id.userName);
@@ -43,7 +43,6 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
         refusePostButton = itemView.findViewById(R.id.adminDeletePost);
     }
 
-    // All the getters
     public ImageButton getValidatePostButton() {
         return validatePostButton;
     }
@@ -70,7 +69,7 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     public TextView getPostContent() {
         return postContent;
     }
-    
+
     public TextView getLikeCount() {
         return likeCount;
     }
@@ -90,4 +89,5 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     public ImageButton getDeletePostButton() {
         return deletePostButton;
     }
+
 }
