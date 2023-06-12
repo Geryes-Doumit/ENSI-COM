@@ -40,7 +40,7 @@
     <string name="plus">Bouton plus</string>
     <string name="menu_profil">Profil</string>
     <string name="parametres">Parametres</string>
-    <string name="welcome_message">Bienvenue chez ENSICOM</string>
+    <string name="welcome_message">Bienvenue sur ENSI\'COM</string>
     <string name="popup_content">Contenu de la fenêtre contextuelle</string>
     <string name="event_filters">Filtres d\'événements</string>
     <string name="filters_title">Filtres d\'actualités</string>
