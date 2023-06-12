@@ -5,7 +5,7 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Ajouter modération
+        <!-- TODO: Supprimer les données inutiles (photos de profil, etc.)
         <include .../>
         <exclude .../>
         -->

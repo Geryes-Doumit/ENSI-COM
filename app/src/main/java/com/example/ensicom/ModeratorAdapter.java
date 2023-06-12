@@ -43,13 +43,11 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull ModeratorHolder holder, int position) {
-        String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         int currentPosition = position;
         ClassicPost post = postsList.get(position);
 
         String postContent = post.getContent();
         pictureUrlList = post.getPictureUrlList();
-        Integer likeCount = post.getLikeCount();
         videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
 
@@ -61,7 +59,6 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
             User postUser = dataSnapshot.getValue(User.class);
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
-            Boolean isAdmin = postUser.isAdmin();
             holder.getRefusePostButton().setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(holder.getRefusePostButton().getContext());
                 builder.setTitle("Refuser le post");
@@ -108,10 +105,13 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                 builder.show();
             });
             holder.getDeletePostButton().setVisibility(View.GONE);
+            holder.getCommentButton().setVisibility(View.GONE);
+            holder.getLikeButton().setVisibility(View.GONE);
+            holder.getCommentCount().setVisibility(View.GONE);
+            holder.getLikeCount().setVisibility(View.GONE);
+            holder.getLinearLayout().setVisibility(View.GONE);
             holder.getUserName().setText(postUserName);
             holder.getPostContent().setText(postContent);
-            holder.getLikeCount().setText(likeCount.toString());
-            holder.getCommentCount().setText(post.getCommentCount().toString());
             StringBuilder stringBuilder = new StringBuilder();
             for (String tag : tags) {
                 if (!tag.equals("")) {
@@ -148,36 +148,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                 holder.getVideoView().setVisibility(View.GONE);
             }
         });
-        holder.getLikeButton().setOnClickListener(view -> {
-            String postId = post.getPostId();
-            DatabaseReference postRef = FirebaseDatabase
-                    .getInstance(DATABASE_URL)
-                    .getReference("posts")
-                    .child(postId);
-            postRef.get().addOnSuccessListener(dataSnapshot -> {
-                ClassicPost post1 = dataSnapshot.getValue(ClassicPost.class);
-                if (post1.getLikeUserList().toString().contains(currentUserUid)){
-                    Integer likeCount1 = post1.getLikeCount();
-                    post1.removeLike(currentUserUid);
-                    postRef.setValue(post1);
-                    holder.getLikeCount().setText(likeCount1.toString());
-                } else {
-                    Integer likeCount1 = post1.getLikeCount();
-                    post1.addLike(currentUserUid);
-                    postRef.setValue(post1);
-                    holder.getLikeCount().setText(likeCount1.toString());
-                }
-            });
-        });
-
-        holder.getCommentButton().setOnClickListener(v -> {
-            String postId = post.getPostId();
-            Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
-            intent.putExtra("postId", postId);
-            v.getContext().startActivity(intent);
-        });
     }
-
     @Override
     public int getItemCount() {
         return postsList.size();

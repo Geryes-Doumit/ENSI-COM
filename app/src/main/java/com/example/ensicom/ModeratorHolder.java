@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -24,6 +25,7 @@ public class ModeratorHolder extends RecyclerView.ViewHolder {
     private ImageButton refusePostButton;
     private TextView tagList;
     private VideoView videoView;
+    private LinearLayout linearLayout;
 
     public ModeratorHolder(@NonNull View itemView) {
         super(itemView);
@@ -41,8 +43,11 @@ public class ModeratorHolder extends RecyclerView.ViewHolder {
         videoView= itemView.findViewById(R.id.videoView);
         validatePostButton = itemView.findViewById(R.id.adminValidPost);
         refusePostButton = itemView.findViewById(R.id.adminDeletePost);
+        linearLayout = itemView.findViewById(R.id.commentLikeLayout);
     }
-
+    public LinearLayout getLinearLayout() {
+            return linearLayout;
+        }
     public ImageButton getValidatePostButton() {
         return validatePostButton;
     }
