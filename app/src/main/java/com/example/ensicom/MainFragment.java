@@ -63,8 +63,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 postsListView = view.findViewById(R.id.postsListView);
-                if (isAdded()) {
-                    if (task.isSuccessful()) {
+                if (isAdded() && (task.isSuccessful())) {
+                        postsList.clear();
                         for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
                             postsList.add(post);
@@ -74,7 +74,7 @@ public class MainFragment extends Fragment {
                         // Showing the posts using the recycler view
                         postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
-                    }
+
                 }
             }
         });
