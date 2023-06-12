@@ -150,9 +150,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             intent.putExtra("postId", postId);
             v.getContext().startActivity(intent);
         });
-
-        ImageView test = holder.getUserProfilePicture();
-        test.setOnClickListener(v -> Toast.makeText(holder.itemView.getContext(), post.getPictureUrlList().get(0), Toast.LENGTH_SHORT).show());
     }
 
     public void deletePost(String postId) {
