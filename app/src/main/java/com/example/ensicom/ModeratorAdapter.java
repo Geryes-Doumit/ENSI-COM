@@ -123,23 +123,15 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
 
             }
             if (videoUrl != null) {
-                holder.getVideoView().setVisibility(View.VISIBLE);
-                holder.getVideoView().setVideoPath(videoUrl);
-                holder.getVideoView().setOnPreparedListener(mp -> mp.setLooping(true));
-                holder.getVideoView().setOnTouchListener((v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        if (holder.getVideoView().isPlaying()) {
-                            holder.getVideoView().pause();
-                        } else {
-                            holder.getVideoView().start();
-                        }
-                        return true;
-                    }
-                    return false;
+                holder.getVideoPlayer().setVisibility(View.VISIBLE);
+                holder.getVideoPlayer().setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), VideoPlayer.class);
+                    intent.putExtra("videoUrl", videoUrl);
+                    v.getContext().startActivity(intent);
                 });
 
             } else {
-                holder.getVideoView().setVisibility(View.GONE);
+                holder.getVideoPlayer().setVisibility(View.GONE);
             }
         });
     }

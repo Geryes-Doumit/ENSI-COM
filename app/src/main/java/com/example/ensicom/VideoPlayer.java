@@ -8,18 +8,20 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.VideoView;
+
+import java.util.Locale;
 
 public class VideoPlayer extends AppCompatActivity {
     private VideoView videoView;
-    private ImageButton playButton;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        videoView= findViewById(R.id.videoPlayer);
-        playButton = findViewById(R.id.playVideoButton);
+        videoView = findViewById(R.id.videoPlayer);
+        ImageButton playButton = findViewById(R.id.playVideoButton);
         String videoUrl = getIntent().getStringExtra("videoUrl");
         videoView.setVideoURI(Uri.parse(videoUrl));
         videoView.setOnPreparedListener(mp -> mp.setLooping(true));
@@ -37,7 +39,6 @@ public class VideoPlayer extends AppCompatActivity {
             videoView.start();
             playButton.setVisibility(View.INVISIBLE);
         });
-
     }
     @Override
     protected void onDestroy() {

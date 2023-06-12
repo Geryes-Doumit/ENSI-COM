@@ -127,14 +127,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/videoLinearLayout">
+            android:id="@+id/videoLinearLayout"/>
 
-            <VideoView
-                android:id="@+id/videoView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/moderationVideoPlayer"
+            android:layout_width="162dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_media_play" />
 
     </LinearLayout>
 
