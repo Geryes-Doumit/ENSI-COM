@@ -68,10 +68,10 @@
 
                 <Button
                     android:id="@+id/profil_button"
-                    android:layout_width="50dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="35dp"
-                    android:background="@drawable/header_person"
+                    android:layout_width="42dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="25dp"
+                    android:background="@drawable/burger_menu"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

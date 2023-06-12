@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/profile_side_menu"
+            android:id="@+id/profile_pic_side_menu"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:paddingTop="21dp"
@@ -18,15 +18,17 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/profile_name_side_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jacob"
+            android:text="Username"
             android:textSize="24dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_side_menu"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_side_menu">
+        </TextView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

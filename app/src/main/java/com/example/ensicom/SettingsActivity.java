@@ -39,7 +39,6 @@ import java.util.UUID;
 public class SettingsActivity extends AppCompatActivity {
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app";
     Button updateButton;
-    Button logout;
     EditText nameSettings;
     TextView userName;
     ImageView profilePicture;
@@ -109,14 +108,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
-        logout=findViewById(R.id.buttonLogout);
-        logout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent mainIntent = new Intent(SettingsActivity.this, LoginActivity.class);
-            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(mainIntent);
-            finish();
         });
         profilePicture=findViewById(R.id.imageViewPostPicture);
         profilePicture.setOnClickListener(v -> {

@@ -8,87 +8,38 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity1 extends AppCompatActivity{
 
     private DrawerLayout drawerLayout;
 
-
-
-
-    /*
-    private void showMenuDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.activity_menu, null);
-
-        builder.setView(dialogView);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Code à exécuter lorsque l'utilisateur appuie sur OK
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void showProfileDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.activity_bonhomme, null);
-
-        Button profileButton = dialogView.findViewById(R.id.profile_rubrique_button);
-        Button settingsButton = dialogView.findViewById(R.id.settings_rubrique_button);
-        Button logoutButton = dialogView.findViewById(R.id.logout_rubrique_button);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Code à exécuter lorsque l'utilisateur appuie sur OK
-            }
-        });
-
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProfileDialog();
-            }
-        });
-
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSettingsRubriqueClick(v);
-            }
-        });
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLogoutRubriqueClick(v);
-            }
-        });
-
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-*/
-
     BottomNavigationView bottomNavigationView;
+
+    NavigationView navigationView;
+
+    TextView profileName;
+
+    ImageView profilePicture;
+    String profilePictureUrl;
 
     MainFragment homeFragment = new MainFragment();
     EvenementFragment evenementFragment = new EvenementFragment();
@@ -97,6 +48,12 @@ public class MainActivity1 extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String name = user.getDisplayName();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference().child("user").child(currentUserId);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -124,19 +81,59 @@ public class MainActivity1 extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(Gravity.LEFT);
+                profileName = findViewById(R.id.profile_name_side_menu);
+                profileName.setText(name);
+                profilePicture=findViewById(R.id.profile_pic_side_menu);
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+                            Glide.with(MainActivity1.this)
+                                    .load(profilePictureUrl).circleCrop()
+                                    .placeholder(R.drawable.ic_launcher_foreground)
+                                    .error(R.drawable.ic_launcher_foreground)
+                                    .into(profilePicture);
+                            if (profilePictureUrl == null) {
+                                Toast.makeText(MainActivity1.this, "Impossible de charger l'image", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainActivity1.this, "L'image n'a pas pu être récupérée", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+       navigationView = findViewById(R.id.nav_view);
+       navigationView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+           @Override
+           public void onViewAttachedToWindow(@NonNull View view) {
+               FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//               String name = user.getDisplayName();
+//               Toast.makeText(MainActivity1.this, "Bienvenue " + name, Toast.LENGTH_SHORT).show();
+//               profileName = findViewById(R.id.profile_name_side_menu);
+           }
+
+           @Override
+           public void onViewDetachedFromWindow(@NonNull View view) {
+
+
+           }
+       });
+
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id  == R.id.side_profile) {
                 Intent pIntent = new Intent(MainActivity1.this, ProfileActivity.class);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(pIntent);
             } else if (id == R.id.side_settings) {
                 Intent sIntent = new Intent(MainActivity1.this, SettingsActivity.class);
-                sIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                sIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(sIntent);
             } else if (id == R.id.side_logout) {
                 FirebaseAuth.getInstance().signOut();
