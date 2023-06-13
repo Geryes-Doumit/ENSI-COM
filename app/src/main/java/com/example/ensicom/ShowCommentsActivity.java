@@ -94,6 +94,11 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 if (urlList != null) {
                     Glide.with(imageContent1.getContext()).load(post.getPictureUrlList().get(0)).into(imageContent1);
                 }
+                if (urlList == null || urlList.isEmpty()) {
+                    imageContent1.setVisibility(View.GONE);
+                } else {
+                    imageContent1.setVisibility(View.VISIBLE);
+                }
             });
 
             // Showing the comments
