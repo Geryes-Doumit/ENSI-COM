@@ -110,6 +110,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             }
             if (videoUrl != null) {
                 holder.getMainVideoLayout().setVisibility(View.VISIBLE);
+                holder.getPlayVideo().setVisibility(View.VISIBLE);
+                Glide.with(holder.getPlayVideo().getContext()).load(videoUrl).into(holder.getPlayVideo());
                 holder.getPlayVideo().setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), VideoPlayer.class);
                     intent.putExtra("videoUrl", videoUrl);

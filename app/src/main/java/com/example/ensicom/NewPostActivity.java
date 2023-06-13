@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import android.Manifest;
 
@@ -61,10 +63,11 @@ public class NewPostActivity extends AppCompatActivity {
     Button addVideo;
     Button addPicture;
     ImageView videoThumbnail;
-    LinearLayout scrollableLayout;
+    LinearLayout linearLayout;
     Uri videoUri;
     String videoUrl;
     String tags;
+    String videoThumbnailUrl;
     private static final int CAMERA_AND_STORAGE_REQUEST = 100;
     private static final int STORAGE_REQUEST = 101;
 
@@ -81,7 +84,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         addPicture=findViewById(R.id.pictureButton);
         addVideo=findViewById(R.id.videoButton);
-        scrollableLayout=findViewById(R.id.scrollableLayout);
+        linearLayout=findViewById(R.id.postLayout);
         postButton=findViewById(R.id.postButton);
         postButton.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -116,7 +119,6 @@ public class NewPostActivity extends AppCompatActivity {
                 return;
             }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
         });
@@ -167,6 +169,9 @@ public class NewPostActivity extends AppCompatActivity {
         switch(requestCode) {
             case 2:
                 if (resultCode == Activity.RESULT_OK && data != null) {
+                    if (videoThumbnail != null) {
+                        linearLayout.removeView(videoThumbnail);
+                    }
                     videoUri = data.getData();
                     videoThumbnail = new ImageView(this);
                     try {
@@ -174,12 +179,13 @@ public class NewPostActivity extends AppCompatActivity {
                         mMMR.setDataSource(NewPostActivity.this, videoUri);
                         Glide.with(this)
                                 .load(mMMR.getFrameAtTime())
+                                .override(900,900)
                                 .apply(new RequestOptions()
                                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                                         .placeholder(R.drawable.ic_launcher_background)
                                         .error(R.drawable.ic_launcher_background))
                                 .into(videoThumbnail);
-                        scrollableLayout.addView(videoThumbnail);
+                        linearLayout.addView(videoThumbnail);
                         videoThumbnail.setOnClickListener(v -> {
                             ViewGroup parentView = (ViewGroup) videoThumbnail.getParent();
                             if (parentView != null) {
@@ -202,7 +208,7 @@ public class NewPostActivity extends AppCompatActivity {
                             ImageView imageView = new ImageView(this);
                             getImageInImageView(imageUri, imageView);
                             pictureUriList.add(imageUri);
-                            scrollableLayout.addView(imageView);
+                            linearLayout.addView(imageView);
                             imageView.setOnClickListener(v -> {
                                 ViewGroup parentView = (ViewGroup) imageView.getParent();
                                 if (parentView != null) {
@@ -213,11 +219,15 @@ public class NewPostActivity extends AppCompatActivity {
                         }
                     }
                     else {
+                        if (linearLayout.getChildCount()>0) {
+                            linearLayout.removeViews(0,1);
+                            pictureUriList.remove(0);
+                        }
                         Uri imageUri = data.getData();
                         ImageView imageView = new ImageView(this);
                         getImageInImageView(imageUri, imageView);
                         pictureUriList.add(imageUri);
-                        scrollableLayout.addView(imageView);
+                        linearLayout.addView(imageView);
                         imageView.setOnClickListener(v -> {
                             ViewGroup parentView = (ViewGroup) imageView.getParent();
                             if (parentView != null) {
@@ -237,6 +247,7 @@ public class NewPostActivity extends AppCompatActivity {
                 .applyDefaultRequestOptions(RequestOptions.centerCropTransform()
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
                 .load(imagePath)
+                .override(900, 900)
                 .into(imageView);
     }
     public void uploadVideo() {

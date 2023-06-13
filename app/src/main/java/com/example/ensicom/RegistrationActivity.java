@@ -70,7 +70,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
                                 .getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .setValue(new User("",email,"", true));
+                                .setValue(new User("",email,"", false));
                         Toast.makeText(RegistrationActivity.this, "Compte créé", Toast.LENGTH_SHORT).show();
                         Intent mainIntent = new Intent(RegistrationActivity.this, SetupProfileActivity.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
