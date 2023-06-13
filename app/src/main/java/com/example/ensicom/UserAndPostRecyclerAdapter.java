@@ -29,6 +29,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
 
     List<ClassicPost> postsList;
     String videoUrl;
+    User currentUser;
 
     public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
         this.postsList = postsList;
@@ -49,6 +50,12 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         int currentPosition = position;
         ClassicPost post = postsList.get(position);
+        FirebaseDatabase
+                .getInstance(DATABASE_URL)
+                .getReference("user")
+                .child(currentUserUid)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> currentUser = dataSnapshot.getValue(User.class));
 
         String postContent = post.getContent();
         Integer likeCount = post.getLikeCount();
@@ -64,7 +71,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             String postId = post.getPostId();
-            if (dataSnapshot.getKey().equals(currentUserUid)) {
+            if (currentUser.isAdmin()) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
                 holder.getDeletePostButton().setVisibility(View.GONE);

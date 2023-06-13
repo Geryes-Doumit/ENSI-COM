@@ -157,6 +157,13 @@ public class ShowCommentsActivity extends AppCompatActivity {
         DatabaseReference postRef = database.getReference(POSTS).child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
+
+            if (!dataSnapshot.exists()) {
+                Toast.makeText(this, "Ce post n'existe plus.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
             ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
 
             if (post.getCommentsId().equals("")) {
