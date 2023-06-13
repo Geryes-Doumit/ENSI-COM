@@ -24,6 +24,7 @@
         android:ems="10"
         android:hint="Entrer un nom"
         android:importantForAutofill="no"
+        android:paddingStart="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
