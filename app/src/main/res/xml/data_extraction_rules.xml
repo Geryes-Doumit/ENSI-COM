@@ -5,10 +5,6 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Supprimer les données inutiles (photos de profil, etc.)
-        <include .../>
-        <exclude .../>
-        -->
         <!-- TODO: Ajouter mignature vidéo + vérifier taille vidéo & images
         <include .../>
         <exclude .../>
@@ -21,6 +17,10 @@
         <include .../>
         <exclude .../>
         -->
+        <!-- TODO: SearchBar
+<include .../>
+<exclude .../>
+-->
     </cloud-backup>
     <!--
     <device-transfer>

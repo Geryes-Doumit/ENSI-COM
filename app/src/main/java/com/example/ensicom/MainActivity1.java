@@ -129,10 +129,12 @@ public class MainActivity1 extends AppCompatActivity{
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                if (user.isAdmin()) {
-                    navigationView.getMenu().findItem(R.id.side_admin).setVisible(true);
-                } else {
-                    navigationView.getMenu().findItem(R.id.side_admin).setVisible(false);
+                if (user!=null) {
+                    if (user.isAdmin()) {
+                        navigationView.getMenu().findItem(R.id.side_admin).setVisible(true);
+                    } else {
+                        navigationView.getMenu().findItem(R.id.side_admin).setVisible(false);
+                    }
                 }
             }
         });

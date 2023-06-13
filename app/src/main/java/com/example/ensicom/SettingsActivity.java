@@ -1,6 +1,7 @@
 package com.example.ensicom;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -28,9 +29,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
@@ -44,6 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
     ImageView profilePicture;
     private Uri imagePath;
     String profilePictureUrl;
+    String userId;
+    FirebaseUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +63,11 @@ public class SettingsActivity extends AppCompatActivity {
         userName.setText(name);
         nameSettings=findViewById(R.id.editTextUpdateProfileNameSettings);
         profilePicture=findViewById(R.id.imageViewPostPicture);
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference userRef = FirebaseDatabase.getInstance(DATABASE_URL)
-                .getReference().child("user").child(currentUserId);
+                .getReference().child("user").child(userId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -77,7 +83,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être récupérée", Toast.LENGTH_SHORT).show();
@@ -90,7 +95,6 @@ public class SettingsActivity extends AppCompatActivity {
             String name1 = nameSettings.getText().toString();
             if (imagePath!=null){
                 uploadImage();
-                Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
             }
             if (!nameSettings.getText().toString().isEmpty()) {
                 updateProfileName(name1);
@@ -115,6 +119,55 @@ public class SettingsActivity extends AppCompatActivity {
             pictureIntent.setType("image/*");
             startActivityForResult(pictureIntent,1);
         });
+        Button deletionButton = findViewById(R.id.deleteAccountButton);
+        deletionButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+            builder.setMessage("Voulez-vous vraiment supprimer votre compte ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Oui", (dialog, id) -> {
+                        deleteUserData();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(SettingsActivity.this, RegistrationActivity.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Non", (dialog, id) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+        });
+
+    }
+
+    public void deleteUserData() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
+        databaseRef.child("posts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String postId = postSnapshot.getKey();
+                    databaseRef.child("posts").child(postId).removeValue();
+                }
+                Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        if (!profilePictureUrl.equals("")) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SettingsActivity.this, "L'image a été supprimée", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être supprimée", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        databaseRef.child("user").child(userId).removeValue();
+        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé de la bdd", Toast.LENGTH_SHORT).show();
+        currentUser.delete();
+
+        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé totalement", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -149,12 +202,14 @@ public class SettingsActivity extends AppCompatActivity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
+        FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete();
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 updateProfilePicture(task1.getResult().toString());
+                                Toast.makeText(SettingsActivity.this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
                             }
                         });
                         progressDialog.dismiss();

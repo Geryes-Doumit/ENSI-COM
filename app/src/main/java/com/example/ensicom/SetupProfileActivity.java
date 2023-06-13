@@ -49,28 +49,27 @@ public class SetupProfileActivity extends AppCompatActivity {
                 return;
             }
             if (imagePath!=null && !nameSettings.getText().toString().isEmpty()){
-                uploadImage();
-                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
-            }
-            if (!nameSettings.getText().toString().isEmpty()) {
                 updateProfileName(name);
-                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
                 FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue(name);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
                         .build();
-                user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Intent intent = new Intent(SetupProfileActivity.this, MainActivity1.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else {
-                        Toast.makeText(SetupProfileActivity.this, "Le profil n'a pas pu être crée.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                user.updateProfile(profileUpdates);
+                uploadImage();
+            }
+            else {
+                updateProfileName(name);
+                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue(name);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build();
+                user.updateProfile(profileUpdates);
+                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SetupProfileActivity.this, MainActivity1.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
 
         });
@@ -112,7 +111,7 @@ public class SetupProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
+                        ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
@@ -120,13 +119,18 @@ public class SetupProfileActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         task.getResult().getStorage().getDownloadUrl().addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                updateProfilePicture(task1.getResult().toString());
+                                FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").
+                                        getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/profilePicture")
+                                        .setValue(task1.getResult().toString());
+                                Toast.makeText(SetupProfileActivity.this, "Profil créé", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SetupProfileActivity.this, MainActivity1.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
                             }
                         });
-                        progressDialog.dismiss();
                     }
                     else {
-                        progressDialog.dismiss();
                         Toast.makeText(SetupProfileActivity.this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnProgressListener(snapshot -> {
@@ -134,11 +138,6 @@ public class SetupProfileActivity extends AppCompatActivity {
                     progressDialog.setMessage("Chargement "+(int)progress+"%");
                 });
 
-    }
-    private void updateProfilePicture(String url){
-        FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").
-                getReference("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/profilePicture")
-                .setValue(url);
     }
     private void updateProfileName(String name){
         FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app").
