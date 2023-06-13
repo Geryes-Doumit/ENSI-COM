@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -22,6 +23,7 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     private ImageButton deletePostButton;
     private TextView tagList;
     private ImageView playVideo;
+    private LinearLayout imageLayout;
 
     public UserAndPostViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -37,6 +39,7 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
         deletePostButton = itemView.findViewById(R.id.deletePostButton);
         tagList = itemView.findViewById(R.id.postTags);
         playVideo = itemView.findViewById(R.id.playVideo);
+        imageLayout = itemView.findViewById(R.id.image_layout);
     }
 
     // All the getters
@@ -79,5 +82,8 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
 
     public ImageButton getDeletePostButton() {
         return deletePostButton;
+    }
+    public LinearLayout getImageLayout() {
+        return imageLayout;
     }
 }

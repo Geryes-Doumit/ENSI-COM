@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -93,12 +94,20 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
+            if (tag.equals("")) {
+                holder.getTagList().setVisibility(View.GONE);
+            }
             if (post.getPictureUrlList() != null) {
                 Glide.with(holder.getPostPicture1().getContext()).load(post.getPictureUrlList().get(0)).into(holder.getPostPicture1());
             }
             else {
                 holder.getPostPicture1().setVisibility(View.GONE);
-
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0,15,0,0);
+                holder.getImageLayout().setLayoutParams(layoutParams);
             }
             if (videoUrl != null) {
                 holder.getPlayVideo().setVisibility(View.VISIBLE);
