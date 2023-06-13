@@ -24,4 +24,8 @@
     <color name="cyan">#00C6FF</color>
     <color name="dark_green">#43B147</color>
     <color name="danger">#E1FF0000</color>
+    <color name="success">#E100FF00</color>
+    <color name="warning">#E1FFC000</color>
+    <color name="info">#E10000FF</color>
+    <color name="light_purple">#C0C1FF</color>
 </resources>

@@ -14,8 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@color/bottom_purple"
-        android:backgroundTint="@color/accent"
+        android:backgroundTint="@color/light_purple"
         android:src="@drawable/circle"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
