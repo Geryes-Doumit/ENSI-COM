@@ -45,12 +45,10 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void openGithub(View view) {
-        //Snackbar.make(view, "Github", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubURL));
         startActivity(browserIntent);
     }
     public void help(View view) {
-        //Snackbar.make(view, "Something happens", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         Intent easter = new Intent(view.getContext(), VideoPlayer.class);
         easter.putExtra("videoUrl", videoURL);
         view.getContext().startActivity(easter);
