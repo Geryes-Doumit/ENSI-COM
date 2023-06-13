@@ -13,58 +13,119 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/aboutTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="A propos"
-        android:textAlignment="center"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
-
-    <TextView
-        android:id="@+id/aboutText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="62dp"
-        android:text="Cette application a été développée par l'équipe de développement de l'application mobile de l'association des étudiants de l'ENSISA à Mulhouse."
-        android:textAlignment="center"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/toolBar">
 
-    <TextView
-        android:id="@+id/aboutText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Le code source de cette application est disponible sur GitHub :"
-        android:textAlignment="center"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutText" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:text=" Accéder à github"
-        android:onClick="openGithub"
-        android:background="@drawable/login_button"
-        android:drawableStart="@drawable/github_mark"
-        android:backgroundTint="@color/bottom_purple"
-        android:padding="10dp"
-        android:layout_marginTop="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutText2" />
+            <TextView
+                android:id="@+id/aboutTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="A propos"
+                android:textAlignment="center"
+                android:textSize="48sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/aboutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="16dp"
+                android:text="Notre application mobile a été développée par un groupe d'étudiants de l'ENSISIA à Mulhouse. En utilisant Java et Android Studio, nous avons conçu une application pratique et conviviale. Notre objectif est de fournir un outil de communication efficace pour diffuser des informations importantes. Grâce à notre application, vous pouvez recevoir facilement et rapidement des mises à jour cruciales et rester informé."
+                android:textAlignment="center"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutTitle" />
+
+            <TextView
+                android:id="@+id/aboutText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="L'application est née de notre passion pour la programmation et de notre volonté de faciliter la communication au sein d'une communauté. Nous avons travaillé dur pour offrir une expérience utilisateur fluide et intuitive. Nous souhaitons fournir un moyen fiable pour diffuser des informations essentielles, telles que des annonces, des notifications d'urgence et d'autres actualités importantes."
+                android:textAlignment="center"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutText" />
+
+            <TextView
+                android:id="@+id/aboutText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="L'équipe de développement de l'ENSISIA à Mulhouse vous remercie pour votre intérêt et votre soutien. Nous sommes fiers de partager notre application avec vous. Essayez-la dès maintenant et restez à jour avec les informations importantes qui comptent pour vous et votre communauté."
+                android:textAlignment="center"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutText2" />
+
+            <TextView
+                android:id="@+id/aboutText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="16dp"
+                android:text="Le code source de cette application est disponible sur GitHub :"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutText3" />
+
+            <Button
+                android:id="@+id/githubButton"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:background="@drawable/login_button"
+                android:backgroundTint="@color/bottom_purple"
+                android:drawableStart="@drawable/github_mark"
+                android:onClick="openGithub"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:text=" Accéder à github"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutText4" />
+
+            <Button
+                android:id="@+id/helpbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:background="@drawable/login_button"
+                android:backgroundTint="@color/jaune"
+                android:onClick="help"
+                android:padding="10dp"
+                android:layout_marginTop="16dp"
+                android:text="Test button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/githubButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
