@@ -46,6 +46,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_home, container, false);
 
+        lastLoadedPostId = null;
+
         postsListView = view.findViewById(R.id.postsListView);
 
         getPosts();
@@ -88,7 +90,6 @@ public class MainFragment extends Fragment {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
                             postsList.add(post);
                             lastLoadedPostId = postSnapshot.getKey();
-                            numberOfPostsLoaded++;
                         }
                     }
 
@@ -102,22 +103,22 @@ public class MainFragment extends Fragment {
             });
         }
         else {
-//                    .startAfter(numberOfPostsLoaded).endAt(numberOfPostsLoaded+3).get().addOnCompleteListener(task -> {
-//                postsListView = view.findViewById(R.id.postsListView);
-//                if (isAdded() && (task.isSuccessful())) {
-//                    for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-//                        ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-//                        postsList.add(post);
-//                        lastLoadedPostId = postSnapshot.getKey();
-//                        numberOfPostsLoaded++;
-//                    }
-//
-//                    postsListView.getAdapter().notifyItemInserted(postsList.size() - 1);
-//                }
-//                else {
-//                    Toast.makeText(getActivity(), "Pas de posts supplémentaires à charger.", Toast.LENGTH_SHORT).show();
-//                }
-//            });
+            postsRef.orderByKey().startAfter(lastLoadedPostId).get().addOnCompleteListener(task -> {
+                if (isAdded() && (task.isSuccessful())) {
+                    for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
+                        for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                            ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                            postsList.add(post);
+                            lastLoadedPostId = postSnapshot.getKey();
+                        }
+
+                        postsListView.getAdapter().notifyDataSetChanged();
+                    }
+                }
+                else {
+                    Toast.makeText(getActivity(), "Aucun post trouvé.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

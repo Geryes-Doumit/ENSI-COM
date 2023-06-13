@@ -28,7 +28,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
     public static final String DATABASE_URL = "https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/";
 
     List<ClassicPost> postsList;
-    String videoUrl;
     User currentUser;
 
     public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
@@ -59,7 +58,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
 
         String postContent = post.getContent();
         Integer likeCount = post.getLikeCount();
-        videoUrl = post.getVideoUrl();
+        String videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
 
         DatabaseReference userRef = FirebaseDatabase
@@ -71,6 +70,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             String postId = post.getPostId();
+            String postInvertedDate = post.getInvertedDate().toString();
             if (currentUser.isAdmin()) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
@@ -80,7 +80,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             holder.getDeletePostButton().setOnClickListener(v -> new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
                     .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
                     .setPositiveButton("Oui", (dialog, which) -> {
-                        deletePost(postId);
+                        deletePost(postId, postInvertedDate);
                         Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
                         postsList.remove(currentPosition);
                         notifyDataSetChanged();
@@ -105,19 +105,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 holder.getTagList().setVisibility(View.GONE);
             }
             if (post.getPictureUrlList() != null) {
+                holder.getMainImageLayout().setVisibility(View.VISIBLE);
                 Glide.with(holder.getPostPicture1().getContext()).load(post.getPictureUrlList().get(0)).into(holder.getPostPicture1());
             }
-            else {
-                holder.getPostPicture1().setVisibility(View.GONE);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.setMargins(0,15,0,0);
-                holder.getImageLayout().setLayoutParams(layoutParams);
-            }
             if (videoUrl != null) {
-                holder.getPlayVideo().setVisibility(View.VISIBLE);
+                holder.getMainVideoLayout().setVisibility(View.VISIBLE);
                 holder.getPlayVideo().setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), VideoPlayer.class);
                     intent.putExtra("videoUrl", videoUrl);
@@ -162,10 +154,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         });
     }
 
-    public void deletePost(String postId) {
+    public void deletePost(String postId, String postInvertedDate) {
         DatabaseReference postRef = FirebaseDatabase
                 .getInstance(DATABASE_URL)
                 .getReference("posts")
+                .child(postInvertedDate)
                 .child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
@@ -180,6 +173,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             }
             if (post.getPictureUrlList() != null) {
                 for (int i=0; i<post.getPictureUrlList().size(); i++) {
+
                     FirebaseStorage.getInstance().getReferenceFromUrl(post.getPictureUrlList().get(i)).delete();
                 }
             }
