@@ -258,7 +258,9 @@ public class SettingsActivity extends AppCompatActivity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
-        FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete();
+        if (!profilePictureUrl.equals("")){
+            FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete();
+        }
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
