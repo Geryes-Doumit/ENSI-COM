@@ -23,6 +23,8 @@ public class AboutActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityAboutBinding binding;
+    private final String githubURL = "https://github.com/";
+    private final String videoURL = "https://firebasestorage.googleapis.com/v0/b/projet-fin-annee-ddbef.appspot.com/o/rickroll.mp4?alt=media&token=20dfd6f9-d4c1-424f-aa60-ec67b7c85cfc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +45,13 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void openGithub(View view) {
-        String url = "https://github.com/";
-        //Snackbar.make(view, "Github", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubURL));
         startActivity(browserIntent);
     }
     public void help(View view) {
-        Snackbar.make(view, "Something happens", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Intent easter = new Intent(view.getContext(), VideoPlayer.class);
+        easter.putExtra("videoUrl", videoURL);
+        view.getContext().startActivity(easter);
 
     }
 
