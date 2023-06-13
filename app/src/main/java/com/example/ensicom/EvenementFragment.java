@@ -3,11 +3,13 @@ package com.example.ensicom;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
@@ -18,7 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class EvenementFragment extends Fragment {
+public class EvenementFragment extends Fragment implements CalendarAdapter.OnItemListener, View.OnClickListener  {
     private View view;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -37,38 +39,50 @@ public class EvenementFragment extends Fragment {
             startActivity(intent);
         });
 
+        // Find the next month button and set the OnClickListener
+        Button nextMonthButton = view.findViewById(R.id.nextMonthAction);
+        nextMonthButton.setOnClickListener(this);
+
+        // Find the next month button and set the OnClickListener
+        Button previousMonthButton = view.findViewById(R.id.previousMonthAction);
+        previousMonthButton.setOnClickListener(this);
+
         initWidgets();
 
-        //setMonthView();
-
+        setMonthView();
         return view;
     }
-
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.nextMonthAction) {
+            nextMonthAction(view);
+        }
+        if (view.getId() == R.id.previousMonthAction) {
+            previousMonthAction(view);
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         selectedDate = Calendar.getInstance();
     }
 
-
-
-
     private void initWidgets() {
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
         monthYearText = view.findViewById(R.id.monthYearTV);
     }
-/*
+
     private void setMonthView() {
         Calendar currentDate = Calendar.getInstance();
         monthYearText.setText(monthYearFromDate(selectedDate));
 
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, (CalendarAdapter.OnItemListener) this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-    } */
+    }
 
     private ArrayList<String> daysInMonthArray(Calendar calendar) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
@@ -101,7 +115,7 @@ public class EvenementFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
     }
-/*
+
     public void previousMonthAction(View view)
     {
         selectedDate.add(Calendar.MONTH, -1);
@@ -114,8 +128,7 @@ public class EvenementFragment extends Fragment {
         setMonthView();
     }
 
-    */
-
+    @Override
     public void onItemClick(int position, String dayText)
     {
         if(!dayText.equals(""))
