@@ -24,7 +24,7 @@ public class AboutActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityAboutBinding binding;
     private final String githubURL = "https://github.com/";
-    private final String videoURL = "https://firebasestorage.googleapis.com/v0/b/projet-fin-annee-ddbef.appspot.com/o/LCxr0IDDV8o_rickroll.mp4?alt=media&token=31429524-703c-442c-86f5-01fd681d84e1";
+    private final String videoURL = "https://firebasestorage.googleapis.com/v0/b/projet-fin-annee-ddbef.appspot.com/o/rickroll.mp4?alt=media&token=20dfd6f9-d4c1-424f-aa60-ec67b7c85cfc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
