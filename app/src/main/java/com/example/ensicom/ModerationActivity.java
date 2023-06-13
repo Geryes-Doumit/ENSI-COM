@@ -31,6 +31,7 @@ public class ModerationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_moderation);
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Modération");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getPosts();

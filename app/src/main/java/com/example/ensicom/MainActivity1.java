@@ -145,25 +145,24 @@ public class MainActivity1 extends AppCompatActivity{
                 Intent pIntent = new Intent(MainActivity1.this, ProfileActivity.class);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(pIntent);
-//                item.setChecked(false);
             } else if (id == R.id.side_settings) {
                 Intent sIntent = new Intent(MainActivity1.this, SettingsActivity.class);
                 sIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(sIntent);
-//                item.setChecked(false);
             } else if (id == R.id.side_logout) {
                 FirebaseAuth.getInstance().signOut();
                 Intent lIntent = new Intent(MainActivity1.this, LoginActivity.class);
                 lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(lIntent);
                 finish();
-//                item.setChecked(false);
-            }
-            else if (id == R.id.side_admin) {
-                Intent aIntent = new Intent(MainActivity1.this, ModerationActivity.class);
+            } else if (id == R.id.side_about) {
+                Intent aIntent = new Intent(MainActivity1.this, AboutActivity.class);
                 aIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(aIntent);
-//                item.setChecked(false);
+            } else if (id == R.id.side_admin) {
+                Intent abIntent = new Intent(MainActivity1.this, ModerationActivity.class);
+                abIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(abIntent);
             }
             item.setChecked(false);
             return true;

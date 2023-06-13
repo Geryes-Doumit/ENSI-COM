@@ -13,7 +13,7 @@
             android:icon="@drawable/settings_logo"
             android:title="Paramètres" />
         <item
-            android:id="@+id/nav_about"
+            android:id="@+id/side_about"
             android:icon="@drawable/info_icon"
             android:title="À propos" />
 

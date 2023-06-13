@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -72,7 +73,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                             .getReference("moderationPost")
                             .child(post.getPostId());
                     postRef.removeValue();
-                    Toast.makeText(holder.getRefusePostButton().getContext(), "Post refusé", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Post refusé", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     postsList.remove(currentPosition);
                     notifyItemRemoved(currentPosition);
                     notifyItemRangeChanged(currentPosition, postsList.size());
@@ -97,7 +98,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                             .getReference("posts")
                             .child(post.getPostId());
                     postRef2.setValue(post);
-                    Toast.makeText(holder.getValidatePostButton().getContext(), "Post validé", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Post validé", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     postsList.remove(currentPosition);
                     notifyItemRemoved(currentPosition);
                     notifyItemRangeChanged(currentPosition, postsList.size());
