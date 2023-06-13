@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
     List<ClassicPost> postsList;
     List<String> pictureUrlList = new ArrayList<>();
     String videoUrl;
+    Toolbar toolbar;
 
     public ModeratorAdapter(List<ClassicPost> postsList) {
         this.postsList = postsList;
@@ -50,6 +52,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
         pictureUrlList = post.getPictureUrlList();
         videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
+//        toolbar = holder.getToolbar();
 
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance(DATABASE_URL)
