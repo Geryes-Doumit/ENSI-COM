@@ -119,17 +119,16 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 holder.getPlayVideo().setVisibility(View.GONE);
             }
         });
-        long like_button = getItemId(R.id.likeButton);
         holder.getLikeButton().setOnClickListener(view -> {
             String postId = post.getPostId();
             DatabaseReference postRef = FirebaseDatabase
                     .getInstance(DATABASE_URL)
                     .getReference("posts")
+                    .child(post.getInvertedDate().toString())
                     .child(postId);
             postRef.get().addOnSuccessListener(dataSnapshot -> {
                 ClassicPost post1 = dataSnapshot.getValue(ClassicPost.class);
                 if (post1.getLikeUserList().toString().contains(currentUserUid)){
-                    Integer likeCount1 = post1.getLikeCount();
                     Button like_button1 = holder.itemView.findViewById(R.id.likeButton);
                     like_button1.setBackgroundResource(R.drawable.like);
                     post1.removeLike(currentUserUid);
