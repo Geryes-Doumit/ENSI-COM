@@ -28,7 +28,6 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
 
     List<ClassicPost> postsList;
     List<String> pictureUrlList = new ArrayList<>();
-    String videoUrl;
     Toolbar toolbar;
 
     public ModeratorAdapter(List<ClassicPost> postsList) {
@@ -51,7 +50,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
 
         String postContent = post.getContent();
         pictureUrlList = post.getPictureUrlList();
-        videoUrl = post.getVideoUrl();
+        String videoUrl = post.getVideoUrl();
         List<String> tags = post.getTagsList();
 //        toolbar = holder.getToolbar();
 
@@ -124,14 +123,11 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
             if (post.getPictureUrlList() != null) {
+                holder.getModerationImageLayout().setVisibility(View.VISIBLE);
                 Glide.with(holder.getPostPicture1().getContext()).load(post.getPictureUrlList().get(0)).into(holder.getPostPicture1());
             }
-            else {
-                holder.getPostPicture1().setVisibility(View.GONE);
-
-            }
             if (videoUrl != null) {
-                holder.getVideoPlayer().setVisibility(View.VISIBLE);
+                holder.getModerationVideoLayout().setVisibility(View.VISIBLE);
                 holder.getVideoPlayer().setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), VideoPlayer.class);
                     intent.putExtra("videoUrl", videoUrl);

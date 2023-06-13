@@ -6,7 +6,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +22,8 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
     private ImageButton deletePostButton;
     private TextView tagList;
     private ImageView playVideo;
-    private LinearLayout imageLayout;
+    private LinearLayout mainImageLayout;
+    private LinearLayout mainVideoLayout;
 
     public UserAndPostViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -35,14 +35,22 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
         commentCount = itemView.findViewById(R.id.commentCount);
         likeButton = itemView.findViewById(R.id.likeButton);
         commentButton = itemView.findViewById(R.id.commentButton);
-        postPicture1 = itemView.findViewById(R.id.imageContent1);
+        postPicture1 = itemView.findViewById(R.id.mainImage);
         deletePostButton = itemView.findViewById(R.id.deletePostButton);
         tagList = itemView.findViewById(R.id.postTags);
-        playVideo = itemView.findViewById(R.id.playVideo);
-        imageLayout = itemView.findViewById(R.id.image_layout);
+        playVideo = itemView.findViewById(R.id.mainVideo);
+        mainImageLayout = itemView.findViewById(R.id.mainImageLayout);
+        mainVideoLayout = itemView.findViewById(R.id.mainVideoLayout);
+
     }
 
     // All the getters
+    public LinearLayout getMainImageLayout() {
+        return mainImageLayout;
+    }
+    public LinearLayout getMainVideoLayout() {
+        return mainVideoLayout;
+    }
     public ImageView getPlayVideo() {
         return playVideo;
     }
@@ -82,8 +90,5 @@ public class UserAndPostViewHolder extends RecyclerView.ViewHolder{
 
     public ImageButton getDeletePostButton() {
         return deletePostButton;
-    }
-    public LinearLayout getImageLayout() {
-        return imageLayout;
     }
 }
