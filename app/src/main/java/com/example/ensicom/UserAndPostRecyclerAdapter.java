@@ -151,6 +151,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postId = post.getPostId();
             Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
             intent.putExtra("postId", postId);
+            intent.putExtra("postInvertedDate", post.getInvertedDate().toString());
             v.getContext().startActivity(intent);
         });
     }

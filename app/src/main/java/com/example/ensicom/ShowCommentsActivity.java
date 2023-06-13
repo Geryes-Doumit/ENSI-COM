@@ -42,8 +42,10 @@ public class ShowCommentsActivity extends AppCompatActivity {
     private ImageButton deletePostButton;
     private ImageView userProfilePicture;
     private ImageView imageContent1;
+    private ImageView videoImageView;
     private ImageButton sendCommentButton;
     private EditText commentContent;
+    private String postInvertedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,17 @@ public class ShowCommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_comments);
 
         postId = getIntent().getStringExtra("postId");
+        postInvertedDate = getIntent().getStringExtra("postInvertedDate");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
         commentCount = findViewById(R.id.commentCount);
-
+        videoImageView = findViewById(R.id.videoImageView);
         commentsRecyclerView.setAdapter(commentsRecyclerAdapter);
         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         FirebaseDatabase database = FirebaseDatabase
                 .getInstance(DATABASE_URL);
-        DatabaseReference postRef = database.getReference(POSTS).child(postId);
+        DatabaseReference postRef = database.getReference(POSTS).child(postInvertedDate).child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
             ClassicPost post = dataSnapshot.getValue(ClassicPost.class);
@@ -68,7 +71,6 @@ public class ShowCommentsActivity extends AppCompatActivity {
             // Showing the post information
             postContent = findViewById(R.id.postContent);
             postContent.setText(post.getContent());
-
             userName = findViewById(R.id.userName);
             // Get the user name
             DatabaseReference userRef = database.getReference("user").child(post.getUserId());
@@ -98,6 +100,15 @@ public class ShowCommentsActivity extends AppCompatActivity {
                     imageContent1.setVisibility(View.GONE);
                 } else {
                     imageContent1.setVisibility(View.VISIBLE);
+                }
+                String videoUrl = post.getVideoUrl();
+                if (!(videoUrl ==null)) {
+                    Glide.with(videoImageView.getContext()).load(videoUrl).into(videoImageView);
+                    videoImageView.setOnClickListener(v -> {
+                        Intent intent = new Intent(ShowCommentsActivity.this, VideoPlayer.class);
+                        intent.putExtra("videoUrl", videoUrl);
+                        startActivity(intent);
+                    });
                 }
             });
 
