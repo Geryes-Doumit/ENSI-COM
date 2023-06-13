@@ -42,8 +42,10 @@ public class AboutActivity extends AppCompatActivity {
 
     public void openGithub(View view) {
         String url = "https://github.com/";
-        Snackbar.make(view, "Github", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        Snackbar.make(view, "Github", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+    public void help(View view) {
+        Snackbar.make(view, "Something happens", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
 }
