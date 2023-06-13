@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn = "navigation_view" >
 
-    <group
-        android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/side_profile"
             android:icon="@drawable/header_person"
@@ -18,22 +17,19 @@
             android:icon="@drawable/info_icon"
             android:title="À propos" />
 
-    </group>
-
-    <item android:title="">
-        <menu>
-
-            <item
+        <item
             android:id="@+id/side_admin"
             android:icon="@drawable/admin_shield"
             android:title="Administration" />
 
+    </group>
+
+    <item android:title="">
+        <menu>
             <item
                 android:id="@+id/side_logout"
                 android:icon="@drawable/ic_lock"
                 android:title="Déconnexion" />
-
-
         </menu>
     </item>
 
