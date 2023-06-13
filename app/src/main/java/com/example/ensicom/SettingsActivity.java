@@ -138,35 +138,60 @@ public class SettingsActivity extends AppCompatActivity {
     public void deleteUserData() {
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
-        databaseRef.child("posts").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postDateSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
-                        ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                        if (post.getUserId().equals(userId)) {
-                            String postId = postSnapshot.getKey();
-                            DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
-                            if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
-                                for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
-                                    String imageUrl = urlSnapshot.getValue(String.class);
-                                    if (!imageUrl.equals("")) {
-                                        FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
+        databaseRef.child("posts").get().addOnSuccessListener(dataSnapshot -> {
+            for (DataSnapshot postDateSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                    if (post.getUserId().equals(userId)) {
+                        String postId = postSnapshot.getKey();
+                        DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
+                        if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
+                            for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
+                                String imageUrl = urlSnapshot.getValue(String.class);
+                                if (!imageUrl.equals("")) {
+                                    FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }
-                            databaseRef.child("posts").child(post.getInvertedDate().toString()).child(postId).removeValue();
                         }
+                        databaseRef.child("posts").child(post.getInvertedDate().toString()).child(postId).removeValue();
                     }
                 }
-                Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
             }
+            Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
+        });
+
+        databaseRef.child("moderationPost").get().addOnSuccessListener(dataSnapshot -> {
+            for (DataSnapshot postDateSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                    if (post.getUserId().equals(userId)) {
+                        String postId = postSnapshot.getKey();
+                        DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
+                        if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
+                            for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
+                                String imageUrl = urlSnapshot.getValue(String.class);
+                                if (!imageUrl.equals("")) {
+                                    FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        databaseRef.child("moderationPost").child(post.getInvertedDate().toString()).child(postId).removeValue();
+                    }
+                }
+            }
+            Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
         });
 
         if (!profilePictureUrl.equals("")) {
@@ -185,6 +210,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (task1.isSuccessful()) {
                         Toast.makeText(SettingsActivity.this, "L'utilisateur a été supprimé", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(SettingsActivity.this, RegistrationActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
                         Toast.makeText(SettingsActivity.this, "L'utilisateur n'a pas pu être supprimé", Toast.LENGTH_SHORT).show();
