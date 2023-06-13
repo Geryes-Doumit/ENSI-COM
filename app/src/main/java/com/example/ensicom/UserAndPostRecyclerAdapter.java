@@ -178,15 +178,13 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                         .child(commentId);
                 commentsRef.removeValue();
             }
-
             if (post.getPictureUrlList() != null) {
                 for (int i=0; i<post.getPictureUrlList().size(); i++) {
                     FirebaseStorage.getInstance().getReferenceFromUrl(post.getPictureUrlList().get(i)).delete();
                 }
             }
-
-            if (videoUrl != null) {
-                FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl).delete();
+            if (post.getVideoUrl() != null) {
+                FirebaseStorage.getInstance().getReferenceFromUrl(post.getVideoUrl()).delete();
             }
         });
         postRef.removeValue();
