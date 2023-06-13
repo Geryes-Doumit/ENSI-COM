@@ -38,11 +38,15 @@ public class MainFragment extends Fragment {
     private List<ClassicPost> postsList = new ArrayList<>();
     private View view;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private String lastLoadedPostId;
+    private Integer numberOfPostsLoaded = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_home, container, false);
+
+        postsListView = view.findViewById(R.id.postsListView);
 
         getPosts();
         newPostButton = view.findViewById(R.id.newPost);
@@ -51,10 +55,20 @@ public class MainFragment extends Fragment {
             startActivity(intent);
         });
 
-
+        postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1 && lastLoadedPostId != null) {
+                    getPosts();
+                }
+            }
+        });
 
         swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
+            lastLoadedPostId = null;
+            numberOfPostsLoaded = 0;
             getPosts();
             swipeRefreshLayout.setRefreshing(false);
         });
@@ -65,22 +79,46 @@ public class MainFragment extends Fragment {
     public void getPosts() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
 
-        postsRef.limitToLast(20).get().addOnCompleteListener(task -> {
-            postsListView = view.findViewById(R.id.postsListView);
-            if (isAdded() && (task.isSuccessful())) {
-                postsList.clear();
-                for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                    postsList.add(post);
+        if (lastLoadedPostId == null) {
+            postsRef.orderByKey().limitToFirst(5).get().addOnCompleteListener(task -> {
+                if (isAdded() && (task.isSuccessful())) {
+                    postsList.clear();
+                    for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
+                        for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                            ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                            postsList.add(post);
+                            lastLoadedPostId = postSnapshot.getKey();
+                            numberOfPostsLoaded++;
+                        }
+                    }
+
+                    // Showing the posts using the recycler view
+                    postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
                 }
-                Collections.reverse(postsList);
-
-                // Showing the posts using the recycler view
-                postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
-
-            }
-        });
+                else {
+                    Toast.makeText(getActivity(), "Aucun post trouvé.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+//                    .startAfter(numberOfPostsLoaded).endAt(numberOfPostsLoaded+3).get().addOnCompleteListener(task -> {
+//                postsListView = view.findViewById(R.id.postsListView);
+//                if (isAdded() && (task.isSuccessful())) {
+//                    for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
+//                        ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+//                        postsList.add(post);
+//                        lastLoadedPostId = postSnapshot.getKey();
+//                        numberOfPostsLoaded++;
+//                    }
+//
+//                    postsListView.getAdapter().notifyItemInserted(postsList.size() - 1);
+//                }
+//                else {
+//                    Toast.makeText(getActivity(), "Pas de posts supplémentaires à charger.", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+        }
     }
 
     public RecyclerView getPostsListView() {

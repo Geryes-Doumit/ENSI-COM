@@ -1,19 +1,20 @@
 package com.example.ensicom;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ClassicPost {
     private String content;
     private String postId;
     private Long date;
+    private Long invertedDate;
     private String userId;
     private String commentsId; // To get to the comments
     private Integer likeCount;
     private Integer commentCount;
     private ArrayList<String> likeUserList;
     private List<String> tagsList = new ArrayList<>();
-
     private List<String> pictureUrlList;
     private String videoUrl;
 
@@ -25,6 +26,7 @@ public class ClassicPost {
         this.content = content;
         this.userId = userId;
         this.date = date;
+        this.invertedDate = new Date(2099, 12, 31).getTime() - this.date;
         this.pictureUrlList = pictureUrlList;
         this.commentsId = ""; // Initialize the commentId to be able to check if it's empty
         this.commentCount = 0;
@@ -119,6 +121,15 @@ public class ClassicPost {
 
     public void setCommentsId(String commentsId) {
         this.commentsId = commentsId;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+        this.invertedDate = new Date(2099, 12, 31).getTime() - this.date;
+    }
+
+    public Long getInvertedDate() {
+        return this.invertedDate;
     }
 
 }

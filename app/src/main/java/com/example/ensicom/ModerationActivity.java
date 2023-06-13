@@ -48,9 +48,11 @@ public class ModerationActivity extends AppCompatActivity {
             postsListView =findViewById(R.id.postsListViewMod);
             if (task.isSuccessful()) {
                 postsList.clear();
-                for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                    ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                    postsList.add(post);
+                for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
+                    for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                        ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                        postsList.add(post);
+                    }
                 }
                 Collections.reverse(postsList);
 

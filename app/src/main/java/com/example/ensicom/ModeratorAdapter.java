@@ -71,6 +71,7 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                     DatabaseReference postRef = FirebaseDatabase
                             .getInstance(DATABASE_URL)
                             .getReference("moderationPost")
+                            .child(post.getInvertedDate().toString())
                             .child(post.getPostId());
                     postRef.removeValue();
                     Snackbar.make(v, "Post refusé", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -91,11 +92,14 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                     DatabaseReference postRef = FirebaseDatabase
                             .getInstance(DATABASE_URL)
                             .getReference("moderationPost")
+                            .child(post.getInvertedDate().toString())
                             .child(post.getPostId());
                     postRef.removeValue();
+                    post.setDate(System.currentTimeMillis());
                     DatabaseReference postRef2 = FirebaseDatabase
                             .getInstance(DATABASE_URL)
                             .getReference("posts")
+                            .child(post.getInvertedDate().toString())
                             .child(post.getPostId());
                     postRef2.setValue(post);
                     Snackbar.make(v, "Post validé", Snackbar.LENGTH_LONG).setAction("Action", null).show();
