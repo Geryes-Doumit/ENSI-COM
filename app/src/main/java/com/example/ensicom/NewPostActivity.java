@@ -72,10 +72,6 @@ public class NewPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
-        Toolbar toolbar=findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (!checkStoragePermission() && !checkCameraPermission()) {
             requestCameraAndStoragePermissions();
         }
