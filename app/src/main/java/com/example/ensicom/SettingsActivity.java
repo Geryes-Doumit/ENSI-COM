@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -126,9 +127,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .setPositiveButton("Oui", (dialog, id) -> {
                         deleteUserData();
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(SettingsActivity.this, RegistrationActivity.class);
-                        startActivity(intent);
                     })
                     .setNegativeButton("Non", (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
@@ -136,14 +134,29 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
-
     public void deleteUserData() {
+
         DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
         databaseRef.child("posts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String postId = postSnapshot.getKey();
+                    DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
+                    if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
+                        for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
+                            String imageUrl = urlSnapshot.getValue(String.class);
+                            if (!imageUrl.equals("")) {
+                                FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    }
                     databaseRef.child("posts").child(postId).removeValue();
                 }
                 Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
@@ -162,13 +175,56 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
-
-        databaseRef.child("user").child(userId).removeValue();
-        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé de la bdd", Toast.LENGTH_SHORT).show();
-        currentUser.delete();
-
-        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé totalement", Toast.LENGTH_SHORT).show();
+        databaseRef.child("user").child(userId).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(SettingsActivity.this, "Le compte a été supprimé", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(SettingsActivity.this, "L'utilisateur a été supprimé", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SettingsActivity.this, RegistrationActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SettingsActivity.this, "L'utilisateur n'a pas pu être supprimé", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(SettingsActivity.this, "Le compte n'a pas pu être supprimé", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+//    public void deleteUserData() {
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
+//        databaseRef.child("posts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    String postId = postSnapshot.getKey();
+//                    databaseRef.child("posts").child(postId).removeValue();
+//                }
+//                Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//
+//        if (!profilePictureUrl.equals("")) {
+//            FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete().addOnCompleteListener(task -> {
+//                if (task.isSuccessful()) {
+//                    Toast.makeText(SettingsActivity.this, "L'image a été supprimée", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être supprimée", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//
+//        databaseRef.child("user").child(userId).removeValue();
+//        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé de la bdd", Toast.LENGTH_SHORT).show();
+//        currentUser.delete();
+//
+//        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé totalement", Toast.LENGTH_SHORT).show();
+//    }
 
     /**
      * @deprecated 
