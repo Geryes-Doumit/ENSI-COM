@@ -147,7 +147,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="1dp" />
 
-            <Button
+                <Button
                 android:id="@+id/likeButton"
                 android:layout_width="14pt"
                 android:layout_height="14pt"
