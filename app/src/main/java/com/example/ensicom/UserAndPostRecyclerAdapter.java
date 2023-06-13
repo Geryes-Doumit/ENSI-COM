@@ -71,6 +71,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             String postId = post.getPostId();
+            String postInvertedDate = post.getInvertedDate().toString();
             if (currentUser.isAdmin()) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
@@ -80,7 +81,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             holder.getDeletePostButton().setOnClickListener(v -> new AlertDialog.Builder(v.getContext()).setTitle("Supprimer le post")
                     .setMessage("Êtes-vous sûr de vouloir supprimer ce post ?")
                     .setPositiveButton("Oui", (dialog, which) -> {
-                        deletePost(postId);
+                        deletePost(postId, postInvertedDate);
                         Toast.makeText(v.getContext(), "Post supprimé", Toast.LENGTH_SHORT).show();
                         postsList.remove(currentPosition);
                         notifyDataSetChanged();
@@ -162,10 +163,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         });
     }
 
-    public void deletePost(String postId) {
+    public void deletePost(String postId, String postInvertedDate) {
         DatabaseReference postRef = FirebaseDatabase
                 .getInstance(DATABASE_URL)
                 .getReference("posts")
+                .child(postInvertedDate)
                 .child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
