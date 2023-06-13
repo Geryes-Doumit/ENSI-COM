@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -137,32 +138,34 @@ public class SettingsActivity extends AppCompatActivity {
     public void deleteUserData() {
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
-        databaseRef.child("posts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.child("posts").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    String postId = postSnapshot.getKey();
-                    DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
-                    if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
-                        for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
-                            String imageUrl = urlSnapshot.getValue(String.class);
-                            if (!imageUrl.equals("")) {
-                                FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
+            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postDateSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
+                        ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                        if (post.getUserId().equals(userId)) {
+                            String postId = postSnapshot.getKey();
+                            DataSnapshot pictureUrlListSnapshot = postSnapshot.child("pictureUrlList");
+                            if (pictureUrlListSnapshot.exists() && pictureUrlListSnapshot.hasChildren()) {
+                                for (DataSnapshot urlSnapshot : pictureUrlListSnapshot.getChildren()) {
+                                    String imageUrl = urlSnapshot.getValue(String.class);
+                                    if (!imageUrl.equals("")) {
+                                        FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
-                                });
+                                }
                             }
+                            databaseRef.child("posts").child(post.getInvertedDate().toString()).child(postId).removeValue();
                         }
                     }
-                    databaseRef.child("posts").child(postId).removeValue();
                 }
                 Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
@@ -258,7 +261,9 @@ public class SettingsActivity extends AppCompatActivity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Chargement...");
         progressDialog.show();
-        FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete();
+        if (!profilePictureUrl.equals("")){
+            FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete();
+        }
         FirebaseStorage.getInstance().getReference("images"+ UUID.randomUUID().toString()).putFile(imagePath)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

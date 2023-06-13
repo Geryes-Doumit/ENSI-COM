@@ -1,5 +1,7 @@
 package com.example.ensicom;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -42,10 +44,13 @@ public class AboutActivity extends AppCompatActivity {
 
     public void openGithub(View view) {
         String url = "https://github.com/";
-        Snackbar.make(view, "Github", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        //Snackbar.make(view, "Github", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
     public void help(View view) {
         Snackbar.make(view, "Something happens", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
     }
 
 }

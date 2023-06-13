@@ -62,14 +62,15 @@
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/login_button"
+        android:background="@drawable/custom_input_2"
         android:text="Créer un compte"
-        android:textColor="@color/white"
+        android:textColor="@color/babyblue"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        android:stateListAnimator="@null"/>
 
     <ImageView
         android:id="@+id/imageView2"
