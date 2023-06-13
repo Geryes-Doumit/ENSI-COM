@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
 
     List<ClassicPost> postsList;
     String videoUrl;
+    User currentUser;
 
     public UserAndPostRecyclerAdapter(List<ClassicPost> postsList) {
         this.postsList = postsList;
@@ -48,6 +50,12 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         int currentPosition = position;
         ClassicPost post = postsList.get(position);
+        FirebaseDatabase
+                .getInstance(DATABASE_URL)
+                .getReference("user")
+                .child(currentUserUid)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> currentUser = dataSnapshot.getValue(User.class));
 
         String postContent = post.getContent();
         Integer likeCount = post.getLikeCount();
@@ -63,7 +71,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postUserName = postUser.getUsername();
             String profilePictureUrl = postUser.getProfilePicture();
             String postId = post.getPostId();
-            if (dataSnapshot.getKey().equals(currentUserUid)) {
+            if (currentUser.isAdmin()) {
                 holder.getDeletePostButton().setVisibility(View.VISIBLE);
             } else {
                 holder.getDeletePostButton().setVisibility(View.GONE);
@@ -119,6 +127,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 holder.getPlayVideo().setVisibility(View.GONE);
             }
         });
+        long like_button = getItemId(R.id.likeButton);
         holder.getLikeButton().setOnClickListener(view -> {
             String postId = post.getPostId();
             DatabaseReference postRef = FirebaseDatabase
@@ -129,11 +138,15 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 ClassicPost post1 = dataSnapshot.getValue(ClassicPost.class);
                 if (post1.getLikeUserList().toString().contains(currentUserUid)){
                     Integer likeCount1 = post1.getLikeCount();
+                    Button like_button1 = holder.itemView.findViewById(R.id.likeButton);
+                    like_button1.setBackgroundResource(R.drawable.like);
                     post1.removeLike(currentUserUid);
                     postRef.setValue(post1);
                     holder.getLikeCount().setText(post1.getLikeCount().toString());
                 } else {
                     Integer likeCount1 = post1.getLikeCount();
+                    Button like_button1 = holder.itemView.findViewById(R.id.likeButton);
+                    like_button1.setBackgroundResource(R.drawable.like_full);
                     post1.addLike(currentUserUid);
                     postRef.setValue(post1);
                     holder.getLikeCount().setText(post1.getLikeCount().toString());
