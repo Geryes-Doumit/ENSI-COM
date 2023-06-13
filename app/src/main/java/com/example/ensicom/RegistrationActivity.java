@@ -32,8 +32,8 @@ public class RegistrationActivity extends AppCompatActivity {
             finish();
         }
         registerEmail=findViewById(R.id.registerEmail);
-        registerPassword=findViewById(R.id.postTitleEditText);
-        registerConfirmPassword=findViewById(R.id.eventDescriptionEditText);
+        registerPassword=findViewById(R.id.eventTitleEditText);
+        registerConfirmPassword=findViewById(R.id.confirmPassword);
         mRegister = findViewById(R.id.button_register);
         mAuth = FirebaseAuth.getInstance();
         mRegister.setOnClickListener(view -> {
