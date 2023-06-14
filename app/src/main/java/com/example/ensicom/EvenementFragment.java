@@ -15,8 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +53,25 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
         monthYearText = view.findViewById(R.id.monthYearTV);
         addEventButton = view.findViewById(R.id.addEventButton);
+        addEventButton.setVisibility(View.GONE);
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference().child("user").child(currentUserId);
+
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user!=null) {
+                    if (user.isAdmin()) {
+                        addEventButton.setVisibility(View.VISIBLE);
+                    } else {
+                        addEventButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
         calendarRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 7));
         calendarRecyclerView.setAdapter(new CalendarAdapter(daysInMonthArray(selectedDate), EvenementFragment.this, eventsList));

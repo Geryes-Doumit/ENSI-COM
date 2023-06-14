@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -39,12 +40,15 @@ public class ModerationActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             getPosts();
             swipeRefreshLayout.setRefreshing(false);
+            if (postsList.size()==0) {
+                Toast.makeText(ModerationActivity.this, "Aucun post à modérer", Toast.LENGTH_SHORT).show();
+            }
         });
     }
     public void getPosts() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("moderationPost");
 
-        postsRef.get().addOnCompleteListener(task -> {
+        postsRef.limitToFirst(22).get().addOnCompleteListener(task -> {
             postsListView =findViewById(R.id.postsListViewMod);
             if (task.isSuccessful()) {
                 postsList.clear();

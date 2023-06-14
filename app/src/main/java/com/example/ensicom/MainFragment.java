@@ -62,7 +62,6 @@ public class MainFragment extends Fragment {
         postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (layoutManager.findLastVisibleItemPosition() == postsList.size() - 1
                         && lastLoadedPostDate != null) {
@@ -107,25 +106,18 @@ public class MainFragment extends Fragment {
         }
         else {
             postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(5).get().addOnCompleteListener(task -> {
-                List<ClassicPost> temporaryPostList = new ArrayList<>();
                 if (isAdded() && (task.isSuccessful())) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            if (!temporaryPostList.contains(post)) {
-                                temporaryPostList.add(post);
+                            if (!postsList.contains(post)) {
+                                postsList.add(post);
                                 lastLoadedPostDate = post.getInvertedDate().toString();
-                            }
-                            if (!temporaryPostList.isEmpty()) {
-                                postsList.addAll(temporaryPostList);
+                                postsListView.getAdapter()
+                                        .notifyItemInserted(postsList.size() - 1);
                             }
                         }
-                        postsListView.getAdapter().notifyDataSetChanged();
                     }
-                }
-                if (temporaryPostList.size() == 0) {
-                    Toast message = Toast.makeText(view.getContext(), "Tous les posts on été chargés.", Toast.LENGTH_SHORT);
-                    message.show();
                 }
             });
         }

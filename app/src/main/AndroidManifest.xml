@@ -22,6 +22,11 @@
         android:theme="@style/Theme.ENSICOM"
         android:usesCleartextTraffic="false"
         tools:targetApi="24">
+        <activity android:name=".UsersActivity"
+            android:exported="false"
+            android:label="UserActivity"
+            android:theme="@style/Theme.ENSICOM" />
+
         <activity
             android:name=".AboutActivity"
             android:exported="false"
