@@ -46,7 +46,7 @@ public class NewEventActivity extends AppCompatActivity {
         dateButton = findViewById(R.id.calendarImageView);
         postEventButton = findViewById(R.id.postEvent);
         eventList = new ArrayList<>();
-        eventAdapter = new EventRecyclerAdapter(this, eventList);
+        eventAdapter = new EventRecyclerAdapter(eventList);
         // Initialize Firebase Database reference
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/");
         eventsRef = database.getReference("events");
