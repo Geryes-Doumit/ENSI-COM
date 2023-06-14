@@ -180,7 +180,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 if (!imageUrl.equals("")) {
                                     FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
+
                                         } else {
                                             Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
                                         }
@@ -192,7 +192,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
         });
 
         databaseRef.child("moderationPost").get().addOnSuccessListener(dataSnapshot -> {
@@ -208,7 +207,6 @@ public class SettingsActivity extends AppCompatActivity {
                                 if (!imageUrl.equals("")) {
                                     FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(SettingsActivity.this, "Les images ont été supprimées", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(SettingsActivity.this, "Les images n'ont pas pu être supprimées", Toast.LENGTH_SHORT).show();
                                         }
@@ -220,13 +218,11 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
         });
 
         if (!profilePictureUrl.equals("")) {
             FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(SettingsActivity.this, "L'image a été supprimée", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être supprimée", Toast.LENGTH_SHORT).show();
                 }
@@ -237,7 +233,7 @@ public class SettingsActivity extends AppCompatActivity {
                 Toast.makeText(SettingsActivity.this, "Le compte a été supprimé", Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
-                        Toast.makeText(SettingsActivity.this, "L'utilisateur a été supprimé", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, "L'utilisateur et toutes ses données ont été supprimées", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(SettingsActivity.this, RegistrationActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
