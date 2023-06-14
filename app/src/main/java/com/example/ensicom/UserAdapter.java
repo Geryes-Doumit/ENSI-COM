@@ -55,8 +55,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         if (isAdmin) {
             holder.getUserStatus().setText("Admin");
         }
-        else {
+        if (!isAdmin) {
             holder.getUserStatus().setText("Utilisateur");
+            holder.getPutAdmin().setVisibility(View.VISIBLE);
         }
         holder.getPutAdmin().setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(holder.getPutAdmin().getContext());
