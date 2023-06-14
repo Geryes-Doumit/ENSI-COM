@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
     String profilePictureUrl;
     String userId;
     FirebaseUser currentUser;
+    ImageButton profileEditPicture;
+    ImageButton profileDeletePicture;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +71,8 @@ public class SettingsActivity extends AppCompatActivity {
         profilePicture=findViewById(R.id.imageViewPostPicture);
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        profileEditPicture = findViewById(R.id.profileEditPicture);
+        profileDeletePicture = findViewById(R.id.profileDeletePicture);
         DatabaseReference userRef = FirebaseDatabase.getInstance(DATABASE_URL)
                 .getReference().child("user").child(userId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,6 +126,31 @@ public class SettingsActivity extends AppCompatActivity {
             pictureIntent.setType("image/*");
             startActivityForResult(pictureIntent,1);
         });
+        profileEditPicture.setOnClickListener(v -> {
+            Intent pictureIntent= new Intent(Intent.ACTION_PICK);
+            pictureIntent.setType("image/*");
+            startActivityForResult(pictureIntent,1);
+        });
+//        profileDeletePicture.setOnClickListener(v -> {
+//            if (profilePictureUrl!=null) {
+//                Glide.with(SettingsActivity.this)
+//                        .load(R.drawable.ic_launcher_foreground).circleCrop()
+//                        .placeholder(R.drawable.ic_launcher_foreground)
+//                        .error(R.drawable.ic_launcher_foreground)
+//                        .into(profilePicture);
+//                if (!profilePictureUrl.equals("")) {
+//                    Toast.makeText(this, profilePictureUrl, Toast.LENGTH_SHORT).show();
+//                    FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete().addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(SettingsActivity.this, "Image supprimée", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être supprimée", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
+//                imagePath=null;
+//            }
+//        });
         Button deletionButton = findViewById(R.id.deleteAccountButton);
         deletionButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
@@ -133,7 +163,6 @@ public class SettingsActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         });
-
     }
     public void deleteUserData() {
 
@@ -221,40 +250,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-
-//    public void deleteUserData() {
-//        DatabaseReference databaseRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
-//        databaseRef.child("posts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    String postId = postSnapshot.getKey();
-//                    databaseRef.child("posts").child(postId).removeValue();
-//                }
-//                Toast.makeText(SettingsActivity.this, "Les posts ont été supprimés", Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//
-//        if (!profilePictureUrl.equals("")) {
-//            FirebaseStorage.getInstance().getReferenceFromUrl(profilePictureUrl).delete().addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    Toast.makeText(SettingsActivity.this, "L'image a été supprimée", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(SettingsActivity.this, "L'image n'a pas pu être supprimée", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//
-//        databaseRef.child("user").child(userId).removeValue();
-//        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé de la bdd", Toast.LENGTH_SHORT).show();
-//        currentUser.delete();
-//
-//        Toast.makeText(SettingsActivity.this, "Le compte a été supprimé totalement", Toast.LENGTH_SHORT).show();
-//    }
-
     /**
      * @deprecated 
      * @param requestCode The integer request code originally supplied to
@@ -279,6 +274,7 @@ public class SettingsActivity extends AppCompatActivity {
         Glide .with(this)
                 .load(imagePath)
                 .placeholder(R.drawable.ic_launcher_foreground)
+                .circleCrop()
                 .error(R.drawable.ic_launcher_foreground)
                 .into(profilePicture);
     }
