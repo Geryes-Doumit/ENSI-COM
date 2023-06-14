@@ -58,9 +58,10 @@
 
     <ImageView
         android:id="@+id/imageViewPostPicture"
-        android:layout_width="210dp"
-        android:layout_height="199dp"
+        android:layout_width="222dp"
+        android:layout_height="208dp"
         android:layout_marginTop="36dp"
+        android:background="@drawable/settings_border"
         android:contentDescription="Profile picture"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_foreground"
@@ -88,6 +89,7 @@
         android:layout_width="62dp"
         android:layout_height="55dp"
         android:contentDescription="edit profile picture"
+        android:background="@drawable/settings_border_bis"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewPostPicture"
         app:layout_constraintEnd_toEndOf="@+id/imageViewPostPicture"
         app:layout_constraintHorizontal_bias="1.0"
