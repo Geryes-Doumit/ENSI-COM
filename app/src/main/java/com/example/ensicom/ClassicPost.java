@@ -132,5 +132,16 @@ public class ClassicPost {
         return this.invertedDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof ClassicPost)) {
+            return false;
+        }
+        ClassicPost classicPost = (ClassicPost) o;
+        return this.postId.equals(classicPost.getPostId());
+    }
+
 }
 
