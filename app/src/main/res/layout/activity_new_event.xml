@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".NewEventActivity">
 
     <TextView
@@ -42,16 +43,17 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="8dp"
-            android:src="@drawable/calendar" />
+            android:src="@drawable/calendar"/>
 
         <TextView
             android:id="@+id/dateTextView"
-            android:layout_width="152dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center"
             android:text="Date de l'évènement"
             tools:layout_editor_absoluteX="105dp"
-            tools:layout_editor_absoluteY="330dp" />
+            tools:layout_editor_absoluteY="330dp"
+            android:textColor="@color/dark_gray"/>
 
     </LinearLayout>
 
@@ -106,6 +108,7 @@
 
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/eventTitleEditText"
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -113,6 +116,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="180dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:drawablePadding="12dp"
         android:ems="10"
         android:hint="Titre de l'évènement"
@@ -125,6 +129,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/eventDescriptionEditText"
         android:layout_width="0dp"
         android:layout_height="157dp"
@@ -132,6 +137,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:ems="10"
         android:gravity="center"
         android:hint="Description de l'évènement"
@@ -192,11 +198,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <EditText
+            android:textColorHint="@color/dark_gray"
             android:id="@+id/locationEditText"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="start"
             android:drawableStart="@drawable/location_icon"
+            android:textColor="@color/black"
             android:drawablePadding="2dp"
             android:hint="Emplacement"
             android:paddingLeft="2dp"

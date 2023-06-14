@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:visibility="visible"
-    app:circularflow_radiusInDP="20">
+    app:circularflow_radiusInDP="20"
+    android:background="@color/white">
 
     <!-- Menu de navigation -->
 
@@ -130,7 +131,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/barlow"
                 android:gravity="center"
-                android:textColor="@color/bottom_purple"
+                android:textColor="@color/user_purple"
                 android:textSize="62px"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -212,6 +213,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
+            android:textColorHint="@color/dark_gray"
             android:id="@+id/newCommentContent"
             android:layout_width="318dp"
             android:layout_height="match_parent"

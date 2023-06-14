@@ -13,7 +13,8 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:textColor="@color/dark_gray"/>
 
     <TextView
         android:id="@+id/replyContent"
@@ -22,5 +23,6 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/replyUserName"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:textColor="@color/dark_gray"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

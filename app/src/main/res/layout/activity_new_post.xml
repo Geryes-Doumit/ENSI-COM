@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".NewPostActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,6 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/postContent"
         android:layout_width="match_parent"
         android:layout_height="130dp"
@@ -48,6 +50,7 @@
         android:layout_marginTop="120dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:hint="veuillez saisir votre message ici"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -67,6 +70,7 @@
         android:layout_height="60dp"
         android:background="@drawable/login_button"
         android:backgroundTint="@color/babyblue"
+        android:textColor="@color/black"
         android:text="Poster"
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -77,11 +81,13 @@
         app:layout_constraintVertical_bias="0.976" />
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/tagsContent"
         android:layout_width="376dp"
         android:layout_height="45dp"
         android:layout_marginTop="60dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:drawableStart="@drawable/custom_tag_icon"
         android:drawablePadding="12dp"
         android:ems="10"

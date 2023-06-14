@@ -139,6 +139,7 @@ public class MainActivity1 extends AppCompatActivity{
         });
 
        navigationView = findViewById(R.id.nav_view);
+       navigationView .setBackgroundColor(getResources().getColor(R.color.white));
        navigationView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
            @Override
            public void onViewAttachedToWindow(@NonNull View view) {

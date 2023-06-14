@@ -223,7 +223,7 @@
             android:id="@+id/bottom_ribbon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#87CEFA"
+            android:background="@color/babyblue"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_alignParentBottom="true"/>

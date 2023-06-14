@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".RegistrationActivity">
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/eventTitleEditText"
         android:layout_width="253dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:drawableStart="@drawable/custom_lock_icon"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -26,11 +29,13 @@
         app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/confirmPassword"
         android:layout_width="253dp"
         android:layout_height="48dp"
         android:layout_marginTop="84dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:drawableStart="@drawable/custom_lock_icon"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -44,11 +49,13 @@
         app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
 
     <EditText
+        android:textColorHint="@color/dark_gray"
         android:id="@+id/registerEmail"
         android:layout_width="253dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/custom_input"
+        android:textColor="@color/black"
         android:drawableStart="@drawable/custom_email_icon"
         android:drawablePadding="12dp"
         android:ems="10"

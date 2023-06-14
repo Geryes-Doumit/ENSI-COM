@@ -42,13 +42,14 @@
             android:text="userName"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/marginRightView"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:layout_editor_absoluteY="0dp"
+            android:textColor="@color/black"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/gris"
+            android:background="@color/post_background"
             android:text="Répondre"
             android:textSize="12sp"
             android:textAllCaps="false"
@@ -72,7 +73,8 @@
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/repliesRecyclerView"
@@ -92,7 +94,7 @@
                 android:id="@+id/showRepliesButton"
                 android:layout_width="60dp"
                 android:layout_height="15dp"
-                android:background="@color/gris"
+                android:background="@color/post_background"
                 android:text="Réponses"
                 android:textAllCaps="false"
                 android:textSize="10sp" />

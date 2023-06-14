@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/barlow"
                 android:gravity="center"
-                android:textColor="@color/bottom_purple"
+                android:textColor="@color/user_purple"
                 android:textSize="62px"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -54,6 +54,7 @@
                 tools:text="@tools:sample/first_names" />
 
             <ImageButton
+                android:background="@drawable/custom_input"
                 android:id="@+id/deletePostButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +69,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:textColor="@color/dark_gray"
             android:id="@+id/postTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,6 +146,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:textColor="@color/black"
                 android:id="@+id/likeCount"
                 android:layout_width="36dp"
                 android:layout_height="35dp"
@@ -152,7 +155,8 @@
                 android:textSize="60px"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="1dp" />
+                tools:layout_editor_absoluteY="1dp"
+                android:gravity="center"/>
 
             <Button
                 android:id="@+id/likeButton"
@@ -168,6 +172,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
+                android:textColor="@color/black"
                 android:id="@+id/commentCount"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
@@ -177,7 +182,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/commentButton"
                 app:layout_constraintStart_toEndOf="@+id/likeCount"
-                tools:layout_editor_absoluteY="1dp" />
+                tools:layout_editor_absoluteY="1dp"
+                android:gravity="center"/>
 
             <Button
                 android:id="@+id/commentButton"

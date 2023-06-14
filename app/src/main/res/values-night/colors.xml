@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="babyblue">#8AAAE5</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF3D3D3D</color>
+    <color name="babyblue">#5C7096</color>
     <color name="jaune">#FCDC06</color>
-    <color name="post_background">#EBEBEB</color>
+    <color name="post_background">#000000</color>
     <color name="post_text">#0060a9</color>
     <color name="gris">#E9E9E9</color>
     <color name="darker_grey">#A9A9A9</color>
@@ -12,16 +12,16 @@
     <color name="primary">#3F51B5</color>
     <color name="primaryDark">#303F9F</color>
     <color name="accent">#FF4081</color>
-    <color name="background">#ECEFF1</color>
+    <color name="background">#191919</color>
     <color name="text">#212121</color>
     <color name="button_background_color">#FFAABBCC</color>
     <color name="blue">#FF0000FF</color>
-    <color name="dark_gray">#6B6B6B</color>
-    <color name="foreground_text_color">#000000</color>
+    <color name="dark_gray">#B3B3B3</color>
+    <color name="foreground_text_color">#FFFFFF</color>
     <color name="grad_blue">#5CE1E6</color>
     <color name="grad_purple">#8C52FF</color>
     <color name="bottom_purple">#7D80F7</color>
-    <color name="user_purple">#7D80F7</color>
+    <color name="user_purple">#A6A8FF</color>
     <color name="cyan">#00C6FF</color>
     <color name="dark_green">#43B147</color>
     <color name="danger">#E1FF0000</color>

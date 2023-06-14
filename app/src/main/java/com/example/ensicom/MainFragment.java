@@ -99,9 +99,6 @@ public class MainFragment extends Fragment {
                     postsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
                 }
-                else {
-                    Toast.makeText(getActivity(), "Aucun post trouvé.", Toast.LENGTH_SHORT).show();
-                }
             });
         }
         else {
