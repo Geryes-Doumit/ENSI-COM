@@ -160,8 +160,10 @@ public class MainActivity1 extends AppCompatActivity{
                 if (user!=null) {
                     if (user.isAdmin()) {
                         navigationView.getMenu().findItem(R.id.side_admin).setVisible(true);
+                        navigationView.getMenu().findItem(R.id.side_users).setVisible(true);
                     } else {
                         navigationView.getMenu().findItem(R.id.side_admin).setVisible(false);
+                        navigationView.getMenu().findItem(R.id.side_users).setVisible(false);
                     }
                 }
             }

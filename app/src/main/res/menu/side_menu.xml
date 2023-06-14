@@ -12,19 +12,20 @@
             android:id="@+id/side_settings"
             android:icon="@drawable/settings_logo"
             android:title="Paramètres" />
+
+        <item
+            android:id="@+id/side_admin"
+            android:icon="@drawable/policy"
+            android:title="Validation des publications" />
+        <item
+            android:id="@+id/side_users"
+            android:icon="@drawable/users_multiple"
+            android:title="Gestion des utilisateurs" />
+
         <item
             android:id="@+id/side_about"
             android:icon="@drawable/info_icon"
             android:title="À propos" />
-
-        <item
-            android:id="@+id/side_admin"
-            android:icon="@drawable/admin_shield"
-            android:title="Gestion des publications" />
-        <item
-            android:id="@+id/side_users"
-            android:icon="@drawable/admin_shield"
-            android:title="Gestion des utilisateurs" />
 
     </group>
 
