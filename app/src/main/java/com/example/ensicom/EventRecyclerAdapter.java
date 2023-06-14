@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder> {
@@ -20,6 +21,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     public EventRecyclerAdapter(Context context, ArrayList<EventPost> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+    }
+
+    public EventRecyclerAdapter(List<EventPost> eventsList) {
     }
 
     @NonNull

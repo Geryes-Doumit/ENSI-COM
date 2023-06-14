@@ -1,37 +1,31 @@
 package com.example.ensicom;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import androidx.recyclerview.widget.GridLayoutManager;
 import android.widget.Toast;
@@ -46,6 +40,8 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
     private FloatingActionButton addEventButton;
     private AlertDialog alertDialog;
     private DatabaseReference eventsRef;
+
+    List<EventPost> eventsList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +71,7 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         eventsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("events");
 
         setMonthView();
-        getEventsList();
+        getEventsList(selectedDate);
         return view;
     }
 
@@ -122,70 +118,45 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         return dateFormat.format(calendar.getTime());
     }
 
-    public void previousMonthAction(View view) {
-        selectedDate.add(Calendar.MONTH, -1);
-        setMonthView();
-    }
-
-    public void nextMonthAction(View view) {
-        selectedDate.add(Calendar.MONTH, 1);
-        setMonthView();
-    }
-
     @Override
     public void onItemClick(int position, String dayText) {
         if (!dayText.equals("")) {
             String date = dayText + " " + monthYearFromDate(selectedDate);
-            getEvents(date);
+
         }
     }
 
-    public ArrayList<String> getEventsList() {
-        eventsRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+    public List<EventPost> getEventsList(Calendar calendar) {
+        eventsRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(view.getContext(), "Error getting data", Toast.LENGTH_SHORT).show();
+                } else {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
+                    String year = dateFormat.format(calendar.getTime());
+                    //Toast.makeText(view.getContext(), year, Toast.LENGTH_SHORT).show();
+
+                    for (DataSnapshot monthSnapshot : task.getResult().child(year).getChildren()) {
+                        String month = monthSnapshot.getKey();
+                        //Toast.makeText(view.getContext(), month, Toast.LENGTH_SHORT).show();
+
+                        for (DataSnapshot daySnapshot : monthSnapshot.getChildren()) {
+                            String day = daySnapshot.getKey();
+                            //Toast.makeText(view.getContext(), day, Toast.LENGTH_SHORT).show();
+
+                            for (DataSnapshot eventSnapshot : daySnapshot.getChildren()) {
+                                EventPost event = eventSnapshot.getValue(EventPost.class);
+                                eventsList.add(event);
+                            }
+                        }
+                    }
+                }
+                //Toast.makeText(view.getContext(), String.valueOf(eventsList.size()), Toast.LENGTH_SHORT).show();
 
             }
         });
         return null;
-    }
-
-    public void getEvents(String date) {
-        //DatabaseReference eventsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("events");
-
-        eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<EventPost> eventsList = new ArrayList<>();
-
-                for (DataSnapshot yearSnapshot : dataSnapshot.getChildren()) {
-                    String year = yearSnapshot.getKey();
-                    Toast.makeText(view.getContext(), year, Toast.LENGTH_SHORT);
-
-//                    for (DataSnapshot monthSnapshot : yearSnapshot.getChildren()) {
-//                        String month = monthSnapshot.getKey();
-//
-//                        for (DataSnapshot daySnapshot : monthSnapshot.getChildren()) {
-//                            for (DataSnapshot eventSnapshot : daySnapshot.getChildren()) {
-//                                String eventId = eventSnapshot.getKey();
-//                                EventPost eventPost = eventSnapshot.getValue(EventPost.class);
-//                                eventsList.add(eventPost);
-//                            }
-//                        }
-//                    }
-                }
-
-                // Filtrer les événements en fonction de la date sélectionnée
-                ArrayList<EventPost> filteredEventsList = filterEventsByDate(eventsList, date);
-
-                showEventDialog(filteredEventsList); // Afficher les événements dans la boîte de dialogue
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Gérer les erreurs
-            }
-        });
     }
 
     private ArrayList<EventPost> filterEventsByDate(ArrayList<EventPost> eventsList, String date) {
@@ -237,3 +208,4 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         setMonthView();
     }
 }
+
