@@ -55,9 +55,6 @@
             android:name=".SetupProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity1"
             android:exported="false" />
         <activity
