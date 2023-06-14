@@ -120,6 +120,13 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             } else {
                 holder.getPlayVideo().setVisibility(View.GONE);
             }
+            Button like_button1 = holder.itemView.findViewById(R.id.likeButton);
+            if (post.getLikeUserList().contains(currentUserUid)) {
+                like_button1.setBackgroundResource(R.drawable.like_full);
+            }
+            else{
+                like_button1.setBackgroundResource(R.drawable.like);
+            }
         });
         holder.getLikeButton().setOnClickListener(view -> {
             String postId = post.getPostId();
