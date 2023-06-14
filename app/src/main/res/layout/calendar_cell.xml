@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/cellEventNumber"
             android:text="0 Evt."
-            android:textSize="20sp"
+            android:textSize="8sp"
             android:textColor="@color/black"
             app:layout_constraintVertical_bias="0.25"/>
 

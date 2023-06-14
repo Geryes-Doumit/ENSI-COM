@@ -29,7 +29,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,15 +60,12 @@ public class MainFragment extends Fragment {
         });
 
         postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            boolean once = true;
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1
+                if (layoutManager.findLastVisibleItemPosition() == postsList.size() - 1
                         && lastLoadedPostDate != null) {
-
                     getPosts();
-//                    once = false;
                 }
             }
         });
@@ -85,7 +84,7 @@ public class MainFragment extends Fragment {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
 
         if (lastLoadedPostDate == null) {
-            postsRef.orderByKey().limitToFirst(5).get().addOnCompleteListener(task -> {
+            postsRef.orderByKey().limitToFirst(10).get().addOnCompleteListener(task -> {
                 if (isAdded() && (task.isSuccessful())) {
                     postsList.clear();
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
@@ -106,23 +105,19 @@ public class MainFragment extends Fragment {
             });
         }
         else {
-            postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(3).get().addOnCompleteListener(task -> {
-                List<ClassicPost> testForSizeList = new ArrayList<>();
+            postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(5).get().addOnCompleteListener(task -> {
                 if (isAdded() && (task.isSuccessful())) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            postsList.add(post);
-                            testForSizeList.add(post);
-                            lastLoadedPostDate = post.getInvertedDate().toString();
+                            if (!postsList.contains(post)) {
+                                postsList.add(post);
+                                lastLoadedPostDate = post.getInvertedDate().toString();
+                                postsListView.getAdapter()
+                                        .notifyItemInserted(postsList.size() - 1);
+                            }
                         }
-
-                        postsListView.getAdapter().notifyDataSetChanged();
                     }
-                    return;
-                }
-                if (testForSizeList.size() == 0) {
-                    Snackbar.make(view, "Tous les posts on été chargés.", Snackbar.LENGTH_SHORT).show();
                 }
             });
         }

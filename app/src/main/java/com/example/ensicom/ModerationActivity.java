@@ -44,7 +44,7 @@ public class ModerationActivity extends AppCompatActivity {
     public void getPosts() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("moderationPost");
 
-        postsRef.get().addOnCompleteListener(task -> {
+        postsRef.limitToFirst(22).get().addOnCompleteListener(task -> {
             postsListView =findViewById(R.id.postsListViewMod);
             if (task.isSuccessful()) {
                 postsList.clear();

@@ -10,15 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder> {
-
-    private Context context;
     private ArrayList<EventPost> arrayList;
 
-    public EventRecyclerAdapter(Context context, ArrayList<EventPost> arrayList) {
-        this.context = context;
+    public EventRecyclerAdapter(ArrayList<EventPost> arrayList) {
         this.arrayList = arrayList;
     }
 
