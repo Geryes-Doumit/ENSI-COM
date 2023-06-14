@@ -42,6 +42,8 @@ public class ShowCommentsActivity extends AppCompatActivity {
     private ImageButton deletePostButton;
     private ImageView userProfilePicture;
     private ImageView imageContent1;
+
+    private ImageView videoContent1;
     private ImageView videoImageView;
     private ImageButton sendCommentButton;
     private EditText commentContent;
@@ -92,6 +94,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).circleCrop().into(userProfilePicture);
 
                 imageContent1 = findViewById(R.id.imageContent1);
+                videoContent1 = findViewById(R.id.videoImageView);
                 List<String> urlList = post.getPictureUrlList();
                 if (urlList != null) {
                     Glide.with(imageContent1.getContext()).load(post.getPictureUrlList().get(0)).into(imageContent1);
@@ -109,6 +112,9 @@ public class ShowCommentsActivity extends AppCompatActivity {
                         intent.putExtra("videoUrl", videoUrl);
                         startActivity(intent);
                     });
+                }
+                else{
+                    videoContent1.setVisibility(View.GONE);
                 }
             });
 
