@@ -26,7 +26,6 @@
             android:icon="@drawable/admin_shield"
             android:title="Gestion des utilisateurs" />
 
-
     </group>
 
     <item android:title="">
