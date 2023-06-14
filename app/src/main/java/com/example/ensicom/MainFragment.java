@@ -52,7 +52,7 @@ public class MainFragment extends Fragment {
 
         postsListView = view.findViewById(R.id.postsListView);
 
-        getPosts();
+        getPosts(false);
         newPostButton = view.findViewById(R.id.newPost);
         newPostButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NewPostActivity.class);
@@ -62,11 +62,15 @@ public class MainFragment extends Fragment {
         postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (layoutManager.findLastVisibleItemPosition() == postsList.size() - 1
                         && lastLoadedPostDate != null) {
-                    getPosts();
+                    boolean showToast = false;
+
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1) {
+                        showToast = true;
+                    }
+                    getPosts(showToast);
                 }
             }
         });
@@ -74,14 +78,14 @@ public class MainFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             lastLoadedPostDate = null;
-            getPosts();
+            getPosts(false);
             swipeRefreshLayout.setRefreshing(false);
         });
 
         return view;
     }
 
-    public void getPosts() {
+    public void getPosts(boolean toast) {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
 
         if (lastLoadedPostDate == null) {
@@ -107,23 +111,21 @@ public class MainFragment extends Fragment {
         }
         else {
             postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(5).get().addOnCompleteListener(task -> {
-                List<ClassicPost> temporaryPostList = new ArrayList<>();
+                List<ClassicPost> testForSizeList = new ArrayList<>();
                 if (isAdded() && (task.isSuccessful())) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            if (!temporaryPostList.contains(post)) {
-                                temporaryPostList.add(post);
+                            if (!postsList.contains(post)) {
+                                postsList.add(post);
+                                testForSizeList.add(post);
                                 lastLoadedPostDate = post.getInvertedDate().toString();
-                            }
-                            if (!temporaryPostList.isEmpty()) {
-                                postsList.addAll(temporaryPostList);
                             }
                         }
                         postsListView.getAdapter().notifyDataSetChanged();
                     }
                 }
-                if (temporaryPostList.size() == 0) {
+                if (testForSizeList.size() == 0 && toast) {
                     Toast message = Toast.makeText(view.getContext(), "Tous les posts on été chargés.", Toast.LENGTH_SHORT);
                     message.show();
                 }
