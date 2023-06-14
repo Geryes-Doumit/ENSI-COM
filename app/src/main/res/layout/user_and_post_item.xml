@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="129dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/post_background"
         android:orientation="vertical">
 
@@ -96,7 +96,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/mainImage"
