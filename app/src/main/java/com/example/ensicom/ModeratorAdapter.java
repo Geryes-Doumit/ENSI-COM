@@ -72,6 +72,16 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
                             .getReference("moderationPost")
                             .child(post.getInvertedDate().toString())
                             .child(post.getPostId());
+                    String videoUrl1 = post.getVideoUrl();
+                    if (videoUrl1 != null) {
+                        FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl1).delete();
+                    }
+                    List<String> pictureUrlList1 = post.getPictureUrlList();
+                    if (pictureUrlList1 != null) {
+                        for (String pictureUrl : pictureUrlList1) {
+                            FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl).delete();
+                        }
+                    }
                     postRef.removeValue();
                     Snackbar.make(v, "Post refusé", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     postsList.remove(currentPosition);
@@ -128,6 +138,8 @@ public class ModeratorAdapter extends RecyclerView.Adapter<ModeratorHolder> {
             }
             if (videoUrl != null) {
                 holder.getModerationVideoLayout().setVisibility(View.VISIBLE);
+                holder.getVideoPlayer().setVisibility(View.VISIBLE);
+                Glide.with(holder.getVideoPlayer().getContext()).load(videoUrl).into(holder.getVideoPlayer());
                 holder.getVideoPlayer().setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), VideoPlayer.class);
                     intent.putExtra("videoUrl", videoUrl);

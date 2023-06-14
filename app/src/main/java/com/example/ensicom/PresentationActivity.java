@@ -57,7 +57,7 @@ public class PresentationActivity extends AppCompatActivity {
     }
 
     private void launchDefaultActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity1.class);
         startActivity(intent);
         finish(); // Termine l'activité de présentation pour revenir à l'activité par défaut
     }

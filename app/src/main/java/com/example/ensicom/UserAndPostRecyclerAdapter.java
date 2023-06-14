@@ -110,6 +110,8 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             }
             if (videoUrl != null) {
                 holder.getMainVideoLayout().setVisibility(View.VISIBLE);
+                holder.getPlayVideo().setVisibility(View.VISIBLE);
+                Glide.with(holder.getPlayVideo().getContext()).load(videoUrl).into(holder.getPlayVideo());
                 holder.getPlayVideo().setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), VideoPlayer.class);
                     intent.putExtra("videoUrl", videoUrl);
@@ -117,6 +119,13 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 });
             } else {
                 holder.getPlayVideo().setVisibility(View.GONE);
+            }
+            Button like_button1 = holder.itemView.findViewById(R.id.likeButton);
+            if (post.getLikeUserList().contains(currentUserUid)) {
+                like_button1.setBackgroundResource(R.drawable.like_full);
+            }
+            else{
+                like_button1.setBackgroundResource(R.drawable.like);
             }
         });
         holder.getLikeButton().setOnClickListener(view -> {
@@ -149,6 +158,7 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String postId = post.getPostId();
             Intent intent = new Intent(v.getContext(), ShowCommentsActivity.class);
             intent.putExtra("postId", postId);
+            intent.putExtra("postInvertedDate", post.getInvertedDate().toString());
             v.getContext().startActivity(intent);
         });
     }

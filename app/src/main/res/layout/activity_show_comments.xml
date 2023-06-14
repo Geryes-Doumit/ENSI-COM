@@ -171,6 +171,16 @@
             android:layout_height="250dp"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
+        <ImageView
+            android:id="@+id/videoImageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/imageContent1"
+            app:layout_constraintTop_toTopOf="@+id/imageContent1"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+
+
         <TextView
             android:id="@+id/commentCount"
             android:layout_width="match_parent"

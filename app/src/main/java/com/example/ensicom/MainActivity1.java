@@ -79,16 +79,17 @@ public class MainActivity1 extends AppCompatActivity{
         });
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        findViewById(R.id.profil_button).setOnClickListener(new View.OnClickListener() {
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.LEFT);
-                profileName = findViewById(R.id.profile_name_side_menu);
-                profileName.setText(name);
-                profilePicture=findViewById(R.id.profile_pic_side_menu);
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                        profileName = findViewById(R.id.profile_name_side_menu);
+                        profileName.setText(name);
+                        profilePicture=findViewById(R.id.profile_pic_side_menu);
                         if (dataSnapshot.exists()) {
                             profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
                             Glide.with(MainActivity1.this)
@@ -108,6 +109,33 @@ public class MainActivity1 extends AppCompatActivity{
                     }
                 });
             }
+        });
+        findViewById(R.id.profil_button).setOnClickListener(v -> {
+            drawerLayout.openDrawer(Gravity.LEFT);
+            profileName = findViewById(R.id.profile_name_side_menu);
+            profileName.setText(name);
+            profilePicture=findViewById(R.id.profile_pic_side_menu);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+                        Glide.with(MainActivity1.this)
+                                .load(profilePictureUrl).circleCrop()
+                                .placeholder(R.drawable.ic_launcher_foreground)
+                                .error(R.drawable.ic_launcher_foreground)
+                                .into(profilePicture);
+                        if (profilePictureUrl == null) {
+                            Toast.makeText(MainActivity1.this, "Impossible de charger l'image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity1.this, "L'image n'a pas pu être récupérée", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
        navigationView = findViewById(R.id.nav_view);
