@@ -52,7 +52,7 @@ public class MainFragment extends Fragment {
 
         postsListView = view.findViewById(R.id.postsListView);
 
-        getPosts(false);
+        getPosts();
         newPostButton = view.findViewById(R.id.newPost);
         newPostButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NewPostActivity.class);
@@ -65,12 +65,7 @@ public class MainFragment extends Fragment {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (layoutManager.findLastVisibleItemPosition() == postsList.size() - 1
                         && lastLoadedPostDate != null) {
-                    boolean showToast = false;
-
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1) {
-                        showToast = true;
-                    }
-                    getPosts(showToast);
+                    getPosts();
                 }
             }
         });
@@ -78,14 +73,14 @@ public class MainFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             lastLoadedPostDate = null;
-            getPosts(false);
+            getPosts();
             swipeRefreshLayout.setRefreshing(false);
         });
 
         return view;
     }
 
-    public void getPosts(boolean toast) {
+    public void getPosts() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
 
         if (lastLoadedPostDate == null) {
@@ -111,23 +106,18 @@ public class MainFragment extends Fragment {
         }
         else {
             postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(5).get().addOnCompleteListener(task -> {
-                List<ClassicPost> testForSizeList = new ArrayList<>();
                 if (isAdded() && (task.isSuccessful())) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
                             if (!postsList.contains(post)) {
                                 postsList.add(post);
-                                testForSizeList.add(post);
                                 lastLoadedPostDate = post.getInvertedDate().toString();
+                                postsListView.getAdapter()
+                                        .notifyItemInserted(postsList.size() - 1);
                             }
                         }
-                        postsListView.getAdapter().notifyDataSetChanged();
                     }
-                }
-                if (testForSizeList.size() == 0 && toast) {
-                    Toast message = Toast.makeText(view.getContext(), "Tous les posts on été chargés.", Toast.LENGTH_SHORT);
-                    message.show();
                 }
             });
         }
