@@ -80,7 +80,7 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
 
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, eventsList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
@@ -122,7 +122,7 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
     public void onItemClick(int position, String dayText) {
         if (!dayText.equals("")) {
             String date = dayText + " " + monthYearFromDate(selectedDate);
-
+            getEventsList(selectedDate);
         }
     }
 
@@ -133,17 +133,21 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
                 if (!task.isSuccessful()) {
                     Toast.makeText(view.getContext(), "Error getting data", Toast.LENGTH_SHORT).show();
                 } else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
-                    String year = dateFormat.format(calendar.getTime());
-                    //Toast.makeText(view.getContext(), year, Toast.LENGTH_SHORT).show();
-
+                    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+                    SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+                    SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+                    String year = yearFormat.format(calendar.getTime());
+                    String mm = monthFormat.format(calendar.getTime());
+                    if (mm.charAt(0) == '0') {
+                        mm = String.valueOf(mm.charAt(1));
+                    }
+                    String dd = dayFormat.format(calendar.getTime());
+                    eventsList.clear();
                     for (DataSnapshot monthSnapshot : task.getResult().child(year).getChildren()) {
                         String month = monthSnapshot.getKey();
-                        //Toast.makeText(view.getContext(), month, Toast.LENGTH_SHORT).show();
 
-                        for (DataSnapshot daySnapshot : monthSnapshot.getChildren()) {
+                        for (DataSnapshot daySnapshot : task.getResult().child(year).child(mm).getChildren()) {
                             String day = daySnapshot.getKey();
-                            //Toast.makeText(view.getContext(), day, Toast.LENGTH_SHORT).show();
 
                             for (DataSnapshot eventSnapshot : daySnapshot.getChildren()) {
                                 EventPost event = eventSnapshot.getValue(EventPost.class);
@@ -152,8 +156,9 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
                         }
                     }
                 }
-                //Toast.makeText(view.getContext(), String.valueOf(eventsList.size()), Toast.LENGTH_SHORT).show();
-
+                //calendarRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                calendarRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 7));
+                calendarRecyclerView.setAdapter(new CalendarAdapter(daysInMonthArray(selectedDate), EvenementFragment.this, eventsList));
             }
         });
         return null;
@@ -163,7 +168,9 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         ArrayList<EventPost> filteredEventsList = new ArrayList<>();
 
         for (EventPost event : eventsList) {
-            if (event.getEventDate().equals(date)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+            String dateEvent = dateFormat.format(event.getEventDate());
+            if (event.getEventDate().equals(dateEvent)) {
                 filteredEventsList.add(event);
             }
         }
@@ -180,7 +187,7 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(getContext(), eventsList);
+        EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(eventsList);
         recyclerView.setAdapter(eventRecyclerAdapter);
 
         builder.setView(showView);
@@ -200,11 +207,13 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
 
     private void nextMonthAction() {
         selectedDate.add(Calendar.MONTH, 1);
+        getEventsList(selectedDate);
         setMonthView();
     }
 
     private void previousMonthAction() {
         selectedDate.add(Calendar.MONTH, -1);
+        getEventsList(selectedDate);
         setMonthView();
     }
 }

@@ -8,16 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
+    private List<EventPost> eventsList;
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener)
+    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, List<EventPost> eventsList)
     {
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
+        this.eventsList = eventsList;
     }
 
     @NonNull
@@ -35,6 +38,15 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position)
     {
         holder.dayOfMonth.setText(daysOfMonth.get(position));
+        holder.eventOfDay.setText("");
+        for (int i = 0; i < eventsList.size(); i++) {
+            String[] date = eventsList.get(i).getEventDate().split("/");
+            String day = date[2];
+            String inpos = holder.dayOfMonth.getText().toString();
+            if (inpos.equals(day)) {
+                holder.eventOfDay.setText(eventsList.get(i).getEventName());
+            }
+        }
     }
 
     @Override
