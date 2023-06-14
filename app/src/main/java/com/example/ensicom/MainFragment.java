@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,15 +39,14 @@ public class MainFragment extends Fragment {
     private List<ClassicPost> postsList = new ArrayList<>();
     private View view;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private String lastLoadedPostId;
-    private Integer numberOfPostsLoaded = 0;
+    private String lastLoadedPostDate;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_home, container, false);
 
-        lastLoadedPostId = null;
+        lastLoadedPostDate = null;
 
         postsListView = view.findViewById(R.id.postsListView);
 
@@ -61,7 +61,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1 && lastLoadedPostId != null) {
+                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1 && lastLoadedPostDate != null) {
                     getPosts();
                 }
             }
@@ -69,8 +69,7 @@ public class MainFragment extends Fragment {
 
         swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            lastLoadedPostId = null;
-            numberOfPostsLoaded = 0;
+            lastLoadedPostDate = null;
             getPosts();
             swipeRefreshLayout.setRefreshing(false);
         });
@@ -81,7 +80,7 @@ public class MainFragment extends Fragment {
     public void getPosts() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app/").getReference("posts");
 
-        if (lastLoadedPostId == null) {
+        if (lastLoadedPostDate == null) {
             postsRef.orderByKey().limitToFirst(5).get().addOnCompleteListener(task -> {
                 if (isAdded() && (task.isSuccessful())) {
                     postsList.clear();
@@ -89,7 +88,7 @@ public class MainFragment extends Fragment {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
                             postsList.add(post);
-                            lastLoadedPostId = postSnapshot.getKey();
+                            lastLoadedPostDate = post.getInvertedDate().toString();
                         }
                     }
 
@@ -103,20 +102,23 @@ public class MainFragment extends Fragment {
             });
         }
         else {
-            postsRef.orderByKey().startAfter(lastLoadedPostId).get().addOnCompleteListener(task -> {
+            postsRef.orderByKey().startAfter(lastLoadedPostDate).limitToFirst(3).get().addOnCompleteListener(task -> {
+                List<ClassicPost> testForSizeList = new ArrayList<>();
                 if (isAdded() && (task.isSuccessful())) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
                             ClassicPost post = postSnapshot.getValue(ClassicPost.class);
                             postsList.add(post);
-                            lastLoadedPostId = postSnapshot.getKey();
+                            testForSizeList.add(post);
+                            lastLoadedPostDate = post.getInvertedDate().toString();
                         }
 
                         postsListView.getAdapter().notifyDataSetChanged();
                     }
+                    return;
                 }
-                else {
-                    Toast.makeText(getActivity(), "Aucun post trouvé.", Toast.LENGTH_SHORT).show();
+                if (testForSizeList.size() == 0) {
+                    Snackbar.make(view, "Tous les posts on été chargés.", Snackbar.LENGTH_SHORT).show();
                 }
             });
         }
