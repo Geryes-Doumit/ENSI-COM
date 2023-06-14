@@ -144,7 +144,7 @@ public class EvenementFragment extends Fragment implements CalendarAdapter.OnIte
         eventsRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                
+
             }
         });
         return null;
