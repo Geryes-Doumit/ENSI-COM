@@ -1,6 +1,7 @@
 package com.example.ensicom;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,6 +26,11 @@ public class UsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        toolbar.setTitle("Utilisateurs");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getUsers();
         swipeRefreshLayout = findViewById(R.id.homeRefreshLayoutMod);
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -51,5 +57,12 @@ public class UsersActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        finish();
+        return true;
     }
 }
