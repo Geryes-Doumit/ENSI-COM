@@ -86,7 +86,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                     deletePostButton.setVisibility(View.VISIBLE);
                 }
 
-                deletePostButton.setOnClickListener(v -> deletePost(postId));
+                deletePostButton.setOnClickListener(v -> deletePost(postId, postInvertedDate));
 
                 userProfilePicture = findViewById(R.id.userProfilePicture);
                 Glide.with(userProfilePicture.getContext()).load(user.getProfilePicture()).circleCrop().into(userProfilePicture);
@@ -170,7 +170,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
         // get the post from the database
         FirebaseDatabase database = FirebaseDatabase
                 .getInstance(DATABASE_URL);
-        DatabaseReference postRef = database.getReference(POSTS).child(postId);
+        DatabaseReference postRef = database.getReference(POSTS).child(postInvertedDate).child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
 
@@ -266,6 +266,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
                 .getInstance(DATABASE_URL);
         DatabaseReference postRef = database
                 .getReference(POSTS)
+                .child(postInvertedDate)
                 .child(postId);
 
         postRef.get().addOnSuccessListener(dataSnapshot -> {
@@ -311,10 +312,11 @@ public class ShowCommentsActivity extends AppCompatActivity {
         commentEditText.setHint("Ajouter un commentaire...");
     }
 
-    public void deletePost(String postId) {
+    public void deletePost(String postId, String postInvertedDate) {
         DatabaseReference postRef = FirebaseDatabase
                 .getInstance(DATABASE_URL)
                 .getReference(POSTS)
+                .child(postInvertedDate)
                 .child(postId);
 
         postRef.child("commentId").get().addOnSuccessListener(dataSnapshot -> {

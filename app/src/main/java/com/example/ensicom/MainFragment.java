@@ -58,11 +58,15 @@ public class MainFragment extends Fragment {
         });
 
         postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            boolean once = true;
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1 && lastLoadedPostDate != null) {
+                if (layoutManager.findLastCompletelyVisibleItemPosition() == postsList.size() - 1
+                        && lastLoadedPostDate != null) {
+
                     getPosts();
+//                    once = false;
                 }
             }
         });
