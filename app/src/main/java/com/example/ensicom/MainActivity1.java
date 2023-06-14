@@ -189,6 +189,10 @@ public class MainActivity1 extends AppCompatActivity{
                 Intent aIntent = new Intent(MainActivity1.this, AboutActivity.class);
                 aIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(aIntent);
+            } else if (id == R.id.side_users) {
+                Intent uIntent = new Intent(MainActivity1.this, UsersActivity.class);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(uIntent);
             } else if (id == R.id.side_admin) {
                 Intent abIntent = new Intent(MainActivity1.this, ModerationActivity.class);
                 abIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
