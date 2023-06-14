@@ -24,9 +24,9 @@
                 android:id="@+id/userProfilePicture"
                 android:layout_width="20pt"
                 android:layout_height="20pt"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/profil_rounded"
                 android:scaleType="centerInside"
-                android:layout_marginLeft="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -57,8 +57,8 @@
                 android:id="@+id/deletePostButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:contentDescription="delete Post"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,9 +71,9 @@
             android:id="@+id/postTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"/>
+            android:layout_marginRight="5pt"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/postContent"
@@ -92,16 +92,17 @@
     <LinearLayout
         android:id="@+id/mainImageLayout"
         android:layout_width="match_parent"
-        android:layout_height="427dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/mainImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_launcher_foreground"
             tools:visibility="visible" />
@@ -127,7 +128,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="36dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="20dp">
 
