@@ -105,6 +105,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
             String tag = stringBuilder.toString();
             holder.getTagList().setText(tag);
             Glide.with(holder.getUserProfilePicture().getContext()).load(profilePictureUrl).circleCrop().into(holder.getUserProfilePicture());
+            holder.getUserProfilePicture().setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                intent.putExtra("userId", post.getUserId());
+                v.getContext().startActivity(intent);
+            });
             if (tag.equals("")) {
                 holder.getTagList().setVisibility(View.GONE);
             }

@@ -129,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     // Showing the posts using the recycler view
                     postsListView.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
-                    postsListView.setAdapter(new UserAndPostRecyclerAdapter(postsList));
+                    postsListView.setAdapter(new ProfileAdapter(postsList));
                 }
             });
         }
