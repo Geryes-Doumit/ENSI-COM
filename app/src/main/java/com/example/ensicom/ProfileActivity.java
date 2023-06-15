@@ -35,7 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
     private List<ClassicPost> postsList = new ArrayList<>();
     SwipeRefreshLayout swipeRefreshLayout;
     private String lastLoadedPostDate;
-
+    String userUid;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         lastLoadedPostDate = null;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String name = user.getDisplayName();
+        userUid = getIntent().getStringExtra("userId");
         profileName=findViewById(R.id.textViewProfileName);
-        profileName.setText(name);
         profilePicture=findViewById(R.id.imageViewProfilePic);
         postsListView = findViewById(R.id.profileRecyclerView);
         postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -62,14 +61,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         DatabaseReference userRef = FirebaseDatabase.getInstance("https://projet-fin-annee-ddbef-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference().child("user").child(currentUserId);
+                .getReference().child("user").child(userUid);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    name = dataSnapshot.child("username").getValue(String.class);
+                    profileName.setText(name);
                     profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
                     Glide.with(ProfileActivity.this)
                             .load(profilePictureUrl)
@@ -120,9 +119,11 @@ public class ProfileActivity extends AppCompatActivity {
                     postsList.clear();
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
-                            ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            postsList.add(post);
-                            lastLoadedPostDate = post.getInvertedDate().toString();
+                            if (userUid.equals(postSnapshot.child("userId").getValue(String.class))) {
+                                ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                                postsList.add(post);
+                                lastLoadedPostDate = post.getInvertedDate().toString();
+                            }
                         }
                     }
 
@@ -137,12 +138,14 @@ public class ProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DataSnapshot postDateSnapshot : task.getResult().getChildren()) {
                         for (DataSnapshot postSnapshot : postDateSnapshot.getChildren()) {
-                            ClassicPost post = postSnapshot.getValue(ClassicPost.class);
-                            if (!postsList.contains(post)) {
-                                postsList.add(post);
-                                lastLoadedPostDate = post.getInvertedDate().toString();
-                                postsListView.getAdapter()
-                                        .notifyItemInserted(postsList.size() - 1);
+                            if (userUid.equals(postSnapshot.child("userId").getValue(String.class))) {
+                                ClassicPost post = postSnapshot.getValue(ClassicPost.class);
+                                if (!postsList.contains(post)) {
+                                    postsList.add(post);
+                                    lastLoadedPostDate = post.getInvertedDate().toString();
+                                    postsListView.getAdapter()
+                                            .notifyItemInserted(postsList.size() - 1);
+                            }
                             }
                         }
                     }

@@ -176,6 +176,7 @@ public class MainActivity1 extends AppCompatActivity{
             int id = item.getItemId();
             if (id  == R.id.side_profile) {
                 Intent pIntent = new Intent(MainActivity1.this, ProfileActivity.class);
+                pIntent.putExtra("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(pIntent);
             } else if (id == R.id.side_settings) {

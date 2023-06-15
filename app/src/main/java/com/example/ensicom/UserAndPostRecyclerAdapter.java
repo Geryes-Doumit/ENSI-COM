@@ -55,7 +55,6 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                 .child(currentUserUid)
                 .get()
                 .addOnSuccessListener(dataSnapshot -> currentUser = dataSnapshot.getValue(User.class));
-
         String postContent = post.getContent();
         Integer likeCount = post.getLikeCount();
         String videoUrl = post.getVideoUrl();
@@ -89,6 +88,11 @@ public class UserAndPostRecyclerAdapter extends RecyclerView.Adapter<UserAndPost
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show());
             holder.getUserName().setText(postUserName);
+            holder.getUserName().setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                intent.putExtra("userId", post.getUserId());
+                v.getContext().startActivity(intent);
+            });
             holder.getPostContent().setText(postContent);
             holder.getLikeCount().setText(likeCount.toString());
             holder.getCommentCount().setText(post.getCommentCount().toString());
