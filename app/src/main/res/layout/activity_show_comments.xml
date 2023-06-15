@@ -237,7 +237,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:textColorHint="@color/dark_gray"
             android:id="@+id/newCommentContent"
             android:layout_width="318dp"
             android:layout_height="match_parent"
@@ -247,7 +246,9 @@
             android:gravity="start|top"
             android:hint="Ajouter un commentaire..."
             android:inputType="textMultiLine"
-            android:paddingStart="3dp" />
+            android:paddingStart="3dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/dark_gray" />
 
         <ImageButton
             android:id="@+id/sendCommentButton"
