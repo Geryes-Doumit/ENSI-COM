@@ -73,6 +73,15 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
                         v.getContext().startActivity(intent);
                     }
                 });
+                holder.eventOfDay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("eventDate", event.getEventDate());
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
         }
     }

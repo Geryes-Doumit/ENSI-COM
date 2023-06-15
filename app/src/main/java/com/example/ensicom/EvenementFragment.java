@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -37,7 +39,8 @@ public class EvenementFragment extends Fragment implements View.OnClickListener 
     private RecyclerView calendarRecyclerView;
     private Calendar selectedDate;
     private FloatingActionButton addEventButton;
-    private AlertDialog alertDialog;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<EventPost> eventsList = new ArrayList<>();
 
@@ -88,6 +91,12 @@ public class EvenementFragment extends Fragment implements View.OnClickListener 
         previousMonthButton.setOnClickListener(this);
 
         getEventsList(selectedDate);
+
+        swipeRefreshLayout = view.findViewById(R.id.homeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getEventsList(selectedDate);
+            swipeRefreshLayout.setRefreshing(false);
+        });
         return view;
     }
 
