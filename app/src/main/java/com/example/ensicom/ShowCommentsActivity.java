@@ -3,6 +3,7 @@ package com.example.ensicom;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
     private ImageButton sendCommentButton;
     private EditText commentContent;
     private String postInvertedDate;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,26 @@ public class ShowCommentsActivity extends AppCompatActivity {
         commentsRecyclerView.setAdapter(commentsRecyclerAdapter);
         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+        getComments();
+
+        commentContent = findViewById(R.id.newCommentContent);
+        sendCommentButton = findViewById(R.id.sendCommentButton);
+        sendCommentButton.setOnClickListener(v -> {
+            commentContent.clearFocus();
+            if (Boolean.TRUE.equals(commentsRecyclerAdapter.getReplyMode())) {
+                sendReply();
+            } else {
+                sendComment();
+            }
+        });
+        swipeRefreshLayout = findViewById(R.id.commentsRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getComments();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
+    public void getComments(){
         FirebaseDatabase database = FirebaseDatabase
                 .getInstance(DATABASE_URL);
         DatabaseReference postRef = database.getReference(POSTS).child(postInvertedDate).child(postId);
@@ -150,17 +172,6 @@ public class ShowCommentsActivity extends AppCompatActivity {
                         }
                     });
         }).addOnFailureListener(e -> Toast.makeText(ShowCommentsActivity.this, "Erreur lors du chargement des commentaires.", Toast.LENGTH_SHORT).show());
-
-        commentContent = findViewById(R.id.newCommentContent);
-        sendCommentButton = findViewById(R.id.sendCommentButton);
-        sendCommentButton.setOnClickListener(v -> {
-            commentContent.clearFocus();
-            if (Boolean.TRUE.equals(commentsRecyclerAdapter.getReplyMode())) {
-                sendReply();
-            } else {
-                sendComment();
-            }
-        });
     }
 
     public void sendComment() {
