@@ -96,7 +96,7 @@
                 android:backgroundTint="@color/dark_green"
                 android:contentDescription="valid Post"
                 android:drawableStart="@drawable/check_circle"
-                android:text="Valider"
+                android:text="Promouvoir"
                 android:textSize="12dp"
                 android:visibility="gone" />
 
