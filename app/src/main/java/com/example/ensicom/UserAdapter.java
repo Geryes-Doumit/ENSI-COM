@@ -1,6 +1,7 @@
 package com.example.ensicom;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
                     .circleCrop()
                     .into(holder.getUserProfilePicture());
         }
-
+        holder.getUserProfilePicture().setOnClickListener(v -> {
+            Intent intent = new Intent(holder.getUserName().getContext(), ProfileActivity.class);
+            intent.putExtra("userId", userUID);
+            holder.getUserName().getContext().startActivity(intent);
+        });
         holder.getUserName().setText(username);
+        holder.getUserName().setOnClickListener( v -> {
+            Intent intent = new Intent(holder.getUserName().getContext(), ProfileActivity.class);
+            intent.putExtra("userId", userUID);
+            holder.getUserName().getContext().startActivity(intent);
+        });
         if (isAdmin) {
             holder.getUserStatus().setText("Admin");
         }
