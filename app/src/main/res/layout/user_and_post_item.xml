@@ -113,8 +113,8 @@
 
     <LinearLayout
         android:id="@+id/mainVideoLayout"
-        android:layout_width="421dp"
-        android:layout_height="53dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/post_background"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -122,10 +122,14 @@
         <ImageView
             android:id="@+id/mainVideo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:visibility="visible"
-            app:srcCompat="@android:drawable/ic_media_play" />
+            app:srcCompat="@android:drawable/ic_media_play"
+            android:foreground="@android:drawable/ic_media_play"
+            android:foregroundTint="@color/grad_purple"
+            android:foregroundGravity="center"/>
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
