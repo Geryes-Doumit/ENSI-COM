@@ -1,7 +1,5 @@
 package com.example.ensicom;
 
-import java.util.Date;
-
 public class EventPost {
 
     public String eventId;

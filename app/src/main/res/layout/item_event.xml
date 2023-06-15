@@ -1,22 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/eventCell"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/background"
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/eventdate"
+        android:id="@+id/eventname"
+        android:text="Titre de l'événement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/eventdesc"
+        android:text="Description de l'événement"
+        android:drawableStart="@drawable/description"
+        android:drawablePadding="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingTop="13sp"
+        android:textSize="16sp"
         android:textColor="@color/black"/>
 
     <TextView
-        android:id="@+id/eventname"
-        android:layout_width="wrap_content"
+        android:id="@+id/eventloc"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:paddingTop="11sp"
+        android:drawablePadding="10sp"
+        android:text="Lieu de l'événement"
+        android:drawableStart="@drawable/location_icon"
+        android:textSize="16sp"
         android:textColor="@color/black"/>
 
 </LinearLayout>

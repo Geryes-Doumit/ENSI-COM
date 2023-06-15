@@ -1,7 +1,5 @@
 package com.example.ensicom;
 
-import android.content.Context;
-import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,43 +8,44 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder> {
-    private ArrayList<EventPost> arrayList;
+    private ArrayList<EventPost> eventsList;
 
-    public EventRecyclerAdapter(ArrayList<EventPost> arrayList) {
-        this.arrayList = arrayList;
+    public EventRecyclerAdapter(ArrayList<EventPost> eventsList) {
+        this.eventsList = eventsList;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_evenement, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        EventPost event = arrayList.get(position);
+        EventPost event = eventsList.get(position);
         holder.eventName.setText(event.getEventName());
-        holder.eventDate.setText(event.getEventDate());
+        holder.eventDesc.setText(event.getEventDescription());
+        holder.eventLoc.setText(event.getEventLocation());
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return eventsList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView eventDate, eventName;
+        TextView eventDate, eventName, eventDesc, eventLoc;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            eventDate = itemView.findViewById(R.id.eventdate);
             eventName = itemView.findViewById(R.id.eventname);
+            eventDesc = itemView.findViewById(R.id.eventdesc);
+            eventLoc = itemView.findViewById(R.id.eventloc);
         }
     }
 }

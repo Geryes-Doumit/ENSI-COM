@@ -1,30 +1,28 @@
 package com.example.ensicom;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+import java.text.ParseException;
+
+public class CalendarViewHolder extends RecyclerView.ViewHolder
 {
     public final TextView dayOfMonth;
     public final TextView eventOfDay;
-    private final CalendarAdapter.OnItemListener onItemListener;
+
+    public final LinearLayout eventCell;
     public TextView eventTextView;
-    public CalendarViewHolder(@NonNull View itemView, CalendarAdapter.OnItemListener onItemListener)
+    public CalendarViewHolder(@NonNull View itemView)
     {
         super(itemView);
         dayOfMonth = itemView.findViewById(R.id.cellDayText);
         eventOfDay = itemView.findViewById(R.id.cellEventNumber);
-        this.onItemListener = onItemListener;
-        itemView.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view)
-    {
-        onItemListener.onItemClick(getAdapterPosition(), (String) dayOfMonth.getText());
+        eventCell = itemView.findViewById(R.id.eventCell);
     }
 }
 

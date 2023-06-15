@@ -53,6 +53,8 @@
     <string name="titre">Titre de l\'évenement</string>
     <string name="description">Description de l\'évenement</string>
     <string name="name">CalendarAppExample</string>
+    <string name="Date">Date</string>
+    <string name="Name">Evénement</string>
 
     <style name="CalendarDateStyle">
         <item name="android:textSize">14sp</item> <!-- Taille du texte -->
