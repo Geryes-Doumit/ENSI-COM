@@ -101,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
     public boolean isValidEmail(String email) {
-        String pattern = "^[a-z]+\\.[a-z]+@uha\\.fr$";
+        String pattern = "^[a-z]+-?[a-z]+\\.[a-z]+-?[a-z]+@uha\\.fr$";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(email);
         return matcher.matches();
