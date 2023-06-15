@@ -155,6 +155,8 @@ public class SettingsActivity extends AppCompatActivity {
         deletionButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
             builder.setMessage("Voulez-vous vraiment supprimer votre compte ?")
+                    .setTitle("Suppression du compte")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setPositiveButton("Oui", (dialog, id) -> {
                         deleteUserData();
