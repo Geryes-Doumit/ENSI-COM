@@ -68,12 +68,13 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     name = dataSnapshot.child("username").getValue(String.class);
-                    profileName.setText(name);
+                    profileName.setText("Profil de : " + name);
                     profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
                     Glide.with(ProfileActivity.this)
                             .load(profilePictureUrl)
                             .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
+                            .circleCrop()
                             .into(profilePicture);
                     if (profilePictureUrl == null) {
                         Toast.makeText(ProfileActivity.this, "Impossible de charger l'image", Toast.LENGTH_SHORT).show();
