@@ -1,6 +1,5 @@
 # ENSI'COM
 
-
 <p align ="center">
   ENSI'COM is a end-of-year project that aims to be a "blog" mobile application to be used in the context of a school/university.
   It has multiple features, such as posting images and videos, moderation and an events system.
@@ -11,6 +10,7 @@
 ## Requirements
 
 - Android 7 or higher
+- A student account belonging to Université de Haute Alsace (UHA) to create an account on the app
 
 ## Using the app
 
@@ -25,6 +25,10 @@ On the main page, you'll see two tabs:
 - To see the events of a day, simply press on the day in the calendar.
 
 - You'll notice a button at the top left corner, which, when pressed, will allow you to access your profile and settings. 
+
+## Moderation
+When a user creates a post, it isn't shown directly in the main page, because it has to be validated by an Admin.
+As an admin, you can manage posts and users.
 
 ## License
 This project is licensed under an <a href="https://github.com/Geryes-Doumit/ENSI-COM/edit/main/LICENSE.md">MIT License</a>.
