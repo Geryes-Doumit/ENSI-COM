@@ -16,31 +16,22 @@
 
 ENSI'COM is a very straightforward application :
 
-ENSI'COM is a very straightforward application :i
-ENSI'COM is a very straightforward application :
+Install the .apk file on your Android phone to test the application out.
+On the main page, you'll see two tabs:
+- The news tab that contains the users' validated posts. 
+- The events tab that contains a calendar which can show you the future events that are already planned. 
 
-ENSI'COM is a very straightforward application :i5
-ENSI'COM is a very straightforward application :
-ENSI'COM is a very straightforward application :
+- You can interact with the posts by linking them and commenting on them. You can also reply to other comments. 
+- To see the events of a day, simply press on the day in the calendar.
 
-ENSI'COM is a very straightforward application :
-ENSI'COM is a very straightforward application :
-
-
-- You will see multiple buttons on the interface. You can choose the local mode or the network mode, in which you can choose to host a server or to connect to one
-
-- Make sure to fill out the required information (folder path(s), IP address, port)
-
-- Press "Start Syncing" and admire D-sync working flawlessly !
-
-- You can also change the application's theme just by clicking on the "change theme" button
+- You'll notice a button at the top left corner, which, when pressed, will allow you to access your profile and settings. 
 
 ## License
 
-Dsync is licensed under [license MIT](./LICENSE.md)
+
 
 <footer>
 <p align="center">
-Created with ❤️ by Geryes et Marc, students at <a href="https://www.ensisa.uha.fr">ENSISA</a>.
+Created with ❤️ by 7 students at <a href="https://www.ensisa.uha.fr">ENSISA</a>.
 </p>
 </footer
