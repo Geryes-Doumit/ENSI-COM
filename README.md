@@ -27,8 +27,7 @@ On the main page, you'll see two tabs:
 - You'll notice a button at the top left corner, which, when pressed, will allow you to access your profile and settings. 
 
 ## License
-
-
+This project is licensed under an <a href="https://github.com/Geryes-Doumit/ENSI-COM/edit/main/LICENSE.md">MIT License</a>.
 
 <footer>
 <p align="center">
